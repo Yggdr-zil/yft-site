@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import './App.css'
 
@@ -140,6 +140,12 @@ function ContactForm() {
 }
 
 export default function App() {
+  useEffect(() => {
+    // Run after browser paints — overrides any scroll restoration
+    const raf = requestAnimationFrame(() => window.scrollTo(0, 0))
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
   return (
     <div className="site">
 
