@@ -52,12 +52,6 @@ function LogoMark() {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
     >
-      {/* Floor shadow — static, squished flat at bottom of logo */}
-      <img
-        src="/ygg-mark-t.png"
-        aria-hidden
-        className="hero-logo-shadow"
-      />
       {/* Main logo */}
       <motion.img
         src="/ygg-mark-t.png"
@@ -148,7 +142,7 @@ function ContactForm() {
         {status === 'sending' ? 'Sending…' : 'Send Inquiry →'}
       </button>
       {status === 'error' && (
-        <p className="form-error">Something went wrong — please email <a href="mailto:investors@yggdrasil.tech">investors@yggdrasil.tech</a> directly.</p>
+        <p className="form-error">Something went wrong — please email <a href="mailto:investors@yggfin.tech">investors@yggfin.tech</a> directly.</p>
       )}
     </form>
   )
@@ -156,9 +150,11 @@ function ContactForm() {
 
 export default function App() {
   useEffect(() => {
-    // Run after browser paints — overrides any scroll restoration
-    const raf = requestAnimationFrame(() => window.scrollTo(0, 0))
-    return () => cancelAnimationFrame(raf)
+    // Blur any browser-restored focus (contact form etc) then hard-snap to top
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
+    document.documentElement.style.scrollBehavior = 'auto'
+    window.scrollTo(0, 0)
+    document.documentElement.style.scrollBehavior = ''
   }, [])
 
   return (
@@ -235,43 +231,47 @@ export default function App() {
           <div className="full-section-body">
             <FadeUp delay={0.1} className="full-col">
               <p className="description">
-                The Compute Unit (CU) index applies a physics-grounded geometric mean across four
-                hardware dimensions — floating-point throughput, memory bandwidth, VRAM capacity,
-                and interconnect bandwidth — to produce a single deterministic score per accelerator.
-                TCU and ICU are sub-indices of CU, reweighted for training-heavy and inference-heavy
-                workloads respectively.
+                The Compute Unit (CU) is the normalization layer. It establishes a single,
+                deterministic score per accelerator — anchored to an immutable reference point —
+                that makes cross-GPU comparison possible at all. Without it, an H100 price and
+                an MI300X price are just two different numbers with no common basis.
               </p>
               <p className="description">
-                Scores are derived from manufacturer hardware specifications, not observed benchmark
-                performance. This is deliberate: settlement-grade benchmarks must be reproducible
-                from published, timestamped inputs and must not shift when a vendor ships a new
-                software driver. Software stack maturity (e.g. ROCm vs CUDA ecosystem depth) is
-                a real variable — it is explicitly excluded from the index and left for operators
-                to factor into procurement decisions.
+                The Empirical Compute Unit (eCU) is the index. It captures actual delivered
+                compute from live cloud instances — what a buyer is genuinely receiving per
+                dollar, not what a datasheet claims. TCU and ICU sub-indices carry the same
+                split for training-heavy and inference-heavy workloads.
+              </p>
+              <p className="description">
+                The spread between CU and eCU is a signal in its own right: it measures how
+                much real-world performance a provider is delivering versus hardware spec —
+                varying by provider, hardware age, and utilization. No one else can produce
+                this number.
               </p>
             </FadeUp>
             <FadeUp delay={0.2} className="full-col">
               <p className="description">
-                Any counterparty can independently verify every settlement price from the published
-                methodology and manufacturer data sheets. This is the architectural requirement for
-                exchange listing — CFTC, CME, and CBOE mandate transparent, reproducible benchmark
-                methodologies.
+                CU anchors settlement. eCU is what procurement desks and quants actually
+                trade on. Any counterparty can independently verify every settlement price
+                from the published methodology and manufacturer data sheets — the architectural
+                requirement for listing on a regulated market.
               </p>
               <p className="description">
-                The empirical variants — eCU, eTCU, eICU — extend the index with real measured
-                throughput from our proprietary benchmarking pipeline, which runs standardized
-                workloads against live cloud instances and captures actual delivered compute.
-                Spec-based scores set the settlement baseline; empirical scores provide the
-                real-world signal that procurement desks and quants actually trade on.
+                Software stack variables — ecosystem maturity, driver depth — are explicitly
+                excluded from the index and left for operators to factor into their own
+                procurement decisions.
+              </p>
+              <p className="description">
+                For a technical deep-dive, <a href="mailto:inquiries@yggfin.tech" className="inline-link">reach out directly</a>.
               </p>
               <div className="key-stats">
                 <div className="key-stat">
                   <div className="ks-value">CU · TCU · ICU</div>
-                  <div className="ks-label">Spec-based · settlement grade</div>
+                  <div className="ks-label">Normalization layer · spec-anchored</div>
                 </div>
                 <div className="key-stat">
                   <div className="ks-value">eCU · eTCU · eICU</div>
-                  <div className="ks-label">Empirical · benchmarked throughput</div>
+                  <div className="ks-label">The index · delivered compute per $</div>
                 </div>
                 <div className="key-stat">
                   <div className="ks-value">3.2M rows</div>
@@ -301,7 +301,7 @@ export default function App() {
               <p className="description">
                 Every commodity that became a financial market first needed a settlement-grade
                 benchmark. WTI crude. LIBOR. VIX. The Compute Unit Index is that benchmark for
-                GPU compute — built for CBOE, CME, and OTC cleared markets from the ground up.
+                GPU compute — built for regulated markets from the ground up.
                 No exchange-listed, regulated hedging instrument for GPU compute exists today.
               </p>
               <div className="key-stats">
@@ -337,7 +337,7 @@ export default function App() {
                   <div className="pathway-step">
                     <span className="step-num">2</span>
                     <div>
-                      <div className="step-title">Bloomberg Terminal Feed</div>
+                      <div className="step-title">Bloomberg + Refinitiv Feed</div>
                       <div className="step-sub">Index licensing · months 6–9</div>
                     </div>
                   </div>
@@ -374,11 +374,20 @@ export default function App() {
               <h2>Three Structural Advantages.<br />No Competitor Has All Three.</h2>
               <p className="description">
                 Over $45M has been raised by teams building GPU compute derivatives. None have
-                reached a regulated exchange. Crypto-native approaches lack cross-GPU normalization —
-                a governance crisis every time a new GPU generation releases — and cannot clear
-                for US regulated markets. ML-based approaches cannot produce a settlement price
-                that a losing counterparty can independently verify from published inputs: exchanges
-                will not list a non-deterministic benchmark.
+                reached a regulated exchange. The approaches are structurally different — not
+                competing implementations of the same method.
+              </p>
+              <p className="description">
+                Both aggregate raw spot price data. Without a normalization layer, an H100 and
+                an A100 price are not comparable — liquidity stays fractured across GPU types
+                and generations, and neither approach produces a settlement price a counterparty
+                can independently verify from published inputs.
+              </p>
+              <p className="description">
+                Yggdrasil aggregates price data, runs proprietary benchmarks that track real
+                hardware degradation over time, and normalizes everything to an immutable
+                reference point — producing a settlement price any counterparty can reproduce
+                from published inputs.
               </p>
               <p className="description">
                 Yggdrasil is the only approach designed from day one for settlement-grade
@@ -415,22 +424,22 @@ export default function App() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Cross-GPU norm.</td>
+                      <td>Approach</td>
+                      <td className="cell-no">Price agg.</td>
+                      <td className="cell-no">Price agg.</td>
+                      <td className="cell-yes yft-col">Norm. index</td>
+                    </tr>
+                    <tr>
+                      <td>Liquidity</td>
+                      <td className="cell-no">Fractured</td>
+                      <td className="cell-no">Fractured</td>
+                      <td className="cell-yes yft-col">Unified</td>
+                    </tr>
+                    <tr>
+                      <td>Verifiable</td>
                       <td className="cell-no">✕</td>
                       <td className="cell-no">✕</td>
                       <td className="cell-yes yft-col">✓</td>
-                    </tr>
-                    <tr>
-                      <td>Deterministic</td>
-                      <td className="cell-no">✕</td>
-                      <td className="cell-no">✕</td>
-                      <td className="cell-yes yft-col">✓</td>
-                    </tr>
-                    <tr>
-                      <td>CME/CBOE path</td>
-                      <td className="cell-no">Blocked</td>
-                      <td className="cell-no">Blocked</td>
-                      <td className="cell-yes yft-col">Open</td>
                     </tr>
                     <tr>
                       <td>Patent</td>
@@ -491,8 +500,11 @@ export default function App() {
                 We're in stealth. Announcing mid-March 2026. If you're a fintech or deep-tech
                 infrastructure investor and this interests you, reach out directly.
               </p>
-              <a href="mailto:investors@yggdrasil.tech" className="contact-link">
-                investors@yggdrasil.tech
+              <a href="mailto:investors@yggfin.tech" className="contact-link">
+                investors@yggfin.tech
+              </a>
+              <a href="mailto:inquiries@yggfin.tech" className="contact-link contact-link--secondary">
+                inquiries@yggfin.tech
               </a>
             </FadeUp>
             <FadeUp delay={0.25} className="contact-right">

@@ -27,7 +27,7 @@
   letter-spacing: -0.02em;
   color: var(--fg);
 }
-.nav-logo img { height: 28px; border-radius: 4px; }
+.nav-logo img { height: 28px; width: auto; border-radius: 4px; }
 .nav-links {
   display: flex;
   gap: 0.1rem;
@@ -115,22 +115,6 @@
   object-fit: contain;
   position: relative;
   z-index: 1;
-  filter:
-    drop-shadow(10px 6px 18px rgba(0,0,0,0.22))
-    drop-shadow(18px 10px 36px rgba(0,0,0,0.10));
-}
-.hero-logo-shadow {
-  position: absolute;
-  width: 420px;
-  height: 420px;
-  object-fit: contain;
-  left: 0;
-  bottom: -28px;
-  transform-origin: bottom center;
-  transform: scaleY(0.10) scaleX(0.80);
-  filter: brightness(0) blur(20px) opacity(0.15);
-  z-index: 0;
-  pointer-events: none;
 }
 .overline {
   font-size: 0.72rem;
@@ -148,7 +132,6 @@
   letter-spacing: -0.03em;
   margin-bottom: 1.25rem;
   max-width: 600px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 6px 18px rgba(0,0,0,0.04);
 }
 .hero-sub {
   font-size: 1.05rem;
@@ -502,6 +485,24 @@
 .contact-link:hover {
   border-color: var(--accent);
 }
+.contact-link--secondary {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--muted);
+  border-bottom-color: transparent;
+}
+.contact-link--secondary:hover {
+  color: var(--accent);
+  border-color: var(--accent-light);
+}
+.inline-link {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent-light);
+  transition: border-color 0.2s;
+}
+.inline-link:hover { border-color: var(--accent); }
 
 /* ── Citations + footnotes ── */
 .cite {
