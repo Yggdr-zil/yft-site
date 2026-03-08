@@ -313,6 +313,8 @@
 /* ── Market/pathway card ── */
 .market-card {
   width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -380,6 +382,8 @@
 /* ── Comparison card ── */
 .compare-card {
   width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
   flex: 1;
   display: flex;
   flex-direction: column;
