@@ -359,17 +359,50 @@ export default function App() {
       <div id="contact">
         <AnimatedLine />
         <section className="contact-section">
-          <FadeUp delay={0.1}>
-            <p className="overline">Investor Inquiries</p>
-            <h2 className="contact-h2">Raising $3M Seed</h2>
-            <p className="contact-sub">
-              We're in stealth. Announcing mid-March 2026. If you're a fintech or deep-tech
-              infrastructure investor and this interests you, reach out directly.
-            </p>
-            <a href="mailto:investors@yggdrasil.tech" className="contact-link">
-              investors@yggdrasil.tech
-            </a>
-          </FadeUp>
+          <div className="contact-grid">
+            <FadeUp delay={0.1} className="contact-left">
+              <p className="overline">Investor Inquiries</p>
+              <h2 className="contact-h2">Raising $3M Seed</h2>
+              <p className="contact-sub">
+                We're in stealth. Announcing mid-March 2026. If you're a fintech or deep-tech
+                infrastructure investor and this interests you, reach out directly.
+              </p>
+              <a href="mailto:investors@yggdrasil.tech" className="contact-link">
+                investors@yggdrasil.tech
+              </a>
+            </FadeUp>
+            <FadeUp delay={0.25} className="contact-right">
+              <form
+                className="contact-form"
+                onSubmit={e => {
+                  e.preventDefault()
+                  const form = e.currentTarget
+                  const data = new FormData(form)
+                  window.location.href = `mailto:investors@yggdrasil.tech?subject=Investor Inquiry — ${data.get('fund')}&body=Name: ${data.get('name')}%0AFund: ${data.get('fund')}%0AEmail: ${data.get('email')}%0A%0A${data.get('message')}`
+                }}
+              >
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Name</label>
+                    <input name="name" className="form-input" placeholder="Your name" required />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Fund / Organization</label>
+                    <input name="fund" className="form-input" placeholder="Fund name" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Email</label>
+                  <input name="email" type="email" className="form-input" placeholder="you@fund.com" required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Message</label>
+                  <textarea name="message" className="form-textarea" placeholder="Tell us about your fund and interest in compute derivatives infrastructure..." rows={4} />
+                </div>
+                <button type="submit" className="form-submit">Send Inquiry →</button>
+              </form>
+            </FadeUp>
+          </div>
         </section>
       </div>
 
