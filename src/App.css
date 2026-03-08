@@ -170,7 +170,6 @@
   align-items: center;
   justify-content: center;
   padding: 3rem 2.5rem;
-  background: var(--card-bg);
   border-left: 1px solid var(--border);
 }
 .split-section.reverse .split-aside {
@@ -268,12 +267,7 @@
 
 /* ── Market/pathway card ── */
 .market-card {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
   width: 100%;
-  max-width: 400px;
 }
 .market-card-label {
   font-size: 0.7rem;
@@ -309,7 +303,7 @@
   font-weight: 700;
   color: var(--muted);
   flex-shrink: 0;
-  background: var(--card-bg);
+  background: var(--bg);
 }
 .pathway-step.active .step-num {
   background: var(--accent);
@@ -338,12 +332,7 @@
 
 /* ── Comparison card ── */
 .compare-card {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
   width: 100%;
-  max-width: 440px;
 }
 .compare-table {
   width: 100%;

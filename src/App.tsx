@@ -242,10 +242,10 @@ export default function App() {
           <div className="split-text">
             <FadeUp delay={0.05}>
               <p className="section-number">02 — Market Structure</p>
-              <h2>Hundreds of Billions in AI Capex.<br />No Price Standard.</h2>
+              <h2>$400 Billion in AI Capex.<br />No Price Standard.</h2>
               <p className="description">
-                Global cloud AI infrastructure spend exceeded $500B in 2024 and is projected to
-                surpass $1T annually by 2027.{' '}
+                Hyperscaler AI infrastructure spend reached ~$400B in 2025 and is projected to
+                surpass $600B in 2026 — a 74% year-over-year increase.{' '}
                 <span className="cite">¹</span>{' '}
                 GPU compute prices swing 30–50% quarter-over-quarter as supply chains tighten
                 and new architectures release.
@@ -258,8 +258,8 @@ export default function App() {
               </p>
               <div className="key-stats">
                 <div className="key-stat">
-                  <div className="ks-value">$500B+</div>
-                  <div className="ks-label">2024 AI capex <span className="cite-inline">¹</span></div>
+                  <div className="ks-value">$400B+</div>
+                  <div className="ks-label">2025 AI capex <span className="cite-inline">¹</span></div>
                 </div>
                 <div className="key-stat">
                   <div className="ks-value">30–50%</div>
@@ -270,7 +270,7 @@ export default function App() {
                   <div className="ks-label">Regulated hedging instruments</div>
                 </div>
               </div>
-              <p className="footnote"><span className="cite">¹</span> Goldman Sachs Research, McKinsey Global Institute, IDC — 2024 estimates</p>
+              <p className="footnote"><span className="cite">¹</span> Goldman Sachs, CNBC, IEEE ComSoc — hyperscaler AI infrastructure capex, 2025 actuals / 2026 projections</p>
             </FadeUp>
           </div>
           <div className="split-aside">
@@ -323,14 +323,14 @@ export default function App() {
           <div className="split-text">
             <FadeUp delay={0.05}>
               <p className="section-number">03 — Differentiation</p>
-              <h2>Three Moats. No Competitor<br />Has All Three.</h2>
+              <h2>Three Structural Advantages.<br />No Competitor Has All Three.</h2>
               <p className="description">
                 Over $45M has been raised by teams building GPU compute derivatives. None have
                 reached a regulated exchange. Crypto-native approaches lack cross-GPU normalization —
-                a governance crisis every time a new GPU generation releases — and remain CFTC-blocked
-                for US persons. ML-based approaches cannot produce a settlement price that a losing
-                counterparty can independently verify from published inputs: exchanges will not list
-                a non-deterministic benchmark.
+                a governance crisis every time a new GPU generation releases — and cannot clear
+                for US regulated markets. ML-based approaches cannot produce a settlement price
+                that a losing counterparty can independently verify from published inputs: exchanges
+                will not list a non-deterministic benchmark.
               </p>
               <p className="description">
                 Yggdrasil is the only approach designed from day one for settlement-grade
