@@ -33,6 +33,14 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
   )
 }
 
+const floatAnim = {
+  y: [0, -10, 2, -6, 0],
+  rotate: [0, 0.4, -0.3, 0.2, 0],
+}
+const floatTransition = {
+  duration: 9, repeat: Infinity, ease: 'easeInOut' as const, repeatType: 'mirror' as const,
+}
+
 function LogoMark() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
@@ -44,12 +52,21 @@ function LogoMark() {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
     >
+      {/* Shadow silhouette — same PNG, turned black, blurred, offset */}
+      <motion.img
+        src="/ygg-mark-t.png"
+        aria-hidden
+        className="hero-logo-shadow"
+        animate={floatAnim}
+        transition={floatTransition}
+      />
+      {/* Main logo */}
       <motion.img
         src="/ygg-mark-t.png"
         alt="Yggdrasil mark"
         className="hero-logo-img"
-        animate={{ y: [0, -10, 2, -6, 0], rotate: [0, 0.4, -0.3, 0.2, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
+        animate={floatAnim}
+        transition={floatTransition}
       />
     </motion.div>
   )
