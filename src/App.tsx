@@ -57,15 +57,25 @@ function LogoMark() {
 
 function ScrollNudge() {
   return (
-    <motion.div
-      className="scroll-nudge"
-      animate={{ y: [0, 7, 0] }}
-      transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-    >
-      <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="6 9 12 15 18 9" />
+    <div className="scroll-nudge">
+      <svg className="scroll-mouse" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="7" y="2" width="10" height="16" rx="5" />
+        <motion.line
+          x1="12" y1="6" x2="12" y2="9"
+          strokeLinecap="round"
+          animate={{ y1: [6, 8, 6], y2: [9, 11, 9] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </svg>
-    </motion.div>
+      <motion.svg
+        className="scroll-chevron"
+        viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"
+        animate={{ y: [0, 5, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <polyline points="6 9 12 15 18 9" />
+      </motion.svg>
+    </div>
   )
 }
 
