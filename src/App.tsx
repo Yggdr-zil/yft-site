@@ -149,6 +149,8 @@ function ContactForm() {
 }
 
 export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   useEffect(() => {
     // Blur any browser-restored focus (contact form etc) then hard-snap to top
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
@@ -173,7 +175,33 @@ export default function App() {
             <li><a href="#moat">Differentiation</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
+          <button
+            className={`nav-hamburger${menuOpen ? ' open' : ''}`}
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <line x1="3" y1="7" x2="21" y2="7" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="17" x2="21" y2="17" />
+              </svg>
+            )}
+          </button>
         </div>
+        {menuOpen && (
+          <div className="nav-mobile-menu">
+            <a href="#index" onClick={() => setMenuOpen(false)}>Index</a>
+            <a href="#market" onClick={() => setMenuOpen(false)}>Market</a>
+            <a href="#moat" onClick={() => setMenuOpen(false)}>Differentiation</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero ── */}

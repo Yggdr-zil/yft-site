@@ -76,7 +76,9 @@ function serveStatic(req, res) {
     : join(STATIC_DIR, "index.html");
   try {
     const data = readFileSync(filePath);
-    res.writeHead(200, { "Content-Type": MIME[ext] || "text/html", "Cache-Control": ext === ".html" ? "no-cache" : "max-age=31536000" });
+    const isHashed = /\.[a-f0-9]{8,}\.[a-z]+$/.test(req.url); // Vite content-hashed assets
+    const cc = ext === ".html" ? "no-cache" : isHashed ? "max-age=31536000,immutable" : "max-age=3600";
+    res.writeHead(200, { "Content-Type": MIME[ext] || "text/html", "Cache-Control": cc });
     res.end(data);
   } catch {
     const html = readFileSync(join(STATIC_DIR, "index.html"));

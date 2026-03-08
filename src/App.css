@@ -50,6 +50,53 @@
   background: var(--accent-light);
 }
 
+/* Hamburger button — desktop hidden, mobile shown */
+.nav-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+  color: var(--muted);
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-hamburger:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+/* Mobile dropdown menu */
+.nav-mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0; right: 0;
+  background: rgba(250, 250, 250, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  z-index: 99;
+}
+.nav-mobile-menu a {
+  display: block;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.nav-mobile-menu a:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
 /* ── Hero ── */
 .hero-wrap {
   min-height: 100vh;
@@ -710,4 +757,13 @@
   .footer { padding: 1.5rem; }
   .stats-row { gap: 1.5rem; }
   .cred-sep { display: none; }
+  .nav { padding: 0 1rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; flex-shrink: 0; }
+  .scroll-nudge { display: none; }
+  .compare-card, .market-card, .formula-card { max-width: 100%; }
+  .compare-table { table-layout: fixed; width: 100%; }
+  .compare-table td, .compare-table th { word-break: break-word; font-size: 0.78rem; padding: 0.65rem 0.4rem; }
+  .key-stats { gap: 0.5rem; }
+  .stats-row { gap: 1rem; }
 }
