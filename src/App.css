@@ -121,9 +121,11 @@
   width: 420px;
   height: 420px;
   object-fit: contain;
-  top: 22px;
-  left: 16px;
-  filter: brightness(0) blur(18px) opacity(0.22);
+  left: 0;
+  bottom: -30px;
+  transform-origin: bottom center;
+  transform: scaleY(0.12) scaleX(0.88);
+  filter: brightness(0) blur(22px) opacity(0.18);
   z-index: 0;
   pointer-events: none;
 }

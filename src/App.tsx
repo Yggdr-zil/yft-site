@@ -52,13 +52,11 @@ function LogoMark() {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
     >
-      {/* Shadow silhouette — same PNG, turned black, blurred, offset */}
-      <motion.img
+      {/* Floor shadow — static, squished flat at bottom of logo */}
+      <img
         src="/ygg-mark-t.png"
         aria-hidden
         className="hero-logo-shadow"
-        animate={floatAnim}
-        transition={floatTransition}
       />
       {/* Main logo */}
       <motion.img
