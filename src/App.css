@@ -167,9 +167,10 @@
 }
 .split-aside {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   padding: 3rem 2.5rem;
+  background: var(--card-bg);
   border-left: 1px solid var(--border);
 }
 .split-section.reverse .split-aside {
@@ -268,6 +269,8 @@
 /* ── Market/pathway card ── */
 .market-card {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .market-card-label {
   font-size: 0.7rem;
@@ -280,26 +283,27 @@
 .pathway {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  flex: 1;
+  justify-content: space-evenly;
 }
 .pathway-step {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
-  opacity: 0.55;
+  gap: 1.25rem;
+  opacity: 0.5;
 }
 .pathway-step.active {
   opacity: 1;
 }
 .step-num {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1.5px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--muted);
   flex-shrink: 0;
@@ -312,51 +316,52 @@
 }
 .step-title {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--fg);
   line-height: 1.3;
 }
 .step-sub {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--muted);
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
 }
 .pathway-connector {
   width: 1.5px;
-  height: 28px;
+  height: 36px;
   background: var(--border);
-  margin-left: 13px;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-left: 17px;
 }
 
 /* ── Comparison card ── */
 .compare-card {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .compare-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 .compare-table th {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--muted);
-  padding: 0.5rem 0.6rem;
+  padding: 0.75rem 0.75rem;
   text-align: center;
   border-bottom: 1px solid var(--border);
 }
 .compare-table th:first-child { text-align: left; }
 .compare-table td {
-  padding: 0.55rem 0.6rem;
+  padding: 0.85rem 0.75rem;
   text-align: center;
   color: var(--muted);
   border-bottom: 1px solid var(--border);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 .compare-table td:first-child { text-align: left; color: var(--fg); font-weight: 500; }
 .compare-table tr:last-child td { border-bottom: none; }
