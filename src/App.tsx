@@ -437,9 +437,9 @@ export default function App() {
                     </tr>
                     <tr>
                       <td>Verifiable</td>
-                      <td className="cell-no">✕</td>
-                      <td className="cell-no">✕</td>
-                      <td className="cell-yes yft-col">✓</td>
+                      <td className="cell-no">?</td>
+                      <td className="cell-no">?</td>
+                      <td className="cell-yes yft-col">*</td>
                     </tr>
                     <tr>
                       <td>Patent</td>
@@ -454,6 +454,7 @@ export default function App() {
                     </tr>
                   </tbody>
                 </table>
+                <p className="compare-footnote">* Clear path to IOSCO compliance</p>
               </div>
             </FadeUp>
           </div>

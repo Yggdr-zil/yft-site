@@ -420,6 +420,7 @@
 .yft-col { background: var(--accent-light); color: var(--accent) !important; font-weight: 700 !important; }
 .cell-no { color: #d1d5db !important; }
 .cell-yes { color: var(--accent) !important; font-weight: 700; }
+.compare-footnote { margin-top: 0.75rem; font-size: 0.72rem; color: #9ca3af; letter-spacing: 0.01em; }
 
 /* ── Credibility Strip ── */
 .cred-strip {
