@@ -2,12 +2,12 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import './App.css'
 
-// Animated horizontal rule that draws from left to right when in view
+// Animated horizontal rule — draws left to right on scroll entry
 function AnimatedLine({ delay = 0 }: { delay?: number }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   return (
-    <div ref={ref} style={{ height: '1px', background: 'var(--border)', overflow: 'hidden' }}>
+    <div ref={ref} style={{ height: '1px', background: 'transparent', overflow: 'hidden' }}>
       <motion.div
         initial={{ scaleX: 0, transformOrigin: 'left' }}
         animate={inView ? { scaleX: 1 } : {}}
@@ -18,7 +18,7 @@ function AnimatedLine({ delay = 0 }: { delay?: number }) {
   )
 }
 
-// Fade + slide up for content blocks
+// Fade + slide up
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
@@ -31,6 +31,29 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
       className={className}
     >
       {children}
+    </motion.div>
+  )
+}
+
+// Logo mark — fades in and floats gently
+function LogoMark() {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true })
+  return (
+    <motion.div
+      ref={ref}
+      className="hero-logo-wrap"
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+    >
+      <motion.img
+        src="/ygg-mark-t.png"
+        alt="Yggdrasil mark"
+        className="hero-logo-img"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      />
     </motion.div>
   )
 }
@@ -57,57 +80,73 @@ export default function App() {
 
       {/* ── Hero ── */}
       <section className="hero">
-        <FadeUp delay={0.1}>
-          <p className="overline">Compute Derivatives Infrastructure</p>
-        </FadeUp>
-        <FadeUp delay={0.2}>
-          <h1>The Compute<br />Unit Index</h1>
-        </FadeUp>
-        <FadeUp delay={0.3}>
-          <p className="hero-sub">
-            The first physics-constrained, settlement-grade standard for GPU compute pricing.
-            Built for regulated derivatives markets.
-          </p>
-        </FadeUp>
-        <FadeUp delay={0.4}>
-          <div className="stats-row">
-            <div className="stat-item">
-              <div className="stat-value">56</div>
-              <div className="stat-label">Accelerators tracked</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-value">28</div>
-              <div className="stat-label">Cloud providers</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-value">Real-time</div>
-              <div className="stat-label">Live pricing</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-value">Patent<br /><span style={{ fontSize: '1rem' }}>Pending</span></div>
-              <div className="stat-label">USPTO · Jan 9, 2026</div>
-            </div>
+        <div className="hero-grid">
+          <div className="hero-text">
+            <FadeUp delay={0.1}>
+              <p className="overline">Compute Derivatives Infrastructure</p>
+            </FadeUp>
+            <FadeUp delay={0.2}>
+              <h1>The Compute<br />Unit Index</h1>
+            </FadeUp>
+            <FadeUp delay={0.3}>
+              <p className="hero-sub">
+                The first physics-constrained, settlement-grade standard for GPU compute pricing.
+                Built for regulated derivatives markets.
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.4}>
+              <div className="stats-row">
+                <div className="stat-item">
+                  <div className="stat-value">56</div>
+                  <div className="stat-label">Accelerators tracked</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-value">28</div>
+                  <div className="stat-label">Cloud providers</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-value">Real-time</div>
+                  <div className="stat-label">Live pricing</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-value">Patent<br /><span className="stat-pending">Pending</span></div>
+                  <div className="stat-label">USPTO · Jan 9, 2026</div>
+                </div>
+              </div>
+            </FadeUp>
           </div>
-        </FadeUp>
+          <LogoMark />
+        </div>
       </section>
 
       {/* ── Section 1: Index ── */}
       <div id="index">
         <AnimatedLine />
-        <section className="split-section">
-          <div className="split-text">
-            <FadeUp delay={0.05}>
-              <p className="section-number">01 — Index Methodology</p>
-              <h2>Cross-GPU Normalization<br />No One Else Has Solved</h2>
+        <section className="full-section">
+          <FadeUp delay={0.05}>
+            <p className="section-number">01 — Index Methodology</p>
+            <h2>Cross-GPU Normalization<br />No One Else Has Solved</h2>
+          </FadeUp>
+          <div className="full-section-body">
+            <FadeUp delay={0.1} className="full-col">
               <p className="description">
-                The CU (Compute Unit) index uses a physics-grounded geometric mean across four hardware dimensions —
-                floating-point throughput, memory bandwidth, VRAM capacity, and interconnect bandwidth —
-                to produce a single, deterministic score per accelerator.
+                The CU (Compute Unit) index uses a physics-grounded geometric mean across four hardware
+                dimensions — floating-point throughput, memory bandwidth, VRAM capacity, and interconnect
+                bandwidth — to produce a single, deterministic score per accelerator.
               </p>
               <p className="description">
-                Unlike competing approaches that rely on ML models or governance-dependent basket recompositions,
-                the CU index is fully reproducible from published inputs. Any counterparty can independently
-                verify every settlement price. This is the architectural requirement for exchange listing.
+                Unlike competing approaches that rely on ML models or governance-dependent basket
+                recompositions, the CU index is fully reproducible from published inputs. Any
+                counterparty can independently verify every settlement price. This is the architectural
+                requirement for exchange listing.
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.2} className="full-col">
+              <p className="description">
+                Three sub-indices address distinct market segments: CU (general compute), TCU
+                (training-weighted, FP16/FP8 heavy), and ICU (inference-weighted, VRAM-bound).
+                Each generates independent Bloomberg-feedable time series, enabling separate
+                financial instruments per workload type.
               </p>
               <div className="key-stats">
                 <div className="key-stat">
@@ -122,23 +161,10 @@ export default function App() {
                   <div className="ks-value">CFTC-designed</div>
                   <div className="ks-label">From day one</div>
                 </div>
-              </div>
-            </FadeUp>
-          </div>
-          <div className="split-aside">
-            <FadeUp delay={0.2}>
-              <div className="formula-card">
-                <p className="formula-label">TCU (Training Compute Unit)</p>
-                <code className="formula">
-                  TCU = FP<sup>0.43</sup> × BW<sup>0.22</sup> × VRAM<sup>0.55</sup> × IC<sup>0.11</sup>
-                </code>
-                <p className="formula-note">Geometric mean, normalized to H100 SXM reference (TCU = 1.0)</p>
-                <div className="formula-divider" />
-                <p className="formula-label">ICU (Inference Compute Unit)</p>
-                <code className="formula">
-                  ICU = FP<sup>0.60</sup> × BW<sup>0.28</sup> × VRAM<sup>0.73</sup> × IC<sup>0.05</sup>
-                </code>
-                <p className="formula-note">Higher VRAM weight — inference is memory-bound</p>
+                <div className="key-stat">
+                  <div className="ks-value">Deterministic</div>
+                  <div className="ks-label">Settlement-reproducible</div>
+                </div>
               </div>
             </FadeUp>
           </div>
@@ -148,20 +174,20 @@ export default function App() {
       {/* ── Section 2: Market ── */}
       <div id="market">
         <AnimatedLine />
-        <section className="split-section reverse">
+        <section className="split-section">
           <div className="split-text">
             <FadeUp delay={0.05}>
               <p className="section-number">02 — Market Structure</p>
               <h2>An $800B Market with<br />No Price Standard</h2>
               <p className="description">
-                Global cloud AI infrastructure spend exceeds $800B annually. GPU compute prices swing 40%
-                quarter-over-quarter as supply chains tighten and new architectures release. Hyperscalers,
-                AI labs, and enterprise buyers have zero hedging instruments.
+                Global cloud AI infrastructure spend exceeds $800B annually. GPU compute prices swing
+                40% quarter-over-quarter as supply chains tighten and new architectures release.
+                Hyperscalers, AI labs, and enterprise buyers have zero hedging instruments.
               </p>
               <p className="description">
-                Every commodity that became a financial market first needed a settlement-grade benchmark.
-                WTI crude. LIBOR. VIX. The Compute Unit Index is that benchmark for GPU compute —
-                built for CBOE, CME, and OTC cleared markets from the ground up.
+                Every commodity that became a financial market first needed a settlement-grade
+                benchmark. WTI crude. LIBOR. VIX. The Compute Unit Index is that benchmark for
+                GPU compute — built for CBOE, CME, and OTC cleared markets from the ground up.
               </p>
               <div className="key-stats">
                 <div className="key-stat">

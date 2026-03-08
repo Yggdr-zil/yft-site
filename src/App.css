@@ -56,6 +56,25 @@
   margin: 0 auto;
   padding: 7rem 3rem 4rem;
 }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  align-items: center;
+  gap: 2rem;
+}
+.hero-text { }
+.hero-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+.hero-logo-img {
+  width: 320px;
+  height: 320px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 32px rgba(37, 99, 235, 0.15));
+}
 .overline {
   font-size: 0.72rem;
   font-weight: 600;
@@ -66,17 +85,17 @@
 }
 .hero h1 {
   font-family: 'Source Serif 4', Georgia, serif;
-  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
   margin-bottom: 1.25rem;
-  max-width: 700px;
+  max-width: 600px;
 }
 .hero-sub {
   font-size: 1.05rem;
   color: var(--muted);
-  max-width: 560px;
+  max-width: 520px;
   line-height: 1.75;
   margin-bottom: 2.5rem;
 }
@@ -94,11 +113,37 @@
   color: var(--fg);
   line-height: 1.2;
 }
+.stat-pending {
+  font-size: 1rem;
+  font-weight: 600;
+}
 .stat-item .stat-label {
   font-size: 0.78rem;
   color: var(--muted);
   margin-top: 0.2rem;
 }
+
+/* ── Full-width 2-col text section ── */
+.full-section {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 4rem 3rem;
+}
+.full-section h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+  max-width: 560px;
+}
+.full-section-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.full-col { }
 
 /* ── Split sections ── */
 .split-section {
@@ -424,6 +469,19 @@
 }
 
 /* ── Responsive ── */
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-logo-wrap {
+    justify-content: center;
+    padding-right: 0;
+    order: -1;
+  }
+  .hero-logo-img { width: 220px; height: 220px; }
+  .full-section-body { grid-template-columns: 1fr; gap: 0; }
+}
+
 @media (max-width: 768px) {
   .split-section {
     grid-template-columns: 1fr;
@@ -438,6 +496,7 @@
   .hero { padding: 5rem 1.5rem 3rem; }
   .split-text { padding: 2.5rem 1.5rem; }
   .split-aside { padding: 2rem 1.5rem; }
+  .full-section { padding: 2.5rem 1.5rem; }
   .cred-strip { padding: 2rem 1.5rem; }
   .contact-section { padding: 3rem 1.5rem 4rem; }
   .footer { padding: 1.5rem; }
