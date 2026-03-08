@@ -1,8 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import './App.css'
 
-// Animated horizontal rule — draws left to right on scroll entry
 function AnimatedLine({ delay = 0 }: { delay?: number }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
@@ -18,7 +17,6 @@ function AnimatedLine({ delay = 0 }: { delay?: number }) {
   )
 }
 
-// Fade + slide up
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
@@ -35,7 +33,6 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
   )
 }
 
-// Logo mark — fades in and floats gently
 function LogoMark() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
@@ -51,10 +48,70 @@ function LogoMark() {
         src="/ygg-mark-t.png"
         alt="Yggdrasil mark"
         className="hero-logo-img"
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ y: [0, -10, 2, -6, 0], rotate: [0, 0.4, -0.3, 0.2, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
       />
     </motion.div>
+  )
+}
+
+function ContactForm() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setStatus('sending')
+    const data = Object.fromEntries(new FormData(e.currentTarget))
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      setStatus(res.ok ? 'sent' : 'error')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  if (status === 'sent') {
+    return (
+      <div className="form-success">
+        <p className="form-success-title">Message received.</p>
+        <p className="form-success-sub">We'll be in touch at the email you provided.</p>
+      </div>
+    )
+  }
+
+  return (
+    <form className="contact-form" onSubmit={handleSubmit}>
+      <div className="form-row">
+        <div className="form-group">
+          <label className="form-label">Name</label>
+          <input name="name" className="form-input" placeholder="Your name" required />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Fund / Organization</label>
+          <input name="fund" className="form-input" placeholder="Fund name" />
+        </div>
+      </div>
+      <div className="form-group">
+        <label className="form-label">Email</label>
+        <input name="email" type="email" className="form-input" placeholder="you@fund.com" required />
+      </div>
+      <div className="form-group">
+        <label className="form-label">Message</label>
+        <textarea name="message" className="form-textarea"
+          placeholder="Tell us about your fund and interest in compute derivatives infrastructure..."
+          rows={4} required />
+      </div>
+      <button type="submit" className="form-submit" disabled={status === 'sending'}>
+        {status === 'sending' ? 'Sending…' : 'Send Inquiry →'}
+      </button>
+      {status === 'error' && (
+        <p className="form-error">Something went wrong — please email <a href="mailto:investors@yggdrasil.tech">investors@yggdrasil.tech</a> directly.</p>
+      )}
+    </form>
   )
 }
 
@@ -130,40 +187,47 @@ export default function App() {
           <div className="full-section-body">
             <FadeUp delay={0.1} className="full-col">
               <p className="description">
-                The CU (Compute Unit) index uses a physics-grounded geometric mean across four hardware
-                dimensions — floating-point throughput, memory bandwidth, VRAM capacity, and interconnect
-                bandwidth — to produce a single, deterministic score per accelerator.
+                The Compute Unit (CU) index applies a physics-grounded geometric mean across four
+                hardware dimensions — floating-point throughput, memory bandwidth, VRAM capacity,
+                and interconnect bandwidth — to produce a single deterministic score per accelerator.
+                TCU and ICU are sub-indices of CU, reweighted for training-heavy and inference-heavy
+                workloads respectively.
               </p>
               <p className="description">
-                Unlike competing approaches that rely on ML models or governance-dependent basket
-                recompositions, the CU index is fully reproducible from published inputs. Any
-                counterparty can independently verify every settlement price. This is the architectural
-                requirement for exchange listing.
+                Scores are derived from manufacturer hardware specifications, not observed benchmark
+                performance. This is deliberate: settlement-grade benchmarks must be reproducible
+                from published, timestamped inputs and must not shift when a vendor ships a new
+                software driver. Software stack maturity (e.g. ROCm vs CUDA ecosystem depth) is
+                a real variable — it is explicitly excluded from the index and left for operators
+                to factor into procurement decisions.
               </p>
             </FadeUp>
             <FadeUp delay={0.2} className="full-col">
               <p className="description">
-                Three sub-indices address distinct market segments: CU (general compute), TCU
-                (training-weighted, FP16/FP8 heavy), and ICU (inference-weighted, VRAM-bound).
-                Each generates independent Bloomberg-feedable time series, enabling separate
-                financial instruments per workload type.
+                Any counterparty can independently verify every settlement price from the published
+                methodology and manufacturer data sheets. This is the architectural requirement for
+                exchange listing — CFTC, CME, and CBOE mandate transparent, reproducible benchmark
+                methodologies.
+              </p>
+              <p className="description">
+                The empirical variants — eCU, eTCU, eICU — extend the index with real measured
+                throughput from our proprietary benchmarking pipeline, which runs standardized
+                workloads against live cloud instances and captures actual delivered compute.
+                Spec-based scores set the settlement baseline; empirical scores provide the
+                real-world signal that procurement desks and quants actually trade on.
               </p>
               <div className="key-stats">
                 <div className="key-stat">
                   <div className="ks-value">CU · TCU · ICU</div>
-                  <div className="ks-label">Three sub-indices</div>
+                  <div className="ks-label">Spec-based · settlement grade</div>
+                </div>
+                <div className="key-stat">
+                  <div className="ks-value">eCU · eTCU · eICU</div>
+                  <div className="ks-label">Empirical · benchmarked throughput</div>
                 </div>
                 <div className="key-stat">
                   <div className="ks-value">3.2M rows</div>
-                  <div className="ks-label">Historical data</div>
-                </div>
-                <div className="key-stat">
-                  <div className="ks-value">CFTC-designed</div>
-                  <div className="ks-label">From day one</div>
-                </div>
-                <div className="key-stat">
-                  <div className="ks-value">Deterministic</div>
-                  <div className="ks-label">Settlement-reproducible</div>
+                  <div className="ks-label">Historical price data</div>
                 </div>
               </div>
             </FadeUp>
@@ -178,31 +242,35 @@ export default function App() {
           <div className="split-text">
             <FadeUp delay={0.05}>
               <p className="section-number">02 — Market Structure</p>
-              <h2>An $800B Market with<br />No Price Standard</h2>
+              <h2>Hundreds of Billions in AI Capex.<br />No Price Standard.</h2>
               <p className="description">
-                Global cloud AI infrastructure spend exceeds $800B annually. GPU compute prices swing
-                40% quarter-over-quarter as supply chains tighten and new architectures release.
-                Hyperscalers, AI labs, and enterprise buyers have zero hedging instruments.
+                Global cloud AI infrastructure spend exceeded $500B in 2024 and is projected to
+                surpass $1T annually by 2027.{' '}
+                <span className="cite">¹</span>{' '}
+                GPU compute prices swing 30–50% quarter-over-quarter as supply chains tighten
+                and new architectures release.
               </p>
               <p className="description">
                 Every commodity that became a financial market first needed a settlement-grade
                 benchmark. WTI crude. LIBOR. VIX. The Compute Unit Index is that benchmark for
                 GPU compute — built for CBOE, CME, and OTC cleared markets from the ground up.
+                No exchange-listed, regulated hedging instrument for GPU compute exists today.
               </p>
               <div className="key-stats">
                 <div className="key-stat">
-                  <div className="ks-value">$800B+</div>
-                  <div className="ks-label">Annual AI capex</div>
+                  <div className="ks-value">$500B+</div>
+                  <div className="ks-label">2024 AI capex <span className="cite-inline">¹</span></div>
                 </div>
                 <div className="key-stat">
-                  <div className="ks-value">40%</div>
+                  <div className="ks-value">30–50%</div>
                   <div className="ks-label">Quarterly price swing</div>
                 </div>
                 <div className="key-stat">
-                  <div className="ks-value">$0</div>
-                  <div className="ks-label">Hedging available today</div>
+                  <div className="ks-value">Zero</div>
+                  <div className="ks-label">Regulated hedging instruments</div>
                 </div>
               </div>
+              <p className="footnote"><span className="cite">¹</span> Goldman Sachs Research, McKinsey Global Institute, IDC — 2024 estimates</p>
             </FadeUp>
           </div>
           <div className="split-aside">
@@ -213,13 +281,21 @@ export default function App() {
                   <div className="pathway-step active">
                     <span className="step-num">1</span>
                     <div>
-                      <div className="step-title">Bloomberg Data Feed</div>
-                      <div className="step-sub">Index licensing · months 6–9</div>
+                      <div className="step-title">API + Data Subscriptions</div>
+                      <div className="step-sub">Direct licensing · months 1–6</div>
                     </div>
                   </div>
                   <div className="pathway-connector" />
                   <div className="pathway-step">
                     <span className="step-num">2</span>
+                    <div>
+                      <div className="step-title">Bloomberg Terminal Feed</div>
+                      <div className="step-sub">Index licensing · months 6–9</div>
+                    </div>
+                  </div>
+                  <div className="pathway-connector" />
+                  <div className="pathway-step">
+                    <span className="step-num">3</span>
                     <div>
                       <div className="step-title">OTC Cleared Swap</div>
                       <div className="step-sub">First trade · months 12–18</div>
@@ -227,7 +303,7 @@ export default function App() {
                   </div>
                   <div className="pathway-connector" />
                   <div className="pathway-step">
-                    <span className="step-num">3</span>
+                    <span className="step-num">4</span>
                     <div>
                       <div className="step-title">Exchange-Listed Futures</div>
                       <div className="step-sub">CBOE/CME · Series A milestone</div>
@@ -249,11 +325,12 @@ export default function App() {
               <p className="section-number">03 — Differentiation</p>
               <h2>Three Moats. No Competitor<br />Has All Three.</h2>
               <p className="description">
-                Three companies have raised a combined $45M building GPU compute derivatives.
-                None can access a regulated exchange. Ornn lacks cross-GPU normalization —
-                a governance crisis with every architecture transition. Silicon Data's ML model
-                is non-deterministic: no counterparty can reproduce the settlement price from
-                published inputs. CFTC will not approve it. CME will not list it.
+                Over $45M has been raised by teams building GPU compute derivatives. None have
+                reached a regulated exchange. Crypto-native approaches lack cross-GPU normalization —
+                a governance crisis every time a new GPU generation releases — and remain CFTC-blocked
+                for US persons. ML-based approaches cannot produce a settlement price that a losing
+                counterparty can independently verify from published inputs: exchanges will not list
+                a non-deterministic benchmark.
               </p>
               <p className="description">
                 Yggdrasil is the only approach designed from day one for settlement-grade
@@ -283,8 +360,8 @@ export default function App() {
                   <thead>
                     <tr>
                       <th></th>
-                      <th>Ornn</th>
-                      <th>Silicon Data</th>
+                      <th>Crypto-native</th>
+                      <th>ML-based</th>
                       <th className="yft-col">Yggdrasil</th>
                     </tr>
                   </thead>
@@ -314,9 +391,8 @@ export default function App() {
                       <td className="cell-yes yft-col">Pending</td>
                     </tr>
                     <tr>
-                      <td>Raised</td>
-                      <td>$5.7M</td>
-                      <td>$4.7M</td>
+                      <td>Combined raised</td>
+                      <td colSpan={2} style={{ textAlign: 'center' }}>$45M+</td>
                       <td className="yft-col">Seed</td>
                     </tr>
                   </tbody>
@@ -372,35 +448,7 @@ export default function App() {
               </a>
             </FadeUp>
             <FadeUp delay={0.25} className="contact-right">
-              <form
-                className="contact-form"
-                onSubmit={e => {
-                  e.preventDefault()
-                  const form = e.currentTarget
-                  const data = new FormData(form)
-                  window.location.href = `mailto:investors@yggdrasil.tech?subject=Investor Inquiry — ${data.get('fund')}&body=Name: ${data.get('name')}%0AFund: ${data.get('fund')}%0AEmail: ${data.get('email')}%0A%0A${data.get('message')}`
-                }}
-              >
-                <div className="form-row">
-                  <div className="form-group">
-                    <label className="form-label">Name</label>
-                    <input name="name" className="form-input" placeholder="Your name" required />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Fund / Organization</label>
-                    <input name="fund" className="form-input" placeholder="Fund name" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Email</label>
-                  <input name="email" type="email" className="form-input" placeholder="you@fund.com" required />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Message</label>
-                  <textarea name="message" className="form-textarea" placeholder="Tell us about your fund and interest in compute derivatives infrastructure..." rows={4} />
-                </div>
-                <button type="submit" className="form-submit">Send Inquiry →</button>
-              </form>
+              <ContactForm />
             </FadeUp>
           </div>
         </section>

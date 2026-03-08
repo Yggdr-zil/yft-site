@@ -440,6 +440,28 @@
   border-color: var(--accent);
 }
 
+/* ── Citations + footnotes ── */
+.cite {
+  font-size: 0.65em;
+  color: var(--accent);
+  vertical-align: super;
+  font-weight: 600;
+}
+.cite-inline {
+  font-size: 0.65em;
+  color: var(--accent);
+  vertical-align: super;
+  font-weight: 600;
+}
+.footnote {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  margin-top: 1.25rem;
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+}
+
 /* ── Contact form ── */
 .contact-grid {
   display: grid;
@@ -525,6 +547,40 @@
 @media (max-width: 900px) {
   .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
   .form-row { grid-template-columns: 1fr; }
+}
+
+/* ── Form states ── */
+.form-success {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  min-height: 200px;
+}
+.form-success-title {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+.form-success-sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.form-error {
+  font-size: 0.8rem;
+  color: #ef4444;
+  margin-top: 0.5rem;
+}
+.form-error a { color: var(--accent); }
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 /* ── Footer ── */
