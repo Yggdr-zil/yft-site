@@ -115,6 +115,9 @@
   object-fit: contain;
   position: relative;
   z-index: 1;
+  filter:
+    drop-shadow(10px 6px 18px rgba(0,0,0,0.22))
+    drop-shadow(18px 10px 36px rgba(0,0,0,0.10));
 }
 .hero-logo-shadow {
   position: absolute;
@@ -122,10 +125,10 @@
   height: 420px;
   object-fit: contain;
   left: 0;
-  bottom: -30px;
+  bottom: -28px;
   transform-origin: bottom center;
-  transform: scaleY(0.12) scaleX(0.88);
-  filter: brightness(0) blur(22px) opacity(0.18);
+  transform: scaleY(0.10) scaleX(0.80);
+  filter: brightness(0) blur(20px) opacity(0.15);
   z-index: 0;
   pointer-events: none;
 }
@@ -145,6 +148,7 @@
   letter-spacing: -0.03em;
   margin-bottom: 1.25rem;
   max-width: 600px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 6px 18px rgba(0,0,0,0.04);
 }
 .hero-sub {
   font-size: 1.05rem;
