@@ -51,10 +51,44 @@
 }
 
 /* ── Hero ── */
+.hero-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
 .hero {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 7rem 3rem 4rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+.scroll-nudge {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--muted);
+  opacity: 0.35;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.scroll-nudge svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
 }
 .hero-grid {
   display: grid;
@@ -167,11 +201,16 @@
 }
 .split-aside {
   display: flex;
-  align-items: stretch;
-  justify-content: center;
+  flex-direction: column;
   padding: 3rem 2.5rem;
   background: var(--card-bg);
   border-left: 1px solid var(--border);
+}
+/* Framer-motion wrapper inside aside must fill full height */
+.split-aside > * {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .split-section.reverse .split-aside {
   border-left: none;
@@ -269,6 +308,7 @@
 /* ── Market/pathway card ── */
 .market-card {
   width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
@@ -335,6 +375,7 @@
 /* ── Comparison card ── */
 .compare-card {
   width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;

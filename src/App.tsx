@@ -55,6 +55,20 @@ function LogoMark() {
   )
 }
 
+function ScrollNudge() {
+  return (
+    <motion.div
+      className="scroll-nudge"
+      animate={{ y: [0, 7, 0] }}
+      transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+    >
+      <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </motion.div>
+  )
+}
+
 function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
@@ -136,6 +150,7 @@ export default function App() {
       </nav>
 
       {/* ── Hero ── */}
+      <div className="hero-wrap">
       <section className="hero">
         <div className="hero-grid">
           <div className="hero-text">
@@ -175,6 +190,8 @@ export default function App() {
           <LogoMark />
         </div>
       </section>
+      <ScrollNudge />
+      </div>
 
       {/* ── Section 1: Index ── */}
       <div id="index">
