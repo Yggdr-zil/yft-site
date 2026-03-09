@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { createTransport } from "nodemailer";
 import { fileURLToPath } from "node:url";
@@ -25,9 +25,8 @@ const SMTP_PORT = parseInt(process.env.SMTP_PORT || "1025", 10);
 const SMTP_USER = process.env.SMTP_USER || "";
 const SMTP_PASS = process.env.SMTP_PASS || "";
 const SMTP_SECURE = process.env.SMTP_SECURE === "true";
-const MAIL_TO   = process.env.MAIL_TO   || "investors@yggdrasil.tech";
-const MAIL_FROM = process.env.MAIL_FROM || SMTP_USER || "noreply@yggdrasil.tech";
-const STATIC_DIR = join(__dirname, "../dist");
+const MAIL_TO   = process.env.MAIL_TO   || "inquiries@yggfin.tech";
+const MAIL_FROM = process.env.MAIL_FROM || SMTP_USER || "inquiries@yggfin.tech";
 
 // ── Rate limiting ──────────────────────────────────────────────────────
 const rateMap = new Map();
@@ -63,30 +62,6 @@ function readBody(req) {
   });
 }
 
-// ── Static file server ─────────────────────────────────────────────────
-const MIME = {
-  ".html": "text/html", ".js": "application/javascript", ".css": "text/css",
-  ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml",
-  ".ico": "image/x-icon", ".json": "application/json", ".woff2": "font/woff2",
-};
-function serveStatic(req, res) {
-  const ext = req.url.includes(".") ? "." + req.url.split(".").pop().split("?")[0] : "";
-  const filePath = ext
-    ? join(STATIC_DIR, req.url.split("?")[0])
-    : join(STATIC_DIR, "index.html");
-  try {
-    const data = readFileSync(filePath);
-    const isHashed = /\.[a-f0-9]{8,}\.[a-z]+$/.test(req.url); // Vite content-hashed assets
-    const cc = ext === ".html" ? "no-cache" : isHashed ? "max-age=31536000,immutable" : "max-age=3600";
-    res.writeHead(200, { "Content-Type": MIME[ext] || "text/html", "Cache-Control": cc });
-    res.end(data);
-  } catch {
-    const html = readFileSync(join(STATIC_DIR, "index.html"));
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(html);
-  }
-}
-
 // ── Server ─────────────────────────────────────────────────────────────
 createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -120,21 +95,18 @@ createServer(async (req, res) => {
         from: `"YFT Investor Site" <${MAIL_FROM}>`,
         replyTo: `"${sanitize(name, 100)}" <${sanitize(email, 200)}>`,
         to: MAIL_TO,
-        subject: `[YFT Investor Inquiry] ${sanitize(fund || name, 80)}`,
+        subject: `[YFT Inquiry] ${sanitize(fund || name, 80)}`,
         text,
       });
       console.log(`[${new Date().toISOString()}] Inquiry from ${email}`);
       return json(res, 200, { ok: true });
     } catch (err) {
       console.error(`[${new Date().toISOString()}] SMTP error:`, err.message);
-      return json(res, 500, { error: "Failed to send. Please email investors@yggdrasil.tech directly." });
+      return json(res, 500, { error: "Failed to send. Please email inquiries@yggfin.tech directly." });
     }
   }
 
-  // Serve static files for all other GET requests
-  if (req.method === "GET") return serveStatic(req, res);
-
   json(res, 404, { error: "Not found" });
 }).listen(PORT, () => {
-  console.log(`YFT server on :${PORT} — mail to ${MAIL_TO}`);
+  console.log(`YFT contact server on :${PORT} — mail to ${MAIL_TO}`);
 });
