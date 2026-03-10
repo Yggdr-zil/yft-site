@@ -862,39 +862,73 @@
             <div class="rv"><span class="label">Vision</span></div>
             <div class="rv"><h2>Every compute transaction in the world prices against this index.</h2></div>
             <div class="rv"><span class="rule"></span></div>
-            <div class="rv">
-                <div class="two-col" style="margin-top:var(--gap);align-items:start;grid-template-columns:1.6fr 1fr;">
+            <div class="rv" style="margin-top:var(--gap);">
 
-                    <table class="t" style="background:rgba(10,20,40,0.5);backdrop-filter:blur(4px);font-size:var(--tb);grid-column:span 1;">
-                        <thead><tr><th>WTI (Oil)</th><th>CU (Compute)</th></tr></thead>
-                        <tbody>
-                            <tr><td>Created 1983</td><td>Created 2026</td></tr>
-                            <tr><td>Grades crude by API gravity</td><td>Grades compute by physics performance</td></tr>
-                            <tr><td>$365B/yr physical market</td><td>$365B/yr cloud spend today</td></tr>
-                            <tr><td>Trillions in derivatives</td><td>OTC swaps → CME futures → ETFs</td></tr>
-                            <tr><td>Bloomberg standard</td><td>Bloomberg standard</td></tr>
-                            <tr><td>Physical delivery (barrels)</td><td>Physical settlement of compute capacity</td></tr>
-                        </tbody>
-                    </table>
+                <!-- Four-Act Market Architecture -->
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(0.6rem,1.2vw,1rem);margin-bottom:clamp(0.6rem,1.2vh,1rem);">
 
-                    <div style="display:flex;flex-direction:column;gap:var(--gap);">
-                        <div class="card-top" style="background:rgba(10,20,40,0.6);backdrop-filter:blur(4px);">
-                            <h3 style="margin-bottom:var(--gaps);">China Expansion</h3>
-                            <p style="font-size:var(--ts2);">~$1 trillion in unhedged compute exposure behind the firewall. No standardized pricing exists. A generational second market.</p>
+                    <!-- Act I -->
+                    <div class="card-top" style="background:rgba(10,20,40,0.65);backdrop-filter:blur(6px);border-top-color:var(--gold);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--gaps);">
+                            <span style="font-family:var(--fd);font-size:clamp(1.3rem,2.4vw,1.9rem);font-weight:500;color:var(--gold);line-height:1;">I</span>
+                            <span style="font-size:var(--tl);color:var(--tm);letter-spacing:0.05em;">Now → Series A</span>
                         </div>
-                        <div class="card-top" style="background:rgba(10,20,40,0.6);backdrop-filter:blur(4px);">
-                            <h3 style="margin-bottom:var(--gaps);">Physical Settlement</h3>
-                            <p style="font-size:var(--ts2);">If institutional depth reaches critical mass — the CU unit becomes the underlying, not just the reference price. Compute-hours delivered, not cash-settled. Fractional delivery fee on every transaction settled through the rail.</p>
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--tp);margin-bottom:0.25em;">OTC Market</div>
+                        <div style="font-size:var(--tl);color:var(--gold);letter-spacing:0.04em;margin-bottom:0.4em;">5–10 bps notional</div>
+                        <p style="font-size:var(--tl);color:var(--tm);line-height:1.55;">Bilateral ISDA swaps. Bloomberg tickers live. Prove demand — build the history CME needs.</p>
+                    </div>
+
+                    <!-- Act II -->
+                    <div class="card-top" style="background:rgba(10,20,40,0.65);backdrop-filter:blur(6px);border-top-color:rgba(197,149,42,0.6);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--gaps);">
+                            <span style="font-family:var(--fd);font-size:clamp(1.3rem,2.4vw,1.9rem);font-weight:500;color:rgba(197,149,42,0.8);line-height:1;">II</span>
+                            <span style="font-size:var(--tl);color:var(--tm);letter-spacing:0.05em;">Series A → B</span>
                         </div>
-                        <div style="padding-top:var(--gap);border-top:1px solid rgba(197,149,42,0.2);">
-                            <p style="font-family:var(--fd);font-size:clamp(1.05rem,2.2vw,1.6rem);font-style:italic;color:var(--tp);line-height:1.7;">
-                                The S&amp;P didn't ask permission from the companies in the index.<br>
-                                <strong style="color:var(--gold);">Neither will Yggdrasil.</strong>
-                            </p>
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--tp);margin-bottom:0.25em;">CME Listing</div>
+                        <div style="font-size:var(--tl);color:var(--gold);letter-spacing:0.04em;margin-bottom:0.4em;">$0.05–$0.10 / contract</div>
+                        <p style="font-size:var(--tl);color:var(--tm);line-height:1.55;">CU / TCU / ICU futures on CME. CME Clearing handles DCO. CF Benchmarks → BRR precedent.</p>
+                    </div>
+
+                    <!-- Act III -->
+                    <div class="card-top" style="background:rgba(10,20,40,0.65);backdrop-filter:blur(6px);border-top-color:rgba(197,149,42,0.35);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--gaps);">
+                            <span style="font-family:var(--fd);font-size:clamp(1.3rem,2.4vw,1.9rem);font-weight:500;color:rgba(197,149,42,0.5);line-height:1;">III</span>
+                            <span style="font-size:var(--tl);color:var(--tm);letter-spacing:0.05em;">Series C</span>
                         </div>
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--tp);margin-bottom:0.25em;">Yggdrasil Clearing</div>
+                        <div style="font-size:var(--tl);color:rgba(197,149,42,0.65);letter-spacing:0.04em;margin-bottom:0.4em;">Index + clearing fees</div>
+                        <p style="font-size:var(--tl);color:var(--tm);line-height:1.55;">CFTC-registered DCO. Full stack — index, exchange standard, clearing rail. VIX model: $100M+/yr.</p>
+                    </div>
+
+                    <!-- Act IV -->
+                    <div class="card-top" style="background:rgba(10,20,40,0.65);backdrop-filter:blur(6px);border-top-color:rgba(197,149,42,0.18);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--gaps);">
+                            <span style="font-family:var(--fd);font-size:clamp(1.3rem,2.4vw,1.9rem);font-weight:500;color:rgba(197,149,42,0.3);line-height:1;">IV</span>
+                            <span style="font-size:var(--tl);color:var(--tm);letter-spacing:0.05em;">Long-term</span>
+                        </div>
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--tp);margin-bottom:0.25em;">Asia Expansion</div>
+                        <div style="font-size:var(--tl);color:rgba(197,149,42,0.45);letter-spacing:0.04em;margin-bottom:0.4em;">Second standard</div>
+                        <p style="font-size:var(--tl);color:var(--tm);line-height:1.55;">~$1T unhedged compute behind the firewall. No standardized pricing exists. A generational second market.</p>
                     </div>
 
                 </div>
+
+                <!-- Data subscriptions throughline -->
+                <div style="padding:clamp(0.5rem,1vh,0.8rem) clamp(0.8rem,1.5vw,1.2rem);background:rgba(197,149,42,0.06);border:1px solid rgba(197,149,42,0.18);margin-bottom:clamp(0.6rem,1.2vh,1rem);display:flex;align-items:center;gap:clamp(0.8rem,1.5vw,1.5rem);flex-wrap:wrap;">
+                    <span style="font-size:var(--tl);font-weight:500;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;">Data Subscriptions</span>
+                    <span style="font-size:var(--tl);color:var(--ts);">—</span>
+                    <span style="font-size:var(--tl);color:var(--tm);">Running the entire way through every act. Cash flow from Day 1, compounding with brand recognition at every stage.</span>
+                    <span style="font-size:var(--tl);color:var(--ts);margin-left:auto;white-space:nowrap;">$45–90K MRR → $150K+ → scales with exchange volume</span>
+                </div>
+
+                <!-- Closer -->
+                <div style="text-align:right;">
+                    <p style="font-family:var(--fd);font-size:clamp(1rem,2vw,1.45rem);font-style:italic;color:var(--tp);line-height:1.7;">
+                        The S&amp;P didn't ask permission from the companies in the index.<br>
+                        <strong style="color:var(--gold);">Neither will Yggdrasil.</strong>
+                    </p>
+                </div>
+
             </div>
         </div>
     </section>
