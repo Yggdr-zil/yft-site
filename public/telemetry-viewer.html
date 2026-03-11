@@ -284,8 +284,12 @@ function renderStats(events) {
   `).join('');
 }
 
+const KNOWN_FUNDS = ['1517','contrary','iv','btv','lux','nyca','precursor','qed','ribbit'];
+
 function renderFundTable(events) {
   const funds = {};
+  // Pre-seed all known funds so they show even with zero activity
+  KNOWN_FUNDS.forEach(f => { funds[f] = { logins:0, deckViews:0, dashViews:0, gpuViews:0, lastSeen:'' }; });
   events.forEach(e => {
     const f = e.fund || '(unknown)';
     if (!funds[f]) funds[f] = { logins:0, deckViews:0, dashViews:0, gpuViews:0, lastSeen:'' };
