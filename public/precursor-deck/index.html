@@ -232,6 +232,19 @@
         .t td { padding:0.5em 0.8em; border-bottom:1px solid rgba(255,255,255,0.055); color:var(--ts); vertical-align:top; line-height:1.4; }
         .t tr:last-child td { border-bottom:none; }
 
+        /* === SOLUTION MAP (Slide 5) === */
+        .sol-map { display:flex; flex-direction:column; gap:.6rem; margin:1.2rem 0 1rem; }
+        .sol-row { display:grid; grid-template-columns:1fr auto 1.4fr; align-items:center; gap:.8rem; padding:.5rem .8rem; background:var(--card-bg); border:1px solid var(--card-border); border-radius:4px; }
+        .sol-prob { font:500 clamp(.8rem,1.2vw,1rem)/1.3 var(--fb); color:var(--ts); }
+        .sol-arrow { color:var(--gold); font-size:1.1rem; }
+        .sol-ans { font:400 clamp(.82rem,1.2vw,1rem)/1.4 var(--fb); color:var(--tp); }
+
+        /* Slide 10 — How It Works clarity improvements */
+        .hiw-physical-label { font:600 .7rem/1 var(--fb); letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-bottom:.5rem; }
+        .hiw-contract-item { padding:.3rem 0; border-bottom:1px solid rgba(197,149,42,0.12); font:400 clamp(.78rem,1.1vw,.9rem)/1.4 var(--fb); color:var(--ts); }
+        .hiw-contract-item:last-child { border-bottom:none; }
+        .hiw-overlay-badge { display:inline-block; background:var(--gold-soft); border:1px solid var(--gold-dim); padding:.2rem .6rem; border-radius:3px; font:600 .68rem/1 var(--fb); letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:.5rem; }
+
     </style>
 </head>
 <body>
@@ -442,6 +455,23 @@
                         <p style="font-size:var(--ts2);">Bandwidth-bound. BW weight dominates. Physics-correct.</p>
                     </div>
                 </div>
+                <div class="sol-map">
+                  <div class="sol-row">
+                    <div class="sol-prob">No Pricing Standard</div>
+                    <div class="sol-arrow">→</div>
+                    <div class="sol-ans">The <strong>Compute Unit Index</strong> — one number, every GPU, every provider</div>
+                  </div>
+                  <div class="sol-row">
+                    <div class="sol-prob">Invisible Degradation</div>
+                    <div class="sol-arrow">→</div>
+                    <div class="sol-ans"><strong>Month-over-month benchmarks</strong> — actual job performance, not spec sheets</div>
+                  </div>
+                  <div class="sol-row">
+                    <div class="sol-prob">Exposure Can't Be Hedged</div>
+                    <div class="sol-arrow">→</div>
+                    <div class="sol-ans"><strong>OTC swaps</strong> settling against the index — and the path to CME futures listing</div>
+                  </div>
+                </div>
             </div>
         </div>
         <!-- Solution panel: barrel + chip side by side -->
@@ -452,7 +482,7 @@
                 <!-- WTI Barrel -->
                 <div style="display:flex;flex-direction:column;align-items:center;gap:0.6em;">
                     <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA3MCI+DQogIDwhLS0gU2luZ2xlIHVuaWZpZWQgb2lsIGRydW0g4oCUIFRIRSBzdGFuZGFyZCAtLT4NCg0KICA8IS0tIFN1YnRsZSBnbG93IC0tPg0KICA8ZWxsaXBzZSBjeD0iMzAiIGN5PSI2MyIgcng9IjI0IiByeT0iNCIgZmlsbD0iI0M1OTUyQSIgb3BhY2l0eT0iMC4xIi8+DQoNCiAgPCEtLSBCb2R5IC0tPg0KICA8cmVjdCB4PSI1IiB5PSI5IiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHJ4PSIzLjUiIGZpbGw9IiMxQjJBNEEiLz4NCg0KICA8IS0tIFRvcCBjYXAgKHJ4PTI1LCByeT04LjUpIC0tPg0KICA8ZWxsaXBzZSBjeD0iMzAiIGN5PSI5IiByeD0iMjUiIHJ5PSI4LjUiIGZpbGw9IiMyYTNmNmEiLz4NCg0KICA8IS0tIEJ1bmcgLS0+DQogIDxlbGxpcHNlIGN4PSIzMCIgY3k9IjcuNSIgcng9IjUiIHJ5PSIyIiBmaWxsPSIjMUIyQTRBIiBzdHJva2U9IiMzYTUwNzgiIHN0cm9rZS13aWR0aD0iMC44Ii8+DQoNCiAgPCEtLSBCb3R0b20gY2FwIC0tPg0KICA8ZWxsaXBzZSBjeD0iMzAiIGN5PSI1OSIgcng9IjI1IiByeT0iOC41IiBmaWxsPSIjMTcyMjQwIi8+DQoNCiAgPCEtLSBHb2xkIGhvb3BzIOKAlCBjdXJ2ZWQgdG8gbWF0Y2ggYmFycmVsIGN1cnZhdHVyZSAtLT4NCiAgPHBhdGggZD0iTSA1LDIyIEEgMjUsOC41IDAgMCAwIDU1LDIyIiBmaWxsPSJub25lIiBzdHJva2U9IiNDNTk1MkEiIHN0cm9rZS13aWR0aD0iMi44Ii8+DQogIDxwYXRoIGQ9Ik0gNSw0NSBBIDI1LDguNSAwIDAgMCA1NSw0NSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzU5NTJBIiBzdHJva2Utd2lkdGg9IjIuOCIvPg0KDQogIDwhLS0gV1RJIGxhYmVsIC0tPg0KICA8dGV4dCB4PSIzMCIgeT0iNDEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiBmaWxsPSIjQzU5NTJBIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiPldUSTwvdGV4dD4NCjwvc3ZnPg0K" alt="WTI Barrel"
-                         style="width:clamp(3.2rem,6.5vw,5.5rem);height:auto;filter:drop-shadow(0 4px 20px rgba(197,149,42,0.4));">
+                         style="width:clamp(3.7rem,7.5vw,6.3rem);height:auto;filter:drop-shadow(0 4px 20px rgba(197,149,42,0.4));">
                     <span style="font-size:var(--tl);color:var(--tm);letter-spacing:0.12em;text-transform:uppercase;">WTI</span>
                 </div>
 
@@ -465,7 +495,7 @@
 
                 <!-- CU Chip — clean die design -->
                 <div style="display:flex;flex-direction:column;align-items:center;gap:0.6em;">
-                    <svg style="width:clamp(3.2rem,6.5vw,5.5rem);height:auto;filter:drop-shadow(0 4px 20px rgba(197,149,42,0.4));" viewBox="0 0 90 90" fill="none">
+                    <svg style="width:clamp(3.7rem,7.5vw,6.3rem);height:auto;filter:drop-shadow(0 4px 20px rgba(197,149,42,0.4));" viewBox="0 0 90 90" fill="none">
                         <!-- Pins: 3 per side -->
                         <line x1="0" y1="27" x2="14" y2="27" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
                         <line x1="0" y1="45" x2="14" y2="45" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
@@ -616,11 +646,10 @@
                         </div>
                         <div style="font-size:var(--tb);font-weight:500;color:var(--tp);margin-bottom:0.35em;">Data Subscriptions</div>
                         <div style="font-size:var(--tl);color:var(--gold);letter-spacing:0.04em;margin-bottom:0.45em;">$3K/mo · $10K/mo</div>
-                        <div style="display:flex;flex-direction:column;gap:0.28em;">
-                            <div style="font-size:var(--ts2);color:var(--tp);font-weight:500;">$3K — 200+ neocloud providers &amp; compute brokers. Price transparency, index benchmarking. Low-friction $36K/yr buy.</div>
-                            <div style="font-size:var(--ts2);color:var(--tp);font-weight:500;">$10K — Quant &amp; prop desks (Millennium pods, Citadel, Two Sigma). Real-time GPU pricing as alt data signal for NVDA/cloud equity models.</div>
-                            <div style="font-size:var(--ts2);color:var(--ts);font-style:italic;">Same model as satellite tanker imagery for oil supply — but for AI infrastructure. 200+ addressable quant buyers.</div>
-                        </div>
+                        <ul class="bm-list" style="list-style:none;display:flex;flex-direction:column;gap:0.5em;">
+                            <li style="padding-left:0;"><strong style="color:var(--tp);">Tier 1 — Price Transparency · $3K/mo</strong><br>Live spot &amp; on-demand pricing across 50+ providers. The benchmark index. For cloud providers, compute brokers, and procurement teams.</li>
+                            <li style="padding-left:0;"><strong style="color:var(--tp);">Tier 2 — Degradation &amp; Depth · $10K/mo</strong><br>Everything in Tier 1 + month-over-month performance benchmarks, per-provider availability &amp; listing data. For quant desks and prop trading pods modeling GPU cost as alt data.</li>
+                        </ul>
                     </div>
                     <!-- Stage 02 — Data Licensing -->
                     <div class="card-top">
@@ -694,17 +723,17 @@
 
                         <!-- Physical Layer -->
                         <div class="card" style="border-left:2px solid var(--tm);padding-left:clamp(0.8rem,1.4vw,1.2rem);">
-                            <div style="font-size:var(--tl);font-weight:600;color:var(--tm);letter-spacing:0.1em;margin-bottom:0.3em;">PHYSICAL LAYER — UNCHANGED</div>
+                            <div class="hiw-physical-label">Physical Layer — Unchanged</div>
                             <p style="font-size:var(--ts2);line-height:1.5;margin-bottom:0.4em;">Enterprise keeps their existing cloud contract intact.</p>
                             <div style="display:flex;flex-direction:column;gap:0.25em;">
-                                <div style="font-size:var(--tl);color:var(--ts);"><span style="color:var(--tp);font-weight:500;">AWS EDP</span> — Enterprise Discount Program</div>
-                                <div style="font-size:var(--tl);color:var(--ts);"><span style="color:var(--tp);font-weight:500;">Azure MACC</span> — Microsoft Azure Consumption Commitment</div>
-                                <div style="font-size:var(--tl);color:var(--ts);"><span style="color:var(--tp);font-weight:500;">GCP CUD</span> — Committed Use Discounts</div>
+                                <div class="hiw-contract-item"><span style="color:var(--tp);font-weight:500;">AWS EDP</span> — Enterprise Discount Program</div>
+                                <div class="hiw-contract-item"><span style="color:var(--tp);font-weight:500;">Azure MACC</span> — Microsoft Azure Consumption Commitment</div>
+                                <div class="hiw-contract-item"><span style="color:var(--tp);font-weight:500;">GCP CUD</span> — Committed Use Discounts</div>
                             </div>
                         </div>
 
                         <!-- Arrow -->
-                        <div style="text-align:center;color:var(--gold);font-size:var(--ts2);letter-spacing:0.15em;">+ INDEPENDENT FINANCIAL OVERLAY</div>
+                        <div style="text-align:center;"><span class="hiw-overlay-badge">+ Independent Financial Overlay</span></div>
 
                         <!-- Financial Layer -->
                         <div class="card" style="border-left:2px solid var(--gold);padding-left:clamp(0.8rem,1.4vw,1.2rem);">
@@ -849,7 +878,7 @@
                         <div class="hire-desc">Dashboard, investor UX</div>
                     </div>
                 </div>
-                <p style="margin-top:var(--gaps);font-family:var(--fd);font-style:italic;color:var(--gold);font-size:var(--ts2);">Pipeline sourced. Outreach active — offers out within 30 days of close.</p>
+                <p style="margin-top:var(--gaps);font-family:var(--fd);font-style:italic;color:var(--gold);font-size:var(--ts2);">Outreach active — offers out within 30 days of close.</p>
             </div>
         </div>
     </section>
