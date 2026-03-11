@@ -1,11 +1,13 @@
 # ---- Build Stage (frontend) ----
 FROM node:20-alpine AS build
 
+RUN apk add --no-cache python3
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build
+RUN npm run build && python3 inject_auth_gate.py
 
 # ---- Build Stage (server) ----
 FROM node:20-alpine AS server-build
