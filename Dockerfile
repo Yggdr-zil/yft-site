@@ -43,7 +43,8 @@ ENV PORT=8080
 ENV DATA_DIR=/data
 # Set UPSTREAM_API at runtime to your Cloudflare Tunnel URL for the live API:
 # docker run -e UPSTREAM_API=https://api.yggfin.tech ...
-ENV UPSTREAM_API=""
+# Default points at a loopback port nobody listens on → clean 502 if not configured.
+ENV UPSTREAM_API="http://127.0.0.1:65535"
 
 EXPOSE ${PORT}
 
