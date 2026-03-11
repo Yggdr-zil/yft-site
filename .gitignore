@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Secrets — never commit
+server/funds.json
+server/.env
+server/sessions.json
+server/telemetry.ndjson
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

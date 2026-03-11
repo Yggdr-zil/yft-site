@@ -1,0 +1,49 @@
+{
+  "_readme": "Copy this file to funds.json in DATA_DIR and fill in real passwords. DO NOT commit funds.json.",
+
+  "1517": {
+    "name": "1517 Fund",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "contrary": {
+    "name": "Contrary Capital",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "precursor": {
+    "name": "Precursor Ventures",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "ribbit": {
+    "name": "Ribbit Capital",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "qed": {
+    "name": "QED Investors",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "nyca": {
+    "name": "NYCA Partners",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "btv": {
+    "name": "Bessemer Venture Partners",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "lux": {
+    "name": "Lux Capital",
+    "password": "CHANGE_ME",
+    "active": true
+  },
+  "iv": {
+    "name": "Industry Ventures",
+    "password": "CHANGE_ME",
+    "active": true
+  }
+}
