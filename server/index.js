@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { createTransport } from "nodemailer";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { login, validateToken, validateAdmin, logEvent, getEvents, revokeByFund } from "./auth.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -17,7 +18,7 @@ try {
     const k = t.slice(0, eq).trim(), v = t.slice(eq + 1).trim();
     if (!process.env[k]) process.env[k] = v;
   }
-} catch { /* no .env - use env vars */ }
+} catch { /* no .env — use env vars */ }
 
 const PORT      = parseInt(process.env.PORT || "3001", 10);
 const SMTP_HOST = process.env.SMTP_HOST || "127.0.0.1";
@@ -34,9 +35,12 @@ function isRateLimited(ip) {
   const now = Date.now();
   const e = rateMap.get(ip);
   if (!e || now - e.t > 60_000) { rateMap.set(ip, { t: now, n: 1 }); return false; }
-  return ++e.n > 5;
+  return ++e.n > 10;
 }
-setInterval(() => { const now = Date.now(); for (const [k,v] of rateMap) if (now - v.t > 60_000) rateMap.delete(k); }, 300_000);
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of rateMap) if (now - v.t > 60_000) rateMap.delete(k);
+}, 300_000);
 
 // ── Mailer ─────────────────────────────────────────────────────────────
 const transporter = createTransport({
@@ -46,7 +50,8 @@ const transporter = createTransport({
 });
 
 // ── Helpers ────────────────────────────────────────────────────────────
-const sanitize = (s, n=2000) => typeof s === "string" ? s.slice(0, n).replace(/[<>]/g, "") : "";
+const sanitize = (s, n = 2000) =>
+  typeof s === "string" ? s.slice(0, n).replace(/[<>]/g, "") : "";
 
 function json(res, status, body) {
   res.writeHead(status, { "Content-Type": "application/json" });
@@ -56,23 +61,114 @@ function json(res, status, body) {
 function readBody(req) {
   return new Promise((resolve, reject) => {
     const chunks = []; let size = 0;
-    req.on("data", c => { size += c.length; if (size > 50_000) { reject(new Error("too large")); req.destroy(); return; } chunks.push(c); });
+    req.on("data", c => {
+      size += c.length;
+      if (size > 50_000) { reject(new Error("too large")); req.destroy(); return; }
+      chunks.push(c);
+    });
     req.on("end", () => resolve(Buffer.concat(chunks).toString()));
     req.on("error", reject);
   });
 }
 
+function getClientIp(req) {
+  return (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
+}
+
+function getBearerToken(req) {
+  const auth = req.headers["authorization"] || "";
+  if (auth.startsWith("Bearer ")) return auth.slice(7).trim();
+  return null;
+}
+
 // ── Server ─────────────────────────────────────────────────────────────
 createServer(async (req, res) => {
+  const ip = getClientIp(req);
+
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") { res.writeHead(204); return res.end(); }
-  if (req.method === "GET" && req.url === "/health") return json(res, 200, { ok: true });
 
+  // ── Health ────────────────────────────────────────────────────────
+  if (req.method === "GET" && req.url === "/health") {
+    return json(res, 200, { ok: true });
+  }
+
+  // ── Auth: Login ────────────────────────────────────────────────────
+  if (req.method === "POST" && req.url === "/api/auth/login") {
+    if (isRateLimited(ip)) return json(res, 429, { error: "Too many requests." });
+    let body;
+    try { body = JSON.parse(await readBody(req)); }
+    catch { return json(res, 400, { error: "Invalid JSON" }); }
+
+    const { username, password } = body;
+    if (!username || !password) return json(res, 400, { error: "username and password required" });
+
+    const result = login(String(username).toLowerCase(), String(password), ip);
+    if (!result) return json(res, 401, { error: "Invalid credentials" });
+    return json(res, 200, result);
+  }
+
+  // ── Telemetry: Log event ───────────────────────────────────────────
+  if (req.method === "POST" && req.url === "/api/telemetry/event") {
+    const token = getBearerToken(req);
+    const sess = validateToken(token);
+    if (!sess) return json(res, 401, { error: "Unauthorized" });
+
+    let body;
+    try { body = JSON.parse(await readBody(req)); }
+    catch { return json(res, 400, { error: "Invalid JSON" }); }
+
+    const { event, page, metadata } = body;
+    if (!event) return json(res, 400, { error: "event field required" });
+
+    logEvent({
+      fund:     sess.fundId,
+      event:    String(event).slice(0, 64),
+      page:     page ? String(page).slice(0, 256) : undefined,
+      ip,
+      metadata: metadata || undefined,
+    });
+    return json(res, 200, { ok: true });
+  }
+
+  // ── Admin: View telemetry log ─────────────────────────────────────
+  if (req.method === "GET" && req.url === "/api/admin/log") {
+    let body;
+    try { body = JSON.parse(await readBody(req)); } catch { body = {}; }
+
+    // Admin auth via Basic or JSON body
+    let adminUser, adminPass;
+    const authHeader = req.headers["authorization"] || "";
+    if (authHeader.startsWith("Basic ")) {
+      const decoded = Buffer.from(authHeader.slice(6), "base64").toString();
+      [adminUser, adminPass] = decoded.split(":", 2);
+    } else {
+      adminUser = body.username;
+      adminPass = body.password;
+    }
+
+    if (!validateAdmin(adminUser, adminPass)) return json(res, 401, { error: "Unauthorized" });
+    return json(res, 200, { events: getEvents() });
+  }
+
+  // ── Admin: Revoke fund ────────────────────────────────────────────
+  if (req.method === "POST" && req.url === "/api/admin/revoke") {
+    let body;
+    try { body = JSON.parse(await readBody(req)); } catch { return json(res, 400, { error: "Invalid JSON" }); }
+
+    const { username, password, fundId } = body;
+    if (!validateAdmin(username, password)) return json(res, 401, { error: "Unauthorized" });
+    if (!fundId) return json(res, 400, { error: "fundId required" });
+
+    const count = revokeByFund(fundId);
+    return json(res, 200, { ok: true, sessionsRevoked: count });
+  }
+
+  // ── Contact form ──────────────────────────────────────────────────
   if (req.method === "POST" && req.url === "/api/contact") {
-    const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
     if (isRateLimited(ip)) return json(res, 429, { error: "Too many requests. Please try again." });
 
     let body;
@@ -107,6 +203,9 @@ createServer(async (req, res) => {
   }
 
   json(res, 404, { error: "Not found" });
+
 }).listen(PORT, () => {
-  console.log(`YFT contact server on :${PORT} — mail to ${MAIL_TO}`);
+  console.log(`YFT server on :${PORT} — auth + telemetry + contact`);
+  console.log(`  ADMIN_USER: ${process.env.ADMIN_USER || "admin"}`);
+  console.log(`  DATA_DIR:   ${process.env.DATA_DIR || "(default: server dir)"}`);
 });
