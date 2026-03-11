@@ -6,11 +6,11 @@ export CONTACT_PORT=3001
 # Ensure DATA_DIR exists (volume may not create it)
 mkdir -p "${DATA_DIR:-/data}"
 
-# Copy template if funds.json doesn't already exist in DATA_DIR
+# Seed funds.json from template if it doesn't exist or if it still has
+# placeholder passwords (i.e. was seeded from the old CHANGE_ME template).
 FUNDS_FILE="${DATA_DIR:-/data}/funds.json"
-if [ ! -f "$FUNDS_FILE" ]; then
-  echo "[entrypoint] No funds.json found — copying template to $FUNDS_FILE"
-  echo "[entrypoint] !! Fill in real passwords before sending VC links !!"
+if [ ! -f "$FUNDS_FILE" ] || grep -q "CHANGE_ME" "$FUNDS_FILE" 2>/dev/null; then
+  echo "[entrypoint] Seeding $FUNDS_FILE from template (first run or stale passwords)"
   cp /opt/contact-server/funds.template.json "$FUNDS_FILE"
 fi
 
