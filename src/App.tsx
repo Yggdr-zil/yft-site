@@ -366,7 +366,7 @@ export default function App() {
                     <span className="step-num">2</span>
                     <div>
                       <div className="step-title">Bloomberg + Refinitiv Feed</div>
-                      <div className="step-sub">Index licensing · months 6–9</div>
+                      <div className="step-sub">Index licensing · months 12–18+</div>
                     </div>
                   </div>
                   <div className="pathway-connector" />
@@ -374,7 +374,7 @@ export default function App() {
                     <span className="step-num">3</span>
                     <div>
                       <div className="step-title">OTC Cleared Swap</div>
-                      <div className="step-sub">First trade · months 12–18</div>
+                      <div className="step-sub">First trade · months 24+</div>
                     </div>
                   </div>
                   <div className="pathway-connector" />
