@@ -88,12 +88,41 @@ AUTH_GATE_HTML = """
     document.body.style.overflow = '';
   }
 
+  function getToken() {
+    try { var s = JSON.parse(sessionStorage.getItem(SESSION_KEY)); return s && s.token; } catch(e) { return null; }
+  }
+
+  function startSlideTracking() {
+    var counter = document.querySelector('.slide-counter');
+    if (!counter) return;
+    var lastSlide = 1;
+    var obs = new MutationObserver(function() {
+      var text = counter.textContent || '';
+      var m = text.match(/(\d+)\s*\/\s*(\d+)/);
+      if (!m) return;
+      var current = parseInt(m[1], 10);
+      var total   = parseInt(m[2], 10);
+      if (current === lastSlide) return;
+      var direction = current > lastSlide ? 'forward' : 'back';
+      lastSlide = current;
+      var tok = getToken();
+      if (!tok) return;
+      fetch('/api/telemetry/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
+        body: JSON.stringify({ event: 'slide_view', page: window.location.pathname,
+                               detail: 'slide_' + current + '_of_' + total + '_' + direction }),
+      }).catch(function() {});
+    });
+    obs.observe(counter, { childList: true, subtree: true, characterData: true });
+  }
+
   // Already authenticated this session?
   try {
     var stored = sessionStorage.getItem(SESSION_KEY);
     if (stored) {
       var s = JSON.parse(stored);
-      if (s && s.token) { dismiss(); return; }
+      if (s && s.token) { dismiss(); startSlideTracking(); return; }
     }
   } catch (e) {}
 
@@ -129,7 +158,7 @@ AUTH_GATE_HTML = """
             body: JSON.stringify({ event: 'deck_view', page: window.location.pathname }),
           }).catch(function () {});
           // Small delay so dismiss doesn't fire into deck's keyup/click listeners
-          setTimeout(dismiss, 50);
+          setTimeout(function() { dismiss(); startSlideTracking(); }, 50);
         } else {
           err.style.display = 'block';
           btn.disabled = false;
