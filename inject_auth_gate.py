@@ -79,7 +79,8 @@ AUTH_GATE_HTML = """
 
 <script>
 (function () {
-  var SESSION_KEY = 'yft_session';
+  // Deck-specific key so each fund's auth is isolated in sessionStorage
+  var SESSION_KEY = 'yft_session_' + location.pathname.replace(/\//g, '_');
   var gate = document.getElementById('yft-gate');
 
   function dismiss() {
@@ -127,7 +128,8 @@ AUTH_GATE_HTML = """
             headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + res.d.token },
             body: JSON.stringify({ event: 'deck_view', page: window.location.pathname }),
           }).catch(function () {});
-          dismiss();
+          // Small delay so dismiss doesn't fire into deck's keyup/click listeners
+          setTimeout(dismiss, 50);
         } else {
           err.style.display = 'block';
           btn.disabled = false;
@@ -142,7 +144,11 @@ AUTH_GATE_HTML = """
   });
 
   document.getElementById('yft-pw').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') document.getElementById('yft-submit').click();
+    if (e.key === 'Enter') {
+      e.stopPropagation();
+      e.preventDefault();
+      document.getElementById('yft-submit').click();
+    }
   });
 })();
 </script>
