@@ -244,6 +244,43 @@
         .bm-list li { font-size:var(--ts2); line-height:1.55; color:var(--ts); padding-left:0; position:static; }
         .bm-list li::before { display:none; }
 
+        /* Slide 5 — Solution cards */
+        .sol-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(0.75rem,1.5vw,1.5rem); margin-top:var(--gap); }
+        .sol-card  { background:var(--card-bg); border-top:2px solid var(--gold); padding:clamp(0.7rem,1.4vw,1.2rem); text-align:center; }
+        .sol-card svg { margin-bottom:0.6em; }
+        .sol-card h3 { font-family:var(--fb); font-size:var(--tb); font-weight:600; color:var(--gold); letter-spacing:0.06em; margin:0 0 0.5em; }
+        .sol-card p, .sol-card ul { font:400 var(--ts2)/1.55 var(--fb); color:var(--ts); margin:0; }
+        .sol-card ul { list-style:none; padding:0; }
+        .sol-card ul li { padding:0.1em 0; }
+
+        /* Slide 10 — How It Works (vertical flow redesign) */
+        .hiw-flow { display:flex; flex-direction:column; gap:clamp(0.6rem,1.2vw,1rem); }
+        .hiw-physical { background:var(--card-bg); border:1px solid var(--card-border); border-radius:6px; padding:clamp(0.6rem,1.2vw,1rem) clamp(0.8rem,1.4vw,1.2rem); }
+        .hiw-physical-label { font:600 clamp(0.62rem,0.9vw,0.72rem)/1 var(--fb); letter-spacing:.12em; text-transform:uppercase; color:var(--tm); margin-bottom:clamp(0.3rem,0.6vw,0.5rem); }
+        .hiw-contracts { display:flex; gap:clamp(0.5rem,1vw,0.9rem); flex-wrap:wrap; }
+        .hiw-contract { flex:1; min-width:8rem; border-left:2px solid var(--gold-dim); padding-left:clamp(0.5rem,0.8vw,0.7rem); }
+        .hiw-contract-name { font:500 clamp(0.78rem,1.1vw,0.92rem)/1.3 var(--fb); color:var(--tp); }
+        .hiw-contract-desc { font:400 clamp(0.65rem,0.9vw,0.78rem)/1.3 var(--fb); color:var(--tm); }
+        .hiw-divider { display:flex; align-items:center; gap:clamp(0.5rem,1vw,0.8rem); padding:clamp(0.15rem,0.4vw,0.3rem) 0; }
+        .hiw-divider-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold-dim),transparent); }
+        .hiw-divider-text { font:600 clamp(0.6rem,0.85vw,0.72rem)/1 var(--fb); letter-spacing:.12em; text-transform:uppercase; color:var(--gold); white-space:nowrap; }
+        .hiw-swap { background:rgba(197,149,42,0.08); border:1.5px solid var(--gold-dim); border-radius:6px; padding:clamp(0.7rem,1.3vw,1.1rem) clamp(0.9rem,1.5vw,1.3rem); }
+        .hiw-swap-title { font:600 clamp(0.72rem,1.05vw,0.88rem)/1 var(--fb); letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:clamp(0.4rem,0.7vw,0.6rem); }
+        .hiw-swap-lines { display:flex; flex-direction:column; gap:clamp(0.2rem,0.4vw,0.35rem); }
+        .hiw-swap-line { font:400 clamp(0.78rem,1.1vw,0.92rem)/1.45 var(--fb); color:var(--ts); }
+        .hiw-swap-line strong { color:var(--tp); font-weight:500; }
+        .hiw-market { display:flex; align-items:stretch; gap:0; margin-top:clamp(0.1rem,0.3vw,0.2rem); }
+        .hiw-market-side { flex:1; padding:clamp(0.5rem,1vw,0.8rem) clamp(0.6rem,1.1vw,0.9rem); text-align:center; }
+        .hiw-market-side:first-child { background:rgba(255,255,255,0.03); border-radius:6px 0 0 6px; }
+        .hiw-market-side:last-child { background:rgba(255,255,255,0.03); border-radius:0 6px 6px 0; }
+        .hiw-market-center { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 clamp(0.4rem,0.8vw,0.7rem); min-width:fit-content; }
+        .hiw-market-center-line { width:1px; flex:1; background:var(--gold-dim); min-height:0.5rem; }
+        .hiw-market-role { font:500 clamp(0.65rem,0.95vw,0.8rem)/1 var(--fb); letter-spacing:.08em; text-transform:uppercase; color:var(--gold); margin-bottom:0.25em; }
+        .hiw-market-who { font:500 clamp(0.72rem,1vw,0.85rem)/1.3 var(--fb); color:var(--tp); margin-bottom:0.2em; }
+        .hiw-market-why { font:400 clamp(0.65rem,0.9vw,0.78rem)/1.4 var(--fb); color:var(--ts); }
+        .hiw-market-spread { font:500 clamp(0.58rem,0.82vw,0.7rem)/1 var(--fb); letter-spacing:.08em; text-transform:uppercase; color:var(--gold); white-space:nowrap; }
+        .hiw-vppa { font-family:var(--fd); font-size:clamp(0.72rem,1vw,0.85rem); font-style:italic; color:var(--ts); line-height:1.5; text-align:center; margin-top:clamp(0.3rem,0.6vw,0.5rem); padding-top:clamp(0.3rem,0.6vw,0.5rem); border-top:1px solid rgba(197,149,42,0.12); }
+
     </style>
 </head>
 <body>
@@ -440,36 +477,60 @@
             <div class="rv"><h2>The Compute Unit Index.<br>The WTI for GPU compute.</h2></div>
             <div class="rv"><span class="rule"></span></div>
             <div class="rv">
-                <div style="display:flex;flex-direction:column;gap:var(--gaps);margin-top:var(--gap);">
-                    <div class="card">
-                        <div style="font-size:var(--tb);font-weight:600;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.45em;">YCU — COMPOSITE</div>
-                        <p style="font-size:var(--ts2);">Harmonic mean of YTCU + YICU. The headline benchmark.</p>
+                <div class="sol-cards">
+                    <!-- Card 1: Compute Unit Index -->
+                    <div class="sol-card">
+                        <svg style="width:clamp(2.8rem,5.5vw,4rem);height:auto;" viewBox="0 0 90 90" fill="none">
+                            <line x1="0" y1="27" x2="14" y2="27" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="0" y1="45" x2="14" y2="45" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="0" y1="63" x2="14" y2="63" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="90" y1="27" x2="76" y2="27" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="90" y1="45" x2="76" y2="45" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="90" y1="63" x2="76" y2="63" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="27" y1="0" x2="27" y2="14" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="45" y1="0" x2="45" y2="14" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="63" y1="0" x2="63" y2="14" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="27" y1="90" x2="27" y2="76" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="45" y1="90" x2="45" y2="76" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <line x1="63" y1="90" x2="63" y2="76" stroke="rgba(197,149,42,0.55)" stroke-width="2"/>
+                            <rect x="14" y="14" width="62" height="62" rx="3" fill="rgba(197,149,42,0.07)" stroke="#C5952A" stroke-width="1.8"/>
+                            <rect x="23" y="23" width="44" height="44" rx="2" fill="rgba(197,149,42,0.12)" stroke="rgba(197,149,42,0.65)" stroke-width="1.3"/>
+                            <text x="45" y="52" text-anchor="middle" dominant-baseline="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="20" font-weight="600" fill="#C5952A">CU</text>
+                        </svg>
+                        <h3>Compute Unit Index</h3>
+                        <ul>
+                            <li>CU — Composite</li>
+                            <li>TCU — Training</li>
+                            <li>ICU — Inference</li>
+                            <li>Bound by physics-based constraints</li>
+                        </ul>
                     </div>
-                    <div class="card">
-                        <div style="font-size:var(--tb);font-weight:600;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.45em;">YTCU — TRAINING</div>
-                        <p style="font-size:var(--ts2);">Compute-bound. FP weight &gt; bandwidth. Physics-correct.</p>
+                    <!-- Card 2: Degradation Benchmarks -->
+                    <div class="sol-card">
+                        <svg viewBox="0 0 64 64" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="8" width="44" height="32" rx="2" stroke="#C5952A" stroke-width="1.5"/>
+                            <rect x="16" y="14" width="32" height="20" rx="1" fill="rgba(197,149,42,0.08)"/>
+                            <text x="32" y="28" text-anchor="middle" fill="#C5952A" font-size="10" font-weight="600" font-family="IBM Plex Sans,sans-serif">CU</text>
+                            <line x1="32" y1="40" x2="32" y2="48" stroke="#C5952A" stroke-width="1.5"/>
+                            <line x1="22" y1="48" x2="42" y2="48" stroke="#C5952A" stroke-width="1.5"/>
+                            <rect x="44" y="20" width="12" height="18" rx="1" stroke="rgba(197,149,42,0.5)" stroke-width="1" stroke-dasharray="2 2"/>
+                            <text x="50" y="32" text-anchor="middle" fill="rgba(197,149,42,0.5)" font-size="6" font-family="IBM Plex Sans,sans-serif">GPU</text>
+                        </svg>
+                        <h3>Degradation Benchmarks</h3>
+                        <p>Know exactly how much compute each instance is yielding</p>
                     </div>
-                    <div class="card">
-                        <div style="font-size:var(--tb);font-weight:600;color:var(--gold);letter-spacing:0.08em;margin-bottom:0.45em;">YICU — INFERENCE</div>
-                        <p style="font-size:var(--ts2);">Bandwidth-bound. BW weight dominates. Physics-correct.</p>
+                    <!-- Card 3: OTC Swaps -->
+                    <div class="sol-card">
+                        <svg viewBox="0 0 64 64" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="8" y1="56" x2="8" y2="8" stroke="rgba(197,149,42,0.3)" stroke-width="1"/>
+                            <line x1="8" y1="56" x2="58" y2="56" stroke="rgba(197,149,42,0.3)" stroke-width="1"/>
+                            <polyline points="12,48 20,44 28,38 34,40 42,28 50,22 56,16" stroke="#C5952A" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+                            <circle cx="56" cy="16" r="2.5" fill="#C5952A"/>
+                            <text x="56" y="12" text-anchor="middle" fill="#C5952A" font-size="7" font-weight="600" font-family="IBM Plex Sans,sans-serif">CU</text>
+                        </svg>
+                        <h3>OTC Swaps</h3>
+                        <p>Financial indices to solve unhedgeable exposure</p>
                     </div>
-                </div>
-                <div class="sol-map">
-                  <div class="sol-row">
-                    <div class="sol-prob">No Pricing Standard</div>
-                    <div class="sol-arrow">→</div>
-                    <div class="sol-ans">The <strong>Compute Unit Index</strong> — one number, every GPU, every provider</div>
-                  </div>
-                  <div class="sol-row">
-                    <div class="sol-prob">Invisible Degradation</div>
-                    <div class="sol-arrow">→</div>
-                    <div class="sol-ans"><strong>Month-over-month benchmarks</strong> — actual job performance, not spec sheets</div>
-                  </div>
-                  <div class="sol-row">
-                    <div class="sol-prob">Exposure Can't Be Hedged</div>
-                    <div class="sol-arrow">→</div>
-                    <div class="sol-ans"><strong>OTC swaps</strong> settling against the index — and the path to CME futures listing</div>
-                  </div>
                 </div>
             </div>
         </div>
@@ -688,7 +749,7 @@
                     <div>
                         <div style="font-size:var(--tl);color:var(--tm);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.25em;">Stage 02 — Year 2</div>
                         <div class="stat-n" style="font-size:clamp(1.4rem,2.8vw,2.2rem);">$1.6M ARR</div>
-                        <div style="font-size:var(--tl);color:var(--ts);margin-top:0.3em;">Bloomberg live · quant adoption building · $100K licensing · OTC bilateral begins Year 3</div>
+                        <div style="font-size:var(--tl);color:var(--ts);margin-top:0.3em;">Bloomberg live · quant adoption building · $100K licensing · OTC bilateral begins ~18m+</div>
                     </div>
                     <div>
                         <div style="font-size:var(--tl);color:var(--tm);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.25em;">Stage 03 — Year 5 Base</div>
@@ -697,7 +758,7 @@
                     </div>
                 </div>
                 <div style="margin-top:var(--gaps);padding-top:var(--gaps);border-top:1px solid rgba(197,149,42,0.08);text-align:center;">
-                    <span style="font-size:var(--tl);color:var(--tm);letter-spacing:0.06em;">Y1 $456K → Y2 $1.6M → Y3 $5.4M → </span><span style="font-size:var(--tl);color:var(--gold);font-weight:500;">Y5 $17M ARR base case</span><span style="font-size:var(--tl);color:var(--tm);"> · OTC starts Y3 at 30–40 bps, compressing to 5 bps at scale → Series A at $80–120M pre-money</span>
+                    <span style="font-size:var(--tl);color:var(--tm);letter-spacing:0.06em;">Y1 $456K → Y2 $1.6M → Y3 $5.4M → </span><span style="font-size:var(--tl);color:var(--gold);font-weight:500;">Y5 $17M ARR base case</span><span style="font-size:var(--tl);color:var(--tm);"> · OTC starts ~18m+ at 30–40 bps, compressing to 5 bps at scale → Series A at $80–120M pre-money</span>
                 </div>
             </div>
         </div>
@@ -713,73 +774,66 @@
             <div class="rv"><h2>A financial overlay on physical compute contracts.</h2></div>
             <div class="rv"><span class="rule"></span></div>
             <div class="rv" style="margin-top:var(--gap);">
+                <div class="hiw-flow">
 
-                <!-- Two-layer structure -->
-                <div class="two-col" style="gap:clamp(0.8rem,1.6vw,1.4rem);align-items:stretch;">
-
-                    <!-- LEFT: The Structure -->
-                    <div style="display:flex;flex-direction:column;gap:var(--gaps);">
-
-                        <!-- Physical Layer -->
-                        <div class="card" style="border-left:2px solid var(--tm);padding-left:clamp(0.8rem,1.4vw,1.2rem);">
-                            <div style="font-size:var(--tl);font-weight:600;color:var(--tm);letter-spacing:0.1em;margin-bottom:0.3em;">PHYSICAL LAYER — UNCHANGED</div>
-                            <p style="font-size:var(--ts2);line-height:1.5;margin-bottom:0.4em;">Enterprise keeps their existing cloud contract intact.</p>
-                            <div style="display:flex;flex-direction:column;gap:0.25em;">
-                                <div style="font-size:var(--tl);color:var(--ts);"><span style="color:var(--tp);font-weight:500;">AWS EDP</span> — Enterprise Discount Program</div>
-                                <div style="font-size:var(--tl);color:var(--ts);"><span style="color:var(--tp);font-weight:500;">Azure MACC</span> — Microsoft Azure Consumption Commitment</div>
-                                <div style="font-size:var(--tl);color:var(--ts);"><span style="color:var(--tp);font-weight:500;">GCP CUD</span> — Committed Use Discounts</div>
+                    <!-- Section 1: Physical Layer -->
+                    <div class="hiw-physical">
+                        <div class="hiw-physical-label">Physical Layer — Unchanged</div>
+                        <div class="hiw-contracts">
+                            <div class="hiw-contract">
+                                <div class="hiw-contract-name">AWS EDP</div>
+                                <div class="hiw-contract-desc">Enterprise Discount Program</div>
                             </div>
-                        </div>
-
-                        <!-- Arrow -->
-                        <div style="text-align:center;color:var(--gold);font-size:var(--ts2);letter-spacing:0.15em;">+ INDEPENDENT FINANCIAL OVERLAY</div>
-
-                        <!-- Financial Layer -->
-                        <div class="card" style="border-left:2px solid var(--gold);padding-left:clamp(0.8rem,1.4vw,1.2rem);">
-                            <div style="font-size:var(--tl);font-weight:600;color:var(--gold);letter-spacing:0.1em;margin-bottom:0.3em;">CU SWAP — CONTRACT FOR DIFFERENCES</div>
-                            <div style="display:flex;flex-direction:column;gap:0.35em;">
-                                <p style="font-size:var(--ts2);line-height:1.5;"><span style="color:var(--tp);font-weight:500;">Enterprise pays:</span> Fixed CU rate</p>
-                                <p style="font-size:var(--ts2);line-height:1.5;"><span style="color:var(--tp);font-weight:500;">Counterparty pays:</span> Floating CU Index, monthly</p>
-                                <p style="font-size:var(--ts2);line-height:1.5;"><span style="color:var(--tp);font-weight:500;">Settlement:</span> Net cash difference — no GPU changes hands</p>
-                                <p style="font-size:var(--ts2);line-height:1.5;"><span style="color:var(--tp);font-weight:500;">Exit:</span> Sell the position. No penalties. No ratchets.</p>
+                            <div class="hiw-contract">
+                                <div class="hiw-contract-name">Azure MACC</div>
+                                <div class="hiw-contract-desc">Consumption Commitment</div>
+                            </div>
+                            <div class="hiw-contract">
+                                <div class="hiw-contract-name">GCP CUD</div>
+                                <div class="hiw-contract-desc">Committed Use Discounts</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- RIGHT: Two-Sided Market -->
-                    <div style="display:flex;flex-direction:column;gap:var(--gaps);">
-                        <div style="font-size:var(--tl);font-weight:600;color:var(--gold);letter-spacing:0.1em;margin-bottom:0.15em;">TWO-SIDED MARKET</div>
+                    <!-- Section 2: Overlay Divider -->
+                    <div class="hiw-divider">
+                        <div class="hiw-divider-line"></div>
+                        <div class="hiw-divider-text">+ Independent Financial Overlay</div>
+                        <div class="hiw-divider-line"></div>
+                    </div>
 
-                        <!-- Flow diagram -->
-                        <div style="display:flex;flex-direction:column;gap:clamp(0.4rem,0.8vh,0.7rem);flex:1;">
-
-                            <!-- Buyer -->
-                            <div class="card" style="text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;">
-                                <div style="font-size:var(--tl);color:var(--gold);letter-spacing:0.08em;font-weight:500;">BUYS FIXED</div>
-                                <div style="font-size:var(--ts2);color:var(--tp);font-weight:500;margin:0.2em 0;">Cloud Providers · Hardware Owners</div>
-                                <div style="font-size:var(--tl);color:var(--ts);">Revenue tied to spot prices.<br>Swap pays them when spot drops.</div>
-                            </div>
-
-                            <!-- Arrow -->
-                            <div style="text-align:center;display:flex;align-items:center;justify-content:center;gap:0.5em;">
-                                <div style="width:clamp(2rem,4vw,4rem);height:1px;background:var(--gold-dim);"></div>
-                                <span style="font-size:var(--tl);color:var(--gold);letter-spacing:0.08em;font-weight:500;">BANK EARNS SPREAD</span>
-                                <div style="width:clamp(2rem,4vw,4rem);height:1px;background:var(--gold-dim);"></div>
-                            </div>
-
-                            <!-- Seller -->
-                            <div class="card" style="text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;">
-                                <div style="font-size:var(--tl);color:var(--gold);letter-spacing:0.08em;font-weight:500;">SELLS FIXED</div>
-                                <div style="font-size:var(--ts2);color:var(--tp);font-weight:500;margin:0.2em 0;">AI Labs · Enterprises</div>
-                                <div style="font-size:var(--tl);color:var(--ts);">Costs exposed to spot spikes.<br>Swap pays them when spot rises, locking in prices.</div>
-                            </div>
-                        </div>
-
-                        <!-- Punchline -->
-                        <div style="text-align:center;padding-top:var(--gaps);border-top:1px solid rgba(197,149,42,0.15);">
-                            <p style="font-family:var(--fd);font-size:var(--ts2);font-style:italic;color:var(--ts);line-height:1.5;">Same structure as energy VPPAs.<br>Google, Microsoft, and Amazon already use these for electricity.</p>
+                    <!-- Section 2: CU Swap -->
+                    <div class="hiw-swap">
+                        <div class="hiw-swap-title">CU Swap — Contract for Differences</div>
+                        <div class="hiw-swap-lines">
+                            <p class="hiw-swap-line"><strong>Enterprise pays:</strong> Fixed CU rate</p>
+                            <p class="hiw-swap-line"><strong>Counterparty pays:</strong> Floating CU Index, monthly</p>
+                            <p class="hiw-swap-line"><strong>Settlement:</strong> Net cash difference — no GPU changes hands</p>
+                            <p class="hiw-swap-line"><strong>Exit:</strong> Sell the position. No penalties. No ratchets.</p>
                         </div>
                     </div>
+
+                    <!-- Section 3: Two-Sided Market -->
+                    <div class="hiw-market">
+                        <div class="hiw-market-side">
+                            <div class="hiw-market-role">Buys Fixed</div>
+                            <div class="hiw-market-who">Cloud Providers · Hardware Owners</div>
+                            <div class="hiw-market-why">Revenue tied to spot prices.<br>Swap pays them when spot drops.</div>
+                        </div>
+                        <div class="hiw-market-center">
+                            <div class="hiw-market-center-line"></div>
+                            <div class="hiw-market-spread">Bank Earns Spread</div>
+                            <div class="hiw-market-center-line"></div>
+                        </div>
+                        <div class="hiw-market-side">
+                            <div class="hiw-market-role">Sells Fixed</div>
+                            <div class="hiw-market-who">AI Labs · Enterprises</div>
+                            <div class="hiw-market-why">Costs exposed to spot spikes.<br>Swap pays them when spot rises.</div>
+                        </div>
+                    </div>
+
+                    <!-- VPPA footnote -->
+                    <p class="hiw-vppa">Same structure as energy VPPAs.<br>Google, Microsoft, and Amazon already use these for electricity.</p>
 
                 </div>
             </div>
