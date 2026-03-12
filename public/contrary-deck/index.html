@@ -1069,6 +1069,10 @@
          SLIDE CONTROLLER
          ============================================= -->
     <script>
+        // Always start on slide 1 — disable browser scroll restoration
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+
         class SlidePresentation {
             constructor() {
                 this.slides  = Array.from(document.querySelectorAll('.slide'));
@@ -1076,6 +1080,7 @@
                 this.current = 0;
                 this.pb      = document.getElementById('pb');
                 this.sc      = document.getElementById('sc');
+                this.slides[0]?.scrollIntoView();
                 this._setupObserver();
                 this._setupKeys();
                 this._setupWheel();
