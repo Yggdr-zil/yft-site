@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build && python3 inject_auth_gate.py
+RUN npm run build && python3 inject_auth_gate.py && python3 build_portals.py
 
 # ---- Build Stage (server) ----
 FROM node:20-alpine AS server-build
