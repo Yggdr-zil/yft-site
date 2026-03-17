@@ -11,6 +11,7 @@ from pathlib import Path
 
 DIST = Path(__file__).parent / "dist"
 TEMPLATE = Path(__file__).parent / "investor-portal.html"
+ADMIN_TEMPLATE = Path(__file__).parent / "admin-portal.html"
 
 # Fund slug → (display name, deck path)
 FUNDS = {
@@ -71,6 +72,19 @@ def main():
                 print(f"  [done] docs/{pdf.name}")
     else:
         print(f"\n  [warn] No public/docs/ found — PDFs won't be available")
+
+    # Build admin portal (single static page, no template vars)
+    if ADMIN_TEMPLATE.exists():
+        admin_dir = DIST / "portal" / "admin"
+        admin_out = admin_dir / "index.html"
+        if DRY_RUN:
+            print(f"  [dry]  portal/admin/index.html  (Admin Portal)")
+        else:
+            admin_dir.mkdir(parents=True, exist_ok=True)
+            admin_out.write_text(ADMIN_TEMPLATE.read_text(encoding="utf-8"), encoding="utf-8")
+            print(f"  [done] portal/admin/index.html  (Admin Portal)")
+    else:
+        print(f"  [warn] admin-portal.html not found — skipping admin portal")
 
     print("\nDone.")
 

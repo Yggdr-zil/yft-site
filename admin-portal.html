@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yggdrasil — Admin Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; background: #0c1624; }
+
+    /* ── Auth Gate ──────────────────────────────────────────── */
+    #auth-gate {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0c1624;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    }
+    #auth-gate.hidden { display: none; }
+    .auth-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(197,149,42,0.25);
+      border-radius: 6px;
+      padding: 2.5rem 2.5rem 2rem;
+      width: 380px;
+      text-align: center;
+    }
+    .auth-logo {
+      color: rgba(197,149,42,0.7);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .auth-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem; font-weight: 500;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 0.35rem;
+    }
+    .auth-subtitle {
+      color: rgba(197,149,42,0.5);
+      font-size: 0.82rem;
+      margin-bottom: 1.5rem;
+    }
+    .auth-input {
+      width: 100%;
+      background: rgba(27,42,74,0.6);
+      border: 1px solid rgba(197,149,42,0.2);
+      border-radius: 4px;
+      padding: 0.7rem 0.9rem;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.85rem;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      outline: none;
+      margin-bottom: 0.65rem;
+    }
+    .auth-input::placeholder { color: rgba(255,255,255,0.3); }
+    .auth-input:focus { border-color: rgba(197,149,42,0.5); }
+    .auth-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(197,149,42,0.45);
+      border-radius: 3px;
+      padding: 0.75rem;
+      color: #C5952A;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      margin-top: 0.4rem;
+      transition: background 0.2s;
+    }
+    .auth-btn:hover { background: rgba(197,149,42,0.08); }
+    .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .auth-err {
+      color: #f87171; font-size: 0.78rem;
+      margin-top: 0.65rem; display: none;
+    }
+
+    /* ── Portal Layout ─────────────────────────────────────── */
+    #portal {
+      display: none; flex-direction: column;
+      height: 100vh;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    }
+    #portal.active { display: flex; }
+
+    /* ── Nav Bar ────────────────────────────────────────────── */
+    .nav {
+      display: flex; align-items: center;
+      background: #1B2A4A;
+      border-bottom: 2px solid rgba(197,149,42,0.35);
+      padding: 0 1.5rem;
+      height: 54px;
+      flex-shrink: 0;
+    }
+    .nav-brand {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem; font-weight: 600;
+      color: #C5952A;
+      letter-spacing: 0.06em;
+      margin-right: 0.8rem;
+      white-space: nowrap;
+    }
+    .nav-badge {
+      font-size: 0.55rem; font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0c1624;
+      background: rgba(197,149,42,0.8);
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      margin-right: 2rem;
+    }
+    .nav-tabs { display: flex; gap: 0.25rem; }
+    .nav-tab {
+      padding: 0.5rem 1.1rem;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      border-radius: 3px;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+      border: none; background: none;
+      font-family: inherit;
+    }
+    .nav-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+    .nav-tab.active { color: #C5952A; background: rgba(197,149,42,0.1); }
+    .nav-spacer { flex: 1; }
+
+    /* ── Content ───────────────────────────────────────────── */
+    .content { flex: 1; position: relative; overflow: hidden; }
+    .tab-panel { position: absolute; inset: 0; display: none; overflow: auto; }
+    .tab-panel.active { display: block; }
+    .tab-panel iframe { width: 100%; height: 100%; border: none; }
+
+    /* ── Overview Tab ──────────────────────────────────────── */
+    .overview {
+      padding: 2rem 2.5rem;
+      background: #0c1624;
+      min-height: 100%;
+    }
+    .overview h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem; font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 1.5rem;
+    }
+    .fund-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .fund-card {
+      background: rgba(27,42,74,0.4);
+      border: 1px solid rgba(197,149,42,0.15);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .fund-card:hover { border-color: rgba(197,149,42,0.4); }
+    .fund-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .fund-card-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem; font-weight: 500;
+      color: rgba(255,255,255,0.88);
+    }
+    .fund-card-status {
+      font-size: 0.65rem; font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+    }
+    .fund-card-status.active { color: #4ade80; background: rgba(74,222,128,0.1); }
+    .fund-card-status.inactive { color: #f87171; background: rgba(248,113,113,0.1); }
+    .fund-card-id {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0.6rem;
+    }
+    .fund-card-meta {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.75rem;
+    }
+    .fund-card-meta span { color: rgba(197,149,42,0.7); }
+    .fund-card-links {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .fund-link {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.06em;
+      color: rgba(197,149,42,0.8);
+      background: rgba(197,149,42,0.06);
+      border: 1px solid rgba(197,149,42,0.2);
+      padding: 0.3rem 0.65rem;
+      border-radius: 3px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .fund-link:hover { background: rgba(197,149,42,0.12); border-color: rgba(197,149,42,0.4); }
+
+    /* ── Deck Viewer ──────────────────────────────────────── */
+    .deck-viewer {
+      display: flex; flex-direction: column;
+      height: 100%;
+    }
+    .deck-selector {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(27,42,74,0.5);
+      border-bottom: 1px solid rgba(197,149,42,0.15);
+      flex-shrink: 0;
+    }
+    .deck-selector label {
+      font-size: 0.75rem; font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.06em;
+    }
+    .deck-select {
+      background: rgba(27,42,74,0.8);
+      border: 1px solid rgba(197,149,42,0.25);
+      border-radius: 4px;
+      padding: 0.45rem 0.75rem;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.8rem;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      outline: none;
+      cursor: pointer;
+    }
+    .deck-select:focus { border-color: rgba(197,149,42,0.5); }
+    .deck-select option { background: #1B2A4A; }
+    .deck-iframe-wrap { flex: 1; position: relative; }
+    .deck-iframe-wrap iframe { width: 100%; height: 100%; border: none; }
+
+    /* ── Contact Tab ───────────────────────────────────────── */
+    .contact-page {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; background: #0c1624;
+    }
+    .contact-card { max-width: 560px; width: 90%; text-align: left; }
+    .contact-label {
+      color: rgba(197,149,42,0.6);
+      font-size: 0.65rem; letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .contact-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem; font-weight: 500;
+      color: rgba(255,255,255,0.92); margin-bottom: 0.3rem;
+    }
+    .contact-title {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem; margin-bottom: 2rem;
+    }
+    .contact-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+    .contact-row a {
+      color: #C5952A; text-decoration: none; font-size: 0.9rem;
+    }
+    .contact-row a:hover { text-decoration: underline; }
+    .contact-row .contact-icon {
+      color: rgba(197,149,42,0.5);
+      font-size: 0.75rem; width: 1.2rem;
+      text-align: center; flex-shrink: 0;
+    }
+    .contact-divider {
+      border: none;
+      border-top: 1px solid rgba(197,149,42,0.15);
+      margin: 2rem 0;
+    }
+    .contact-about-label {
+      color: rgba(197,149,42,0.5);
+      font-size: 0.65rem; letter-spacing: 0.14em;
+      text-transform: uppercase; margin-bottom: 0.8rem;
+    }
+    .contact-about {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.85rem; line-height: 1.7;
+    }
+
+    /* ── Telemetry Embed ──────────────────────────────────── */
+    .telem-panel { display: flex; flex-direction: column; height: 100%; }
+    .telem-panel iframe { flex: 1; width: 100%; border: none; }
+
+    /* ── Mobile ─────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav { padding: 0 0.75rem; }
+      .nav-brand { font-size: 0.95rem; margin-right: 0.4rem; }
+      .nav-badge { margin-right: 1rem; }
+      .nav-tab { padding: 0.4rem 0.6rem; font-size: 0.7rem; }
+      .overview { padding: 1.5rem; }
+      .fund-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Auth Gate ──────────────────────────────────────────── -->
+  <div id="auth-gate">
+    <div class="auth-card">
+      <div class="auth-logo">Yggdrasil Financial Technologies</div>
+      <div class="auth-title">Admin Portal</div>
+      <div class="auth-subtitle">Restricted Access</div>
+      <input id="auth-uid" class="auth-input" type="text" placeholder="Username" value="admin" autocomplete="username" />
+      <input id="auth-pw" class="auth-input" type="password" placeholder="Admin Password" autocomplete="current-password" />
+      <button id="auth-submit" class="auth-btn">Access Admin &rarr;</button>
+      <div id="auth-err" class="auth-err">Invalid admin credentials.</div>
+    </div>
+  </div>
+
+  <!-- ── Portal ─────────────────────────────────────────────── -->
+  <div id="portal">
+    <nav class="nav">
+      <div class="nav-brand">YGGDRASIL</div>
+      <span class="nav-badge">Admin</span>
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="overview">Overview</button>
+        <button class="nav-tab" data-tab="decks">Decks</button>
+        <button class="nav-tab" data-tab="playbook">Playbook</button>
+        <button class="nav-tab" data-tab="onepager">One-Pager</button>
+        <button class="nav-tab" data-tab="contact">Contact</button>
+        <button class="nav-tab" data-tab="telemetry">Telemetry</button>
+      </div>
+      <div class="nav-spacer"></div>
+      <button class="nav-tab" id="btn-dashboard" style="color:rgba(197,149,42,0.7)">Dashboard &#8599;</button>
+    </nav>
+
+    <div class="content">
+
+      <!-- ── Overview ──────────────────────────────────────── -->
+      <div class="tab-panel active" id="panel-overview">
+        <div class="overview">
+          <h2>Fund Overview</h2>
+          <div class="fund-grid" id="fund-grid"></div>
+        </div>
+      </div>
+
+      <!-- ── Decks ─────────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-decks">
+        <div class="deck-viewer">
+          <div class="deck-selector">
+            <label>Fund:</label>
+            <select class="deck-select" id="deck-fund-select"></select>
+          </div>
+          <div class="deck-iframe-wrap">
+            <iframe id="iframe-deck"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Playbook ──────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-playbook"></div>
+
+      <!-- ── One-Pager ─────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-onepager"></div>
+
+      <!-- ── Contact ───────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-contact">
+        <div class="contact-page">
+          <div class="contact-card">
+            <div class="contact-label">Founder &amp; CEO</div>
+            <div class="contact-name">Joseph (Bear) Januszewski</div>
+            <div class="contact-title">Yggdrasil Financial Technologies</div>
+            <div class="contact-row">
+              <span class="contact-icon">&#9993;</span>
+              <a href="mailto:bear@yggfin.tech">bear@yggfin.tech</a>
+            </div>
+            <div class="contact-row">
+              <span class="contact-icon">&#9742;</span>
+              <a href="tel:+16175100322">(617) 510-0322</a>
+            </div>
+            <hr class="contact-divider">
+            <div class="contact-about-label">About</div>
+            <div class="contact-about">
+              Bear enrolled at Texas Tech to pursue a pharmacology degree, but quickly realized the traditional path wasn't for him. He became obsessed with unconventional methods of creating value — solving hard problems and monetizing the solutions. He and his long-time friend built models to generate alpha in the market, and created a volatility forecaster that landed both of them an internship at a quant firm. That experience cemented his conviction: he wanted to work at the intersection of finance and technology.<br><br>
+              While studying compute markets, Bear recognized that GPU compute was following the same trajectory as oil before WTI standardization — fragmented, opaque, and impossible to hedge. He studied how Southwest Airlines survived the 2000s jet fuel crisis through disciplined hedging, how the standardization of crude oil pricing created a trillion-dollar derivatives market, and how the VIX transformed volatility from a risk into a tradeable asset class. He saw the same structural gap in compute: no benchmark, no transparency, no way to hedge. He set out to build the missing infrastructure.<br><br>
+              He designed a solution, presented the concept to Goldman Sachs, and received direct product direction from their futures desk: <em>"Needs long and short side. Build from public prices."</em><br><br>
+              He built exactly that. The Yggdrasil Compute Index now tracks 56 GPU models across 28 providers with continuous price collection. He is seeking seed funding to take the product to market.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Telemetry ─────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-telemetry">
+        <div class="telem-panel">
+          <iframe id="iframe-telemetry"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    /* ── Fund config (matches build_portals.py) ──────────── */
+    var FUNDS = {
+      '1517':      { name: '1517 Fund',           deck: '/1517-deck/',               variant: 'founder-first-1517' },
+      'contrary':  { name: 'Contrary Capital',    deck: '/contrary-deck/',           variant: 'founder-first' },
+      'iv':        { name: 'Industry Ventures',   deck: '/industry-ventures-deck/',  variant: 'founder-first-iv' },
+      'lux':       { name: 'Lux Capital',         deck: '/lux-deck/',                variant: 'founder-first' },
+      'nyca':      { name: 'NYCA Partners',       deck: '/nyca-deck/',               variant: 'market-first' },
+      'precursor': { name: 'Precursor Ventures',  deck: '/precursor-deck/',          variant: 'founder-first' },
+      'qed':       { name: 'QED Investors',       deck: '/qed-deck/',                variant: 'market-first' },
+      'ribbit':    { name: 'Ribbit Capital',      deck: '/ribbit-deck/',             variant: 'market-first' }
+    };
+
+    var adminCreds = null; // { username, password } for API calls
+    var telemetryEvents = [];
+
+    /* ── Admin Auth ───────────────────────────────────────── */
+    var gate   = document.getElementById('auth-gate');
+    var portal = document.getElementById('portal');
+    var btn    = document.getElementById('auth-submit');
+    var errEl  = document.getElementById('auth-err');
+
+    function adminBasicAuth() {
+      return 'Basic ' + btoa(adminCreds.username + ':' + adminCreds.password);
+    }
+
+    function showPortal() {
+      gate.classList.add('hidden');
+      portal.classList.add('active');
+      /* Pre-write sessionStorage for all deck paths so their auth gates auto-dismiss.
+         Uses a placeholder token — admin views don't fire telemetry (no Bearer validation). */
+      Object.keys(FUNDS).forEach(function(fid) {
+        var deckPath = FUNDS[fid].deck;
+        var deckKey = 'yft_session_' + deckPath.replace(/\//g, '_');
+        sessionStorage.setItem(deckKey, JSON.stringify({ token: 'admin-bypass', fundId: fid }));
+      });
+      loadOverview();
+      buildDeckSelector();
+    }
+
+    /* Resume session */
+    try {
+      var stored = sessionStorage.getItem('yft_admin');
+      if (stored) {
+        adminCreds = JSON.parse(stored);
+        // Verify creds still work
+        fetch('/api/admin/log', { headers: { 'Authorization': 'Basic ' + btoa(adminCreds.username + ':' + adminCreds.password) } })
+          .then(function(r) {
+            if (r.ok) { showPortal(); return r.json(); }
+            throw new Error('expired');
+          })
+          .then(function(data) { telemetryEvents = data.events || []; renderOverviewActivity(); })
+          .catch(function() { sessionStorage.removeItem('yft_admin'); adminCreds = null; });
+      }
+    } catch(e) {}
+
+    btn.addEventListener('click', function() {
+      var uid = document.getElementById('auth-uid').value.trim();
+      var pw  = document.getElementById('auth-pw').value;
+      errEl.style.display = 'none';
+      if (!uid || !pw) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Verifying\u2026';
+
+      /* Validate by hitting admin endpoint */
+      fetch('/api/admin/log', {
+        headers: { 'Authorization': 'Basic ' + btoa(uid + ':' + pw) }
+      })
+      .then(function(r) {
+        if (r.ok) return r.json();
+        throw new Error('auth failed');
+      })
+      .then(function(data) {
+        adminCreds = { username: uid, password: pw };
+        sessionStorage.setItem('yft_admin', JSON.stringify(adminCreds));
+        telemetryEvents = data.events || [];
+        showPortal();
+      })
+      .catch(function() {
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Access Admin \u2192';
+      });
+    });
+
+    document.getElementById('auth-pw').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); btn.click(); }
+    });
+
+    /* ── Tab switching ───────────────────────────────────── */
+    var tabs = document.querySelectorAll('.nav-tab[data-tab]');
+    var loaded = { overview: true, decks: false, playbook: false, onepager: false, contact: true, telemetry: false };
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var name = tab.getAttribute('data-tab');
+        tabs.forEach(function(t) { t.classList.toggle('active', t.getAttribute('data-tab') === name); });
+        document.querySelectorAll('.tab-panel').forEach(function(p) {
+          p.classList.toggle('active', p.id === 'panel-' + name);
+        });
+
+        if (name === 'playbook' && !loaded.playbook) {
+          document.getElementById('panel-playbook').innerHTML = '<iframe src="/docs/yggdrasil-playbook.pdf"></iframe>';
+          loaded.playbook = true;
+        }
+        if (name === 'onepager' && !loaded.onepager) {
+          document.getElementById('panel-onepager').innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf"></iframe>';
+          loaded.onepager = true;
+        }
+        if (name === 'telemetry' && !loaded.telemetry) {
+          /* Pass admin password via hash so telemetry viewer auto-authenticates */
+          var hash = adminCreds ? encodeURIComponent(adminCreds.password) : '';
+          document.getElementById('iframe-telemetry').src = '/telemetry-viewer.html#' + hash;
+          loaded.telemetry = true;
+        }
+      });
+    });
+
+    /* ── Dashboard button ────────────────────────────────── */
+    document.getElementById('btn-dashboard').addEventListener('click', function() {
+      window.open('/dashboard/', '_blank');
+    });
+
+    /* ── Overview: Fund Cards ────────────────────────────── */
+    function loadOverview() {
+      var grid = document.getElementById('fund-grid');
+      grid.innerHTML = '';
+
+      Object.keys(FUNDS).sort().forEach(function(fid) {
+        var fund = FUNDS[fid];
+        var card = document.createElement('div');
+        card.className = 'fund-card';
+        card.innerHTML =
+          '<div class="fund-card-header">' +
+            '<div class="fund-card-name">' + fund.name + '</div>' +
+            '<span class="fund-card-status active">Active</span>' +
+          '</div>' +
+          '<div class="fund-card-id">' + fid + ' &middot; ' + fund.variant + '</div>' +
+          '<div class="fund-card-meta" id="meta-' + fid + '">Loading activity...</div>' +
+          '<div class="fund-card-links">' +
+            '<a class="fund-link" href="/portal/' + fid + '/" target="_blank">Portal</a>' +
+            '<a class="fund-link" href="' + fund.deck + '" target="_blank">Deck</a>' +
+            '<a class="fund-link" href="/docs/yggdrasil-playbook.pdf" target="_blank">Playbook</a>' +
+            '<a class="fund-link" href="/docs/yggdrasil-one-pager-v2.pdf" target="_blank">One-Pager</a>' +
+          '</div>';
+        grid.appendChild(card);
+      });
+
+      /* Fetch telemetry if not already loaded */
+      if (telemetryEvents.length === 0 && adminCreds) {
+        fetch('/api/admin/log', { headers: { 'Authorization': adminBasicAuth() } })
+          .then(function(r) { return r.ok ? r.json() : { events: [] }; })
+          .then(function(data) { telemetryEvents = data.events || []; renderOverviewActivity(); })
+          .catch(function() {});
+      } else {
+        renderOverviewActivity();
+      }
+    }
+
+    function renderOverviewActivity() {
+      Object.keys(FUNDS).forEach(function(fid) {
+        var meta = document.getElementById('meta-' + fid);
+        if (!meta) return;
+
+        var fundEvents = telemetryEvents.filter(function(e) { return e.fund === fid; });
+        if (fundEvents.length === 0) {
+          meta.innerHTML = 'No activity yet';
+          return;
+        }
+
+        var logins = fundEvents.filter(function(e) { return e.event === 'login' || e.event === 'portal_login'; }).length;
+        var deckViews = fundEvents.filter(function(e) { return e.event === 'deck_view' || e.event === 'portal_tab_switch'; }).length;
+        var lastEvent = fundEvents[fundEvents.length - 1];
+        var lastSeen = lastEvent.ts ? new Date(lastEvent.ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+
+        meta.innerHTML = '<span>' + logins + '</span> logins &middot; <span>' + deckViews + '</span> views &middot; Last: <span>' + lastSeen + '</span>';
+      });
+    }
+
+    /* ── Deck Viewer ──────────────────────────────────────── */
+    function buildDeckSelector() {
+      var select = document.getElementById('deck-fund-select');
+      select.innerHTML = '';
+      Object.keys(FUNDS).sort().forEach(function(fid) {
+        var opt = document.createElement('option');
+        opt.value = fid;
+        opt.textContent = FUNDS[fid].name + ' (' + FUNDS[fid].variant + ')';
+        select.appendChild(opt);
+      });
+
+      select.addEventListener('change', function() {
+        var fid = select.value;
+        document.getElementById('iframe-deck').src = FUNDS[fid].deck;
+        loaded.decks = true;
+      });
+
+      /* Load first fund's deck by default */
+      var first = Object.keys(FUNDS).sort()[0];
+      select.value = first;
+      document.getElementById('iframe-deck').src = FUNDS[first].deck;
+      loaded.decks = true;
+    }
+  })();
+  </script>
+</body>
+</html>
