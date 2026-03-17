@@ -1,49 +1,45 @@
 {
-  "_readme": "Copy this file to funds.json in DATA_DIR and fill in real passwords. DO NOT commit funds.json.",
+  "_readme": "Unique per-fund passwords. Updated 2026-03-17. _version forces re-seed on deploy.",
+  "_version": "2026-03-17-unique",
 
   "1517": {
     "name": "1517 Fund",
-    "password": "ygg2026",
+    "password": "ygg2026-tia",
     "active": true
   },
   "contrary": {
     "name": "Contrary Capital",
-    "password": "ygg2026",
+    "password": "ygg2026-gbg",
     "active": true
   },
   "precursor": {
     "name": "Precursor Ventures",
-    "password": "ygg2026",
+    "password": "ygg2026-juu",
     "active": true
   },
   "ribbit": {
     "name": "Ribbit Capital",
-    "password": "ygg2026",
+    "password": "ygg2026-bkw",
     "active": true
   },
   "qed": {
     "name": "QED Investors",
-    "password": "ygg2026",
+    "password": "ygg2026-ksd",
     "active": true
   },
   "nyca": {
     "name": "NYCA Partners",
-    "password": "ygg2026",
-    "active": true
-  },
-  "btv": {
-    "name": "Bessemer Venture Partners",
-    "password": "ygg2026",
+    "password": "ygg2026-gme",
     "active": true
   },
   "lux": {
     "name": "Lux Capital",
-    "password": "ygg2026",
+    "password": "ygg2026-bei",
     "active": true
   },
   "iv": {
     "name": "Industry Ventures",
-    "password": "ygg2026",
+    "password": "ygg2026-khm",
     "active": true
   }
 }

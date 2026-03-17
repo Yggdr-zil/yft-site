@@ -151,9 +151,11 @@
       <thead><tr>
         <th>Fund</th>
         <th>Logins</th>
-        <th>Deck Views</th>
-        <th>Dashboard Views</th>
-        <th>GPU Views</th>
+        <th>Deck</th>
+        <th>Slides</th>
+        <th>Playbook</th>
+        <th>One-Pager</th>
+        <th>Dashboard</th>
         <th>Last Seen</th>
       </tr></thead>
       <tbody id="fund-tbody"></tbody>
@@ -263,18 +265,26 @@ async function load() {
 
 function renderStats(events) {
   const funds = new Set(events.map(e => e.fund).filter(Boolean));
-  const logins = events.filter(e => e.event === 'login').length;
+  const logins = events.filter(e => e.event === 'login' || e.event === 'portal_login').length;
   const deckViews = events.filter(e => e.event === 'deck_view').length;
+  const slideViews = events.filter(e => e.event === 'slide_view').length;
   const dashViews = events.filter(e => e.event === 'page_view').length;
   const gpuViews  = events.filter(e => e.event === 'gpu_view').length;
+  const provViews = events.filter(e => e.event === 'provider_view').length;
+  const playbookViews = events.filter(e => e.event === 'portal_view_playbook').length;
+  const onepagerViews = events.filter(e => e.event === 'portal_view_onepager').length;
 
   const el = document.getElementById('stats');
   el.innerHTML = [
     [funds.size, 'Unique Funds'],
     [logins,     'Logins'],
     [deckViews,  'Deck Views'],
-    [dashViews,  'Dashboard Views'],
+    [slideViews, 'Slide Views'],
+    [playbookViews, 'Playbook Views'],
+    [onepagerViews, 'One-Pager Views'],
+    [dashViews,  'Dashboard Pages'],
     [gpuViews,   'GPU Views'],
+    [provViews,  'Provider Views'],
     [events.length, 'Total Events'],
   ].map(([v, l]) => `
     <div class="stat">
@@ -288,50 +298,79 @@ const KNOWN_FUNDS = ['1517','contrary','iv','btv','lux','nyca','precursor','qed'
 
 function renderFundTable(events) {
   const funds = {};
-  // Pre-seed all known funds so they show even with zero activity
-  KNOWN_FUNDS.forEach(f => { funds[f] = { logins:0, deckViews:0, dashViews:0, gpuViews:0, lastSeen:'' }; });
+  KNOWN_FUNDS.forEach(f => { funds[f] = { logins:0, deckViews:0, slideViews:0, playbookViews:0, onepagerViews:0, dashViews:0, gpuViews:0, lastSeen:'', maxSlide:0 }; });
   events.forEach(e => {
     const f = e.fund || '(unknown)';
-    if (!funds[f]) funds[f] = { logins:0, deckViews:0, dashViews:0, gpuViews:0, lastSeen:'' };
+    if (!funds[f]) funds[f] = { logins:0, deckViews:0, slideViews:0, playbookViews:0, onepagerViews:0, dashViews:0, gpuViews:0, lastSeen:'', maxSlide:0 };
     const rec = funds[f];
-    if (e.event === 'login')      rec.logins++;
-    if (e.event === 'deck_view')  rec.deckViews++;
-    if (e.event === 'page_view')  rec.dashViews++;
-    if (e.event === 'gpu_view')   rec.gpuViews++;
+    if (e.event === 'login' || e.event === 'portal_login') rec.logins++;
+    if (e.event === 'deck_view')             rec.deckViews++;
+    if (e.event === 'slide_view')            { rec.slideViews++; const s = e.metadata?.slide || 0; if (s > rec.maxSlide) rec.maxSlide = s; }
+    if (e.event === 'portal_view_playbook')  rec.playbookViews++;
+    if (e.event === 'portal_view_onepager')  rec.onepagerViews++;
+    if (e.event === 'page_view')             rec.dashViews++;
+    if (e.event === 'gpu_view')              rec.gpuViews++;
     if (!rec.lastSeen || e.ts > rec.lastSeen) rec.lastSeen = e.ts;
   });
 
   const rows = Object.entries(funds)
     .sort((a, b) => (b[1].lastSeen || '').localeCompare(a[1].lastSeen || ''))
-    .map(([fund, r]) => `
+    .map(([fund, r]) => {
+      const slideInfo = r.slideViews > 0 ? `${r.slideViews} (→s${r.maxSlide})` : '—';
+      return `
       <tr>
         <td class="fund">${fund}</td>
         <td>${r.logins || '—'}</td>
         <td>${r.deckViews || '—'}</td>
+        <td>${slideInfo}</td>
+        <td>${r.playbookViews || '—'}</td>
+        <td>${r.onepagerViews || '—'}</td>
         <td>${r.dashViews || '—'}</td>
-        <td>${r.gpuViews || '—'}</td>
         <td class="ts">${fmt(r.lastSeen)}</td>
       </tr>
-    `).join('');
+    `}).join('');
 
   document.getElementById('fund-tbody').innerHTML = rows ||
-    '<tr><td colspan="6" class="empty">No fund activity yet.</td></tr>';
+    '<tr><td colspan="8" class="empty">No fund activity yet.</td></tr>';
+}
+
+function fmtDetail(e) {
+  const m = e.metadata || {};
+  switch (e.event) {
+    case 'slide_view':
+      return `Slide ${m.slide || '?'}/${m.total || '?'}: ${m.name || ''}${m.direction ? ' (' + m.direction + ')' : ''}`;
+    case 'portal_view_deck':     return 'Opened Deck tab';
+    case 'portal_view_playbook': return 'Opened Playbook tab';
+    case 'portal_view_onepager': return 'Opened One-Pager tab';
+    case 'portal_view_contact':  return 'Opened Contact tab';
+    case 'portal_dashboard_open': return 'Opened Dashboard';
+    case 'portal_deck_download': return 'Downloaded Deck' + (m.fund ? ' (' + m.fund + ')' : '');
+    case 'portal_login':         return 'Portal login';
+    case 'portal_view':          return 'Portal resumed';
+    case 'gpu_view':             return m.gpu || e.page || '';
+    case 'provider_view':        return m.provider || e.page || '';
+    case 'page_view':            return e.page || '';
+    case 'deck_view':            return e.page || '';
+    case 'login':                return 'Fund login';
+    default:
+      if (e.page) return e.page;
+      if (m.detail) return m.detail;
+      return Object.keys(m).length ? JSON.stringify(m) : '—';
+  }
 }
 
 function renderEventLog(events) {
   document.getElementById('event-count').textContent = `(${events.length})`;
 
   const rows = events.map(e => {
-    const detail = e.page
-      ? e.page
-      : (e.metadata ? JSON.stringify(e.metadata) : '');
+    const detail = fmtDetail(e);
     return `
       <tr>
         <td class="ts">${fmt(e.ts)}</td>
         <td style="color:rgba(240,236,228,0.4);font-size:0.75rem">${e._src}</td>
         <td class="fund">${e.fund || '—'}</td>
         <td class="event ${e.event || ''}">${e.event || '—'}</td>
-        <td class="page">${detail || '—'}</td>
+        <td class="page">${detail}</td>
         <td class="ip">${e.ip || '—'}</td>
       </tr>
     `;

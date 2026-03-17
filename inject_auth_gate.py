@@ -92,6 +92,8 @@ AUTH_GATE_HTML = """
     try { var s = JSON.parse(sessionStorage.getItem(SESSION_KEY)); return s && s.token; } catch(e) { return null; }
   }
 
+  var SLIDE_NAMES = {1:'Cover',2:'Builder',3:'Moment',4:'Problem',5:'Solution',6:'Live Product',7:'IP',8:'Competitive',9:'Business Model',10:'How It Works',11:'Financials',12:'Team',13:'Ask',14:'Vision'};
+
   function startSlideTracking() {
     var counter = document.querySelector('.slide-counter');
     if (!counter) return;
@@ -107,14 +109,24 @@ AUTH_GATE_HTML = """
       lastSlide = current;
       var tok = getToken();
       if (!tok) return;
+      var slideName = SLIDE_NAMES[current] || ('Slide ' + current);
       fetch('/api/telemetry/event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
         body: JSON.stringify({ event: 'slide_view', page: window.location.pathname,
-                               detail: 'slide_' + current + '_of_' + total + '_' + direction }),
+                               metadata: { slide: current, total: total, name: slideName, direction: direction } }),
       }).catch(function() {});
     });
     obs.observe(counter, { childList: true, subtree: true, characterData: true });
+  }
+
+  // Defer slide tracking until DOM is ready (counter element may not exist yet)
+  function deferSlideTracking() {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(startSlideTracking, 100);
+    } else {
+      document.addEventListener('DOMContentLoaded', function() { setTimeout(startSlideTracking, 100); });
+    }
   }
 
   // Already authenticated this session?
@@ -122,7 +134,7 @@ AUTH_GATE_HTML = """
     var stored = sessionStorage.getItem(SESSION_KEY);
     if (stored) {
       var s = JSON.parse(stored);
-      if (s && s.token) { dismiss(); startSlideTracking(); return; }
+      if (s && s.token) { dismiss(); deferSlideTracking(); return; }
     }
   } catch (e) {}
 

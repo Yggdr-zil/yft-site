@@ -282,10 +282,10 @@
 
     /* ── Telemetry (fire-and-forget) ─────────────────────── */
     var authToken = null;
-    function telem(event, detail) {
+    function telem(event, page, metadata) {
       if (!authToken) return;
-      var body = { event: event, page: '/portal/' + FUND_ID + '/' };
-      if (detail) body.metadata = { detail: detail };
+      var body = { event: event, page: page || '/portal/' + FUND_ID + '/' };
+      if (metadata) body.metadata = metadata;
       fetch(TELEM_EP, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
@@ -322,7 +322,7 @@
         panels.onepager.innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf"></iframe>';
         loaded.onepager = true;
       }
-      telem('portal_tab_switch', name);
+      telem('portal_view_' + name, '/portal/' + FUND_ID + '/' + name);
     }
 
     tabs.forEach(function(tab) {
@@ -336,7 +336,7 @@
         localStorage.setItem('ygg_vc_fund', FUND_ID);
       }
       window.open('/dashboard/', '_blank');
-      telem('portal_dashboard_open');
+      telem('portal_dashboard_open', '/dashboard/');
     });
 
     /* ── Download deck ──────────────────────────────────── */
@@ -347,7 +347,7 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      telem('portal_deck_download');
+      telem('portal_deck_download', DECK_PATH, { fund: FUND_NAME });
     });
 
     /* ── Show portal after auth ──────────────────────────── */

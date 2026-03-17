@@ -6,12 +6,15 @@ export CONTACT_PORT=3001
 # Ensure DATA_DIR exists (volume may not create it)
 mkdir -p "${DATA_DIR:-/data}"
 
-# Seed funds.json from template if it doesn't exist or if it still has
-# placeholder passwords (i.e. was seeded from the old CHANGE_ME template).
+# Always seed funds.json from template on startup — template is source of truth.
+# Passwords are baked into the template; no manual editing needed in production.
 FUNDS_FILE="${DATA_DIR:-/data}/funds.json"
-if [ ! -f "$FUNDS_FILE" ] || grep -q "CHANGE_ME" "$FUNDS_FILE" 2>/dev/null; then
-  echo "[entrypoint] Seeding $FUNDS_FILE from template (first run or stale passwords)"
-  cp /opt/contact-server/funds.template.json "$FUNDS_FILE"
+TEMPLATE="/opt/contact-server/funds.template.json"
+TEMPLATE_VER=$(grep -o '"_version"[^,]*' "$TEMPLATE" 2>/dev/null || echo "")
+CURRENT_VER=$(grep -o '"_version"[^,]*' "$FUNDS_FILE" 2>/dev/null || echo "")
+if [ ! -f "$FUNDS_FILE" ] || [ "$TEMPLATE_VER" != "$CURRENT_VER" ]; then
+  echo "[entrypoint] Seeding $FUNDS_FILE from template (version: $TEMPLATE_VER)"
+  cp "$TEMPLATE" "$FUNDS_FILE"
 fi
 
 cd /opt/contact-server
