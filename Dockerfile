@@ -35,6 +35,9 @@ COPY server/funds.template.json /opt/contact-server/funds.template.json
 COPY --from=server-build /server/node_modules /opt/contact-server/node_modules
 COPY server/package.json /opt/contact-server/package.json
 
+# Portal template (used for dynamic portal rendering at runtime)
+COPY investor-portal.html /opt/contact-server/investor-portal.html
+
 # Create persistent data directory (override with -v /host/path:/data)
 RUN mkdir -p /data
 

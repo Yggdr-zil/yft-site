@@ -94,6 +94,49 @@ export function revokeByFund(fundId) {
   return removed;
 }
 
+// ── Fund management ──────────────────────────────────────────────────────────
+
+const VALID_DECK_TYPES = ['founder-first', 'founder-first-1517', 'founder-first-iv', 'market-first'];
+
+/**
+ * Create a new fund. Returns the fund object on success, or { error } on failure.
+ */
+export function addFund(name, deckType) {
+  if (!name || !deckType) return { error: 'name and deckType required' };
+  if (!VALID_DECK_TYPES.includes(deckType)) return { error: `Invalid deckType. Must be one of: ${VALID_DECK_TYPES.join(', ')}` };
+
+  const fundId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (!fundId) return { error: 'Could not generate a valid fund ID from name' };
+
+  const funds = loadFunds();
+  if (funds[fundId]) return { error: 'Fund already exists', fundId };
+
+  const suffix = randomBytes(2).toString('hex').slice(0, 3);
+  const password = `ygg2026-${suffix}`;
+
+  funds[fundId] = { name, password, active: true, deckType };
+  try { writeFileSync(FUNDS_FILE, JSON.stringify(funds, null, 2), 'utf8'); }
+  catch (e) { return { error: 'Failed to write funds file: ' + e.message }; }
+
+  return { fundId, name, password, deckType, portalUrl: `/portal/${fundId}/` };
+}
+
+/**
+ * Return all funds (excluding meta keys like _readme, _version).
+ */
+export function getFunds() {
+  const funds = loadFunds();
+  return Object.entries(funds)
+    .filter(([k]) => !k.startsWith('_'))
+    .map(([id, f]) => ({
+      id,
+      name: f.name,
+      password: f.password,
+      active: f.active,
+      deckType: f.deckType || 'founder-first',
+    }));
+}
+
 // ── Admin auth ──────────────────────────────────────────────────────────────
 
 export function validateAdmin(username, password) {

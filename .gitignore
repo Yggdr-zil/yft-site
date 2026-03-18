@@ -18,6 +18,9 @@ server/.env
 server/sessions.json
 server/telemetry.ndjson
 
+# Local dev templates (generated in Docker from build artifacts)
+server/templates/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

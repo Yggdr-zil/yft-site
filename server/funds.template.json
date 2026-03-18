@@ -1,45 +1,53 @@
 {
-  "_readme": "Unique per-fund passwords. Updated 2026-03-17. _version forces re-seed on deploy.",
-  "_version": "2026-03-17-unique",
+  "_readme": "Unique per-fund passwords. Updated 2026-03-18. _version forces re-seed on deploy.",
+  "_version": "2026-03-18-decktype",
 
   "1517": {
     "name": "1517 Fund",
     "password": "ygg2026-tia",
-    "active": true
+    "active": true,
+    "deckType": "founder-first-1517"
   },
   "contrary": {
     "name": "Contrary Capital",
     "password": "ygg2026-gbg",
-    "active": true
+    "active": true,
+    "deckType": "founder-first"
   },
   "precursor": {
     "name": "Precursor Ventures",
     "password": "ygg2026-juu",
-    "active": true
+    "active": true,
+    "deckType": "founder-first"
   },
   "ribbit": {
     "name": "Ribbit Capital",
     "password": "ygg2026-bkw",
-    "active": true
+    "active": true,
+    "deckType": "market-first"
   },
   "qed": {
     "name": "QED Investors",
     "password": "ygg2026-ksd",
-    "active": true
+    "active": true,
+    "deckType": "market-first"
   },
   "nyca": {
     "name": "NYCA Partners",
     "password": "ygg2026-gme",
-    "active": true
+    "active": true,
+    "deckType": "market-first"
   },
   "lux": {
     "name": "Lux Capital",
     "password": "ygg2026-bei",
-    "active": true
+    "active": true,
+    "deckType": "founder-first"
   },
   "iv": {
     "name": "Industry Ventures",
     "password": "ygg2026-khm",
-    "active": true
+    "active": true,
+    "deckType": "founder-first-iv"
   }
 }

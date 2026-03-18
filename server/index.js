@@ -1,9 +1,9 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { createTransport } from "nodemailer";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { login, validateToken, validateAdmin, logEvent, getEvents, revokeByFund } from "./auth.js";
+import { login, validateToken, validateAdmin, logEvent, getEvents, revokeByFund, addFund, getFunds } from "./auth.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -28,6 +28,7 @@ const SMTP_PASS = process.env.SMTP_PASS || "";
 const SMTP_SECURE = process.env.SMTP_SECURE === "true";
 const MAIL_TO   = process.env.MAIL_TO   || "inquiries@yggfin.tech";
 const MAIL_FROM = process.env.MAIL_FROM || SMTP_USER || "inquiries@yggfin.tech";
+const TEMPLATE_DIR = join(process.env.DATA_DIR || __dirname, "templates");
 
 // ── Rate limiting ──────────────────────────────────────────────────────
 const rateMap = new Map();
@@ -200,6 +201,95 @@ createServer(async (req, res) => {
       console.error(`[${new Date().toISOString()}] SMTP error:`, err.message);
       return json(res, 500, { error: "Failed to send. Please email inquiries@yggfin.tech directly." });
     }
+  }
+
+  // ── Dynamic portal serving ──────────────────────────────────────────
+  const portalMatch = req.url.match(/^\/portal\/([a-z0-9-]+)\/?$/);
+  if (req.method === "GET" && portalMatch) {
+    const fundId = portalMatch[1];
+    if (fundId === "admin") return json(res, 404, { error: "Not found" });
+
+    const funds = JSON.parse(readFileSync(join(process.env.DATA_DIR || __dirname, "funds.json"), "utf8"));
+    const fund = funds[fundId];
+    if (!fund || !fund.active) return json(res, 404, { error: "Fund not found" });
+
+    const templatePath = join(TEMPLATE_DIR, "portal-template.html");
+    if (!existsSync(templatePath)) return json(res, 500, { error: "Portal template not found" });
+
+    let html = readFileSync(templatePath, "utf8");
+    html = html
+      .replace(/__FUND_ID__/g, fundId)
+      .replace(/__FUND_NAME__/g, fund.name)
+      .replace(/__DECK_PATH__/g, `/${fundId}-deck/`);
+
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    return res.end(html);
+  }
+
+  // ── Dynamic deck serving ──────────────────────────────────────────
+  const deckMatch = req.url.match(/^\/([a-z0-9-]+)-deck\/?$/);
+  if (req.method === "GET" && deckMatch) {
+    const fundId = deckMatch[1];
+    const fundsPath = join(process.env.DATA_DIR || __dirname, "funds.json");
+    let funds;
+    try { funds = JSON.parse(readFileSync(fundsPath, "utf8")); } catch { funds = {}; }
+    const fund = funds[fundId];
+    if (!fund || !fund.active) return json(res, 404, { error: "Fund not found" });
+
+    const deckPath = join(TEMPLATE_DIR, "decks", `${fund.deckType}.html`);
+    if (!existsSync(deckPath)) return json(res, 404, { error: "Deck template not found" });
+
+    const html = readFileSync(deckPath, "utf8");
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    return res.end(html);
+  }
+
+  // ── Admin: Add fund ──────────────────────────────────────────────
+  if (req.method === "POST" && req.url === "/api/admin/add-fund") {
+    let body;
+    try { body = JSON.parse(await readBody(req)); }
+    catch { return json(res, 400, { error: "Invalid JSON" }); }
+
+    // Admin auth via Basic header or JSON body
+    let adminUser, adminPass;
+    const authHeader = req.headers["authorization"] || "";
+    if (authHeader.startsWith("Basic ")) {
+      const decoded = Buffer.from(authHeader.slice(6), "base64").toString();
+      [adminUser, adminPass] = decoded.split(":", 2);
+    } else {
+      adminUser = body.username;
+      adminPass = body.password;
+    }
+    if (!validateAdmin(adminUser, adminPass)) return json(res, 401, { error: "Unauthorized" });
+
+    const { name, deckType } = body;
+    const result = addFund(name, deckType);
+    if (result.error) {
+      const status = result.fundId ? 409 : 400;
+      return json(res, status, { error: result.error });
+    }
+
+    logEvent({ fund: result.fundId, event: "admin_add_fund", metadata: { name: result.name, deckType: result.deckType } });
+    return json(res, 200, result);
+  }
+
+  // ── Admin: List funds ───────────────────────────────────────────
+  if (req.method === "GET" && req.url === "/api/admin/funds") {
+    let body;
+    try { body = JSON.parse(await readBody(req)); } catch { body = {}; }
+
+    let adminUser, adminPass;
+    const authHeader = req.headers["authorization"] || "";
+    if (authHeader.startsWith("Basic ")) {
+      const decoded = Buffer.from(authHeader.slice(6), "base64").toString();
+      [adminUser, adminPass] = decoded.split(":", 2);
+    } else {
+      adminUser = body.username;
+      adminPass = body.password;
+    }
+    if (!validateAdmin(adminUser, adminPass)) return json(res, 401, { error: "Unauthorized" });
+
+    return json(res, 200, { funds: getFunds() });
   }
 
   json(res, 404, { error: "Not found" });

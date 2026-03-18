@@ -187,7 +187,20 @@
       font-family: 'IBM Plex Mono', monospace;
       font-size: 0.72rem;
       color: rgba(255,255,255,0.35);
+      margin-bottom: 0.35rem;
+    }
+    .fund-card-creds {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: rgba(197,149,42,0.55);
       margin-bottom: 0.6rem;
+      user-select: all;
+    }
+    .fund-card-creds .cred-label {
+      color: rgba(255,255,255,0.25);
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
     }
     .fund-card-meta {
       font-size: 0.75rem;
@@ -249,28 +262,33 @@
     .contact-page {
       display: flex; align-items: center; justify-content: center;
       height: 100%; background: #0c1624;
+      padding: 2rem 1rem; box-sizing: border-box;
     }
-    .contact-card { max-width: 560px; width: 90%; text-align: left; }
+    .contact-card { max-width: 780px; width: 92%; text-align: left; }
     .contact-label {
       color: rgba(197,149,42,0.6);
-      font-size: 0.65rem; letter-spacing: 0.18em;
+      font-size: clamp(0.6rem, 0.5rem + 0.3vw, 0.75rem);
+      letter-spacing: 0.18em;
       text-transform: uppercase; margin-bottom: 1.5rem;
     }
     .contact-name {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2rem; font-weight: 500;
+      font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.4rem);
+      font-weight: 500;
       color: rgba(255,255,255,0.92); margin-bottom: 0.3rem;
     }
     .contact-title {
       color: rgba(255,255,255,0.4);
-      font-size: 0.85rem; margin-bottom: 2rem;
+      font-size: clamp(0.78rem, 0.7rem + 0.3vw, 0.95rem);
+      margin-bottom: 2rem;
     }
     .contact-row {
       display: flex; align-items: center; gap: 0.75rem;
       margin-bottom: 0.85rem;
     }
     .contact-row a {
-      color: #C5952A; text-decoration: none; font-size: 0.9rem;
+      color: #C5952A; text-decoration: none;
+      font-size: clamp(0.82rem, 0.75rem + 0.3vw, 1rem);
     }
     .contact-row a:hover { text-decoration: underline; }
     .contact-row .contact-icon {
@@ -285,17 +303,204 @@
     }
     .contact-about-label {
       color: rgba(197,149,42,0.5);
-      font-size: 0.65rem; letter-spacing: 0.14em;
+      font-size: clamp(0.6rem, 0.5rem + 0.3vw, 0.75rem);
+      letter-spacing: 0.14em;
       text-transform: uppercase; margin-bottom: 0.8rem;
     }
     .contact-about {
       color: rgba(255,255,255,0.55);
-      font-size: 0.85rem; line-height: 1.7;
+      font-size: clamp(0.85rem, 0.78rem + 0.35vw, 1.05rem);
+      line-height: 1.8; max-width: 72ch;
     }
 
     /* ── Telemetry Embed ──────────────────────────────────── */
     .telem-panel { display: flex; flex-direction: column; height: 100%; }
     .telem-panel iframe { flex: 1; width: 100%; border: none; }
+
+    /* ── Add Fund Button ───────────────────────────────────── */
+    .add-fund-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(197,149,42,0.1);
+      border: 1px solid rgba(197,149,42,0.35);
+      border-radius: 5px;
+      padding: 0.6rem 1.2rem;
+      color: #C5952A;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      transition: background 0.15s, border-color 0.15s;
+      margin-bottom: 1.5rem;
+    }
+    .add-fund-btn:hover { background: rgba(197,149,42,0.18); border-color: rgba(197,149,42,0.55); }
+    .add-fund-btn .plus { font-size: 1.1rem; line-height: 1; }
+
+    /* ── Modal ─────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.65);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal-card {
+      background: #131f33;
+      border: 1px solid rgba(197,149,42,0.3);
+      border-radius: 8px;
+      padding: 2rem 2.5rem;
+      width: 420px;
+      max-width: 92vw;
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.3rem; font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 1.25rem;
+    }
+    .modal-label {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.35rem;
+    }
+    .modal-input {
+      width: 100%;
+      background: rgba(27,42,74,0.6);
+      border: 1px solid rgba(197,149,42,0.2);
+      border-radius: 4px;
+      padding: 0.65rem 0.85rem;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.85rem;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      outline: none;
+      margin-bottom: 1rem;
+    }
+    .modal-input:focus { border-color: rgba(197,149,42,0.5); }
+    .modal-select {
+      width: 100%;
+      background: rgba(27,42,74,0.6);
+      border: 1px solid rgba(197,149,42,0.2);
+      border-radius: 4px;
+      padding: 0.65rem 0.85rem;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.85rem;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      outline: none;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+    .modal-select option { background: #1B2A4A; }
+    .modal-actions {
+      display: flex; gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .modal-btn-primary {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(197,149,42,0.45);
+      border-radius: 3px;
+      padding: 0.7rem;
+      color: #C5952A;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      transition: background 0.15s;
+    }
+    .modal-btn-primary:hover { background: rgba(197,149,42,0.08); }
+    .modal-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .modal-btn-cancel {
+      flex: 0.6;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+      padding: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      transition: background 0.15s;
+    }
+    .modal-btn-cancel:hover { background: rgba(255,255,255,0.05); }
+    .modal-err {
+      color: #f87171; font-size: 0.78rem;
+      margin-top: 0.5rem; display: none;
+    }
+
+    /* ── Fund Result Card (shown after creation) ──────────── */
+    .fund-result {
+      background: rgba(74,222,128,0.06);
+      border: 1px solid rgba(74,222,128,0.25);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1rem;
+    }
+    .fund-result-title {
+      color: #4ade80;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .fund-result-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .fund-result-row:last-child { border-bottom: none; }
+    .fund-result-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+    }
+    .fund-result-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .fund-result-value a {
+      color: #C5952A; text-decoration: none;
+    }
+    .fund-result-value a:hover { text-decoration: underline; }
+
+    /* ── Credentials Table ────────────────────────────────── */
+    .creds-section { margin-top: 2rem; }
+    .creds-section h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.2rem; font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 1rem;
+    }
+    .creds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+    .creds-table th {
+      text-align: left;
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(197,149,42,0.6);
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid rgba(197,149,42,0.2);
+    }
+    .creds-table td {
+      padding: 0.55rem 0.75rem;
+      color: rgba(255,255,255,0.7);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      vertical-align: middle;
+    }
+    .creds-table tr:hover td { background: rgba(27,42,74,0.3); }
+    .creds-table .mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+    }
+    .creds-table .status-active { color: #4ade80; }
+    .creds-table .status-inactive { color: #f87171; }
+    .creds-table a { color: rgba(197,149,42,0.8); text-decoration: none; }
+    .creds-table a:hover { text-decoration: underline; }
 
     /* ── Mobile ─────────────────────────────────────────────── */
     @media (max-width: 768px) {
@@ -305,6 +510,8 @@
       .nav-tab { padding: 0.4rem 0.6rem; font-size: 0.7rem; }
       .overview { padding: 1.5rem; }
       .fund-grid { grid-template-columns: 1fr; }
+      .contact-page { padding: 1.5rem 0.75rem; align-items: flex-start; }
+      .contact-card { width: 100%; }
     }
   </style>
 </head>
@@ -346,7 +553,24 @@
       <div class="tab-panel active" id="panel-overview">
         <div class="overview">
           <h2>Fund Overview</h2>
+          <button class="add-fund-btn" id="btn-add-fund"><span class="plus">+</span> Add Fund</button>
           <div class="fund-grid" id="fund-grid"></div>
+          <div class="creds-section">
+            <h3>Fund Credentials</h3>
+            <table class="creds-table" id="creds-table">
+              <thead>
+                <tr>
+                  <th>Fund Name</th>
+                  <th>Fund ID</th>
+                  <th>Password</th>
+                  <th>Deck Type</th>
+                  <th>Status</th>
+                  <th>Portal</th>
+                </tr>
+              </thead>
+              <tbody id="creds-tbody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -406,22 +630,70 @@
     </div>
   </div>
 
+  <!-- ── Add Fund Modal ─────────────────────────────────────── -->
+  <div class="modal-overlay hidden" id="add-fund-modal">
+    <div class="modal-card">
+      <div class="modal-title">Add New Fund</div>
+      <div class="modal-label">Fund Name</div>
+      <input class="modal-input" id="modal-fund-name" type="text" placeholder="e.g. Sequoia Capital" />
+      <div class="modal-label">Deck Type</div>
+      <select class="modal-select" id="modal-deck-type">
+        <option value="founder-first">Founder-First</option>
+        <option value="founder-first-1517">Founder-First 1517</option>
+        <option value="founder-first-iv">Founder-First IV</option>
+        <option value="market-first">Market-First</option>
+      </select>
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" id="modal-cancel">Cancel</button>
+        <button class="modal-btn-primary" id="modal-create">Create Fund</button>
+      </div>
+      <div class="modal-err" id="modal-err"></div>
+      <div id="modal-result"></div>
+    </div>
+  </div>
+
   <script>
   (function() {
-    /* ── Fund config (matches build_portals.py) ──────────── */
-    var FUNDS = {
-      '1517':      { name: '1517 Fund',           deck: '/1517-deck/',               variant: 'founder-first-1517' },
-      'contrary':  { name: 'Contrary Capital',    deck: '/contrary-deck/',           variant: 'founder-first' },
-      'iv':        { name: 'Industry Ventures',   deck: '/industry-ventures-deck/',  variant: 'founder-first-iv' },
-      'lux':       { name: 'Lux Capital',         deck: '/lux-deck/',                variant: 'founder-first' },
-      'nyca':      { name: 'NYCA Partners',       deck: '/nyca-deck/',               variant: 'market-first' },
-      'precursor': { name: 'Precursor Ventures',  deck: '/precursor-deck/',          variant: 'founder-first' },
-      'qed':       { name: 'QED Investors',       deck: '/qed-deck/',                variant: 'market-first' },
-      'ribbit':    { name: 'Ribbit Capital',      deck: '/ribbit-deck/',             variant: 'market-first' }
-    };
+    /* ── Fund data — loaded from API after auth ──────────── */
+    var FUNDS = {};
+    var fundsList = []; // raw array from GET /api/admin/funds
 
-    var adminCreds = null; // { username, password } for API calls
+    var adminCreds = null;
     var telemetryEvents = [];
+
+    /* ── Helpers ──────────────────────────────────────────── */
+    function adminBasicAuth() {
+      return 'Basic ' + btoa(adminCreds.username + ':' + adminCreds.password);
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* Build FUNDS dict from API funds list */
+    function buildFundsDict(list) {
+      FUNDS = {};
+      list.forEach(function(f) {
+        FUNDS[f.id] = {
+          name: f.name,
+          deck: '/' + f.id + '-deck/',
+          variant: f.deckType || 'founder-first',
+          password: f.password,
+          active: f.active
+        };
+      });
+    }
+
+    /* Fetch fund list from API */
+    function fetchFunds() {
+      return fetch('/api/admin/funds', { headers: { 'Authorization': adminBasicAuth() } })
+        .then(function(r) { return r.ok ? r.json() : { funds: [] }; })
+        .then(function(data) {
+          fundsList = data.funds || [];
+          buildFundsDict(fundsList);
+          return fundsList;
+        });
+    }
 
     /* ── Admin Auth ───────────────────────────────────────── */
     var gate   = document.getElementById('auth-gate');
@@ -429,22 +701,21 @@
     var btn    = document.getElementById('auth-submit');
     var errEl  = document.getElementById('auth-err');
 
-    function adminBasicAuth() {
-      return 'Basic ' + btoa(adminCreds.username + ':' + adminCreds.password);
-    }
-
     function showPortal() {
       gate.classList.add('hidden');
       portal.classList.add('active');
-      /* Pre-write sessionStorage for all deck paths so their auth gates auto-dismiss.
-         Uses a placeholder token — admin views don't fire telemetry (no Bearer validation). */
-      Object.keys(FUNDS).forEach(function(fid) {
-        var deckPath = FUNDS[fid].deck;
-        var deckKey = 'yft_session_' + deckPath.replace(/\//g, '_');
-        sessionStorage.setItem(deckKey, JSON.stringify({ token: 'admin-bypass', fundId: fid }));
+
+      fetchFunds().then(function() {
+        /* Pre-write sessionStorage for all deck paths so auth gates auto-dismiss */
+        Object.keys(FUNDS).forEach(function(fid) {
+          var deckPath = FUNDS[fid].deck;
+          var deckKey = 'yft_session_' + deckPath.replace(/\//g, '_');
+          sessionStorage.setItem(deckKey, JSON.stringify({ token: 'admin-bypass', fundId: fid }));
+        });
+        loadOverview();
+        buildDeckSelector();
+        renderCredentialsTable();
       });
-      loadOverview();
-      buildDeckSelector();
     }
 
     /* Resume session */
@@ -452,7 +723,6 @@
       var stored = sessionStorage.getItem('yft_admin');
       if (stored) {
         adminCreds = JSON.parse(stored);
-        // Verify creds still work
         fetch('/api/admin/log', { headers: { 'Authorization': 'Basic ' + btoa(adminCreds.username + ':' + adminCreds.password) } })
           .then(function(r) {
             if (r.ok) { showPortal(); return r.json(); }
@@ -472,7 +742,6 @@
       btn.disabled = true;
       btn.textContent = 'Verifying\u2026';
 
-      /* Validate by hitting admin endpoint */
       fetch('/api/admin/log', {
         headers: { 'Authorization': 'Basic ' + btoa(uid + ':' + pw) }
       })
@@ -518,7 +787,6 @@
           loaded.onepager = true;
         }
         if (name === 'telemetry' && !loaded.telemetry) {
-          /* Pass admin password via hash so telemetry viewer auto-authenticates */
           var hash = adminCreds ? encodeURIComponent(adminCreds.password) : '';
           document.getElementById('iframe-telemetry').src = '/telemetry-viewer.html#' + hash;
           loaded.telemetry = true;
@@ -538,25 +806,27 @@
 
       Object.keys(FUNDS).sort().forEach(function(fid) {
         var fund = FUNDS[fid];
+        var statusClass = fund.active !== false ? 'active' : 'inactive';
+        var statusText = fund.active !== false ? 'Active' : 'Inactive';
         var card = document.createElement('div');
         card.className = 'fund-card';
         card.innerHTML =
           '<div class="fund-card-header">' +
-            '<div class="fund-card-name">' + fund.name + '</div>' +
-            '<span class="fund-card-status active">Active</span>' +
+            '<div class="fund-card-name">' + escHtml(fund.name) + '</div>' +
+            '<span class="fund-card-status ' + statusClass + '">' + statusText + '</span>' +
           '</div>' +
-          '<div class="fund-card-id">' + fid + ' &middot; ' + fund.variant + '</div>' +
-          '<div class="fund-card-meta" id="meta-' + fid + '">Loading activity...</div>' +
+          '<div class="fund-card-id">' + escHtml(fid) + ' &middot; ' + escHtml(fund.variant) + '</div>' +
+          '<div class="fund-card-creds"><span class="cred-label">user:</span> ' + escHtml(fid) + ' &nbsp;<span class="cred-label">pw:</span> ' + escHtml(fund.password || '—') + '</div>' +
+          '<div class="fund-card-meta" id="meta-' + escHtml(fid) + '">Loading activity...</div>' +
           '<div class="fund-card-links">' +
-            '<a class="fund-link" href="/portal/' + fid + '/" target="_blank">Portal</a>' +
-            '<a class="fund-link" href="' + fund.deck + '" target="_blank">Deck</a>' +
+            '<a class="fund-link" href="/portal/' + encodeURIComponent(fid) + '/" target="_blank">Portal</a>' +
+            '<a class="fund-link" href="' + escHtml(fund.deck) + '" target="_blank">Deck</a>' +
             '<a class="fund-link" href="/docs/yggdrasil-playbook.pdf" target="_blank">Playbook</a>' +
             '<a class="fund-link" href="/docs/yggdrasil-one-pager-v2.pdf" target="_blank">One-Pager</a>' +
           '</div>';
         grid.appendChild(card);
       });
 
-      /* Fetch telemetry if not already loaded */
       if (telemetryEvents.length === 0 && adminCreds) {
         fetch('/api/admin/log', { headers: { 'Authorization': adminBasicAuth() } })
           .then(function(r) { return r.ok ? r.json() : { events: [] }; })
@@ -581,9 +851,29 @@
         var logins = fundEvents.filter(function(e) { return e.event === 'login' || e.event === 'portal_login'; }).length;
         var deckViews = fundEvents.filter(function(e) { return e.event === 'deck_view' || e.event === 'portal_tab_switch'; }).length;
         var lastEvent = fundEvents[fundEvents.length - 1];
-        var lastSeen = lastEvent.ts ? new Date(lastEvent.ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+        var lastSeen = lastEvent.ts ? new Date(lastEvent.ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '\u2014';
 
         meta.innerHTML = '<span>' + logins + '</span> logins &middot; <span>' + deckViews + '</span> views &middot; Last: <span>' + lastSeen + '</span>';
+      });
+    }
+
+    /* ── Credentials Table ────────────────────────────────── */
+    function renderCredentialsTable() {
+      var tbody = document.getElementById('creds-tbody');
+      tbody.innerHTML = '';
+
+      fundsList.sort(function(a, b) { return a.name.localeCompare(b.name); }).forEach(function(f) {
+        var statusClass = f.active !== false ? 'status-active' : 'status-inactive';
+        var statusText = f.active !== false ? 'Active' : 'Inactive';
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + escHtml(f.name) + '</td>' +
+          '<td class="mono">' + escHtml(f.id) + '</td>' +
+          '<td class="mono">' + escHtml(f.password) + '</td>' +
+          '<td>' + escHtml(f.deckType || 'founder-first') + '</td>' +
+          '<td class="' + statusClass + '">' + statusText + '</td>' +
+          '<td><a href="/portal/' + encodeURIComponent(f.id) + '/" target="_blank">Open</a></td>';
+        tbody.appendChild(tr);
       });
     }
 
@@ -604,12 +894,101 @@
         loaded.decks = true;
       });
 
-      /* Load first fund's deck by default */
       var first = Object.keys(FUNDS).sort()[0];
-      select.value = first;
-      document.getElementById('iframe-deck').src = FUNDS[first].deck;
-      loaded.decks = true;
+      if (first) {
+        select.value = first;
+        document.getElementById('iframe-deck').src = FUNDS[first].deck;
+        loaded.decks = true;
+      }
     }
+
+    /* ── Add Fund Modal ───────────────────────────────────── */
+    var modal     = document.getElementById('add-fund-modal');
+    var modalName = document.getElementById('modal-fund-name');
+    var modalDeck = document.getElementById('modal-deck-type');
+    var modalErr  = document.getElementById('modal-err');
+    var modalRes  = document.getElementById('modal-result');
+    var modalBtn  = document.getElementById('modal-create');
+
+    document.getElementById('btn-add-fund').addEventListener('click', function() {
+      modalName.value = '';
+      modalDeck.value = 'founder-first';
+      modalErr.style.display = 'none';
+      modalRes.innerHTML = '';
+      modalBtn.disabled = false;
+      modalBtn.textContent = 'CREATE FUND';
+      modal.classList.remove('hidden');
+      modalName.focus();
+    });
+
+    document.getElementById('modal-cancel').addEventListener('click', function() {
+      modal.classList.add('hidden');
+    });
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.add('hidden');
+    });
+
+    modalBtn.addEventListener('click', function() {
+      var name = modalName.value.trim();
+      var deckType = modalDeck.value;
+      modalErr.style.display = 'none';
+
+      if (!name) {
+        modalErr.textContent = 'Fund name is required.';
+        modalErr.style.display = 'block';
+        return;
+      }
+
+      modalBtn.disabled = true;
+      modalBtn.textContent = 'CREATING\u2026';
+
+      fetch('/api/admin/add-fund', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': adminBasicAuth()
+        },
+        body: JSON.stringify({ name: name, deckType: deckType })
+      })
+      .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, d: d }; }); })
+      .then(function(res) {
+        if (res.ok && res.d.fundId) {
+          modalRes.innerHTML =
+            '<div class="fund-result">' +
+              '<div class="fund-result-title">Fund Created</div>' +
+              '<div class="fund-result-row"><span class="fund-result-label">Fund ID (username)</span><span class="fund-result-value">' + escHtml(res.d.fundId) + '</span></div>' +
+              '<div class="fund-result-row"><span class="fund-result-label">Password</span><span class="fund-result-value">' + escHtml(res.d.password) + '</span></div>' +
+              '<div class="fund-result-row"><span class="fund-result-label">Deck Type</span><span class="fund-result-value">' + escHtml(res.d.deckType) + '</span></div>' +
+              '<div class="fund-result-row"><span class="fund-result-label">Portal URL</span><span class="fund-result-value"><a href="' + escHtml(res.d.portalUrl) + '" target="_blank">' + escHtml(res.d.portalUrl) + '</a></span></div>' +
+            '</div>';
+          modalBtn.textContent = 'DONE';
+
+          /* Refresh fund list + UI */
+          fetchFunds().then(function() {
+            loadOverview();
+            buildDeckSelector();
+            renderCredentialsTable();
+            renderOverviewActivity();
+          });
+        } else {
+          modalErr.textContent = res.d.error || 'Failed to create fund.';
+          modalErr.style.display = 'block';
+          modalBtn.disabled = false;
+          modalBtn.textContent = 'CREATE FUND';
+        }
+      })
+      .catch(function() {
+        modalErr.textContent = 'Network error. Please try again.';
+        modalErr.style.display = 'block';
+        modalBtn.disabled = false;
+        modalBtn.textContent = 'CREATE FUND';
+      });
+    });
+
+    modalName.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); modalBtn.click(); }
+    });
   })();
   </script>
 </body>
