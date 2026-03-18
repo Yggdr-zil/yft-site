@@ -41,6 +41,9 @@ COPY server/package.json /opt/contact-server/package.json
 # Portal template (used for dynamic portal rendering at runtime)
 COPY investor-portal.html /opt/contact-server/investor-portal.html
 
+# PDFs copied outside the build stage so they always reflect latest source
+COPY public/docs/ /opt/contact-server/docs/
+
 # Create persistent data directory (override with -v /host/path:/data)
 RUN mkdir -p /data
 

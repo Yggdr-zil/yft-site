@@ -43,6 +43,9 @@ cp /usr/share/nginx/html/qed-deck/index.html "$TDIR/decks/market-first.html" 2>/
 # Copy portal template (has __FUND_ID__, __FUND_NAME__, __DECK_PATH__ placeholders)
 cp /opt/contact-server/investor-portal.html "$TDIR/portal-template.html" 2>/dev/null || true
 
+# Copy latest PDFs into nginx docs dir (overrides any stale build-cached copies)
+cp /opt/contact-server/docs/*.pdf /usr/share/nginx/html/docs/ 2>/dev/null || true
+
 echo "[entrypoint] Templates ready: $(ls "$TDIR/decks/" 2>/dev/null | wc -l) decks, portal-template"
 
 cd /opt/contact-server
