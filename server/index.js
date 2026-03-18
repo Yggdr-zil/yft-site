@@ -227,9 +227,13 @@ createServer(async (req, res) => {
   }
 
   // ── Dynamic deck serving ──────────────────────────────────────────
+  // Legacy aliases: old deck URLs that don't match fund IDs
+  const DECK_ALIASES = { "industry-ventures": "iv" };
+
   const deckMatch = req.url.match(/^\/([a-z0-9-]+)-deck\/?$/);
   if (req.method === "GET" && deckMatch) {
-    const fundId = deckMatch[1];
+    const rawId = deckMatch[1];
+    const fundId = DECK_ALIASES[rawId] || rawId;
     const fundsPath = join(process.env.DATA_DIR || __dirname, "funds.json");
     let funds;
     try { funds = JSON.parse(readFileSync(fundsPath, "utf8")); } catch { funds = {}; }
