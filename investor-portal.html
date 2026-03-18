@@ -322,11 +322,11 @@
         loaded.deck = true;
       }
       if (name === 'playbook' && !loaded.playbook) {
-        panels.playbook.innerHTML = '<iframe src="/docs/yggdrasil-playbook.pdf"></iframe>';
+        panels.playbook.innerHTML = '<iframe src="/docs/yggdrasil-playbook.pdf?v=20260318"></iframe>';
         loaded.playbook = true;
       }
       if (name === 'onepager' && !loaded.onepager) {
-        panels.onepager.innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf"></iframe>';
+        panels.onepager.innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf?v=20260318"></iframe>';
         loaded.onepager = true;
       }
       telem('portal_view_' + name, '/portal/' + FUND_ID + '/' + name);
