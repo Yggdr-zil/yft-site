@@ -1063,11 +1063,16 @@
                 this.current = 0;
                 this.pb      = document.getElementById('pb');
                 this.sc      = document.getElementById('sc');
-                this._setupObserver();
                 this._setupKeys();
                 this._setupWheel();
                 this._setupTouch();
                 this._updateChrome();
+                requestAnimationFrame(() => {
+                    document.documentElement.scrollTop = 0;
+                    this.current = 0;
+                    this._updateChrome();
+                    this._setupObserver();
+                });
             }
             _setupObserver() {
                 const io = new IntersectionObserver(entries => {

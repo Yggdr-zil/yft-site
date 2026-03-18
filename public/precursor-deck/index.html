@@ -1063,11 +1063,18 @@
                 this.current = 0;
                 this.pb      = document.getElementById('pb');
                 this.sc      = document.getElementById('sc');
-                this._setupObserver();
                 this._setupKeys();
                 this._setupWheel();
                 this._setupTouch();
                 this._updateChrome();
+                // Defer observer + scroll reset — IntersectionObserver's initial
+                // batch can misreport the last slide as visible in iframe embeds
+                requestAnimationFrame(() => {
+                    document.documentElement.scrollTop = 0;
+                    this.current = 0;
+                    this._updateChrome();
+                    this._setupObserver();
+                });
             }
             _setupObserver() {
                 const io = new IntersectionObserver(entries => {

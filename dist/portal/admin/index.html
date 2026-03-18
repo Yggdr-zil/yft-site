@@ -780,11 +780,11 @@
         });
 
         if (name === 'playbook' && !loaded.playbook) {
-          document.getElementById('panel-playbook').innerHTML = '<iframe src="/docs/yggdrasil-playbook.pdf"></iframe>';
+          document.getElementById('panel-playbook').innerHTML = '<iframe src="/docs/yggdrasil-playbook.pdf?v=20260318"></iframe>';
           loaded.playbook = true;
         }
         if (name === 'onepager' && !loaded.onepager) {
-          document.getElementById('panel-onepager').innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf"></iframe>';
+          document.getElementById('panel-onepager').innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf?v=20260318"></iframe>';
           loaded.onepager = true;
         }
         if (name === 'telemetry' && !loaded.telemetry) {
@@ -822,8 +822,8 @@
           '<div class="fund-card-links">' +
             '<a class="fund-link" href="/portal/' + encodeURIComponent(fid) + '/" target="_blank">Portal</a>' +
             '<a class="fund-link" href="' + escHtml(fund.deck) + '" target="_blank">Deck</a>' +
-            '<a class="fund-link" href="/docs/yggdrasil-playbook.pdf" target="_blank">Playbook</a>' +
-            '<a class="fund-link" href="/docs/yggdrasil-one-pager-v2.pdf" target="_blank">One-Pager</a>' +
+            '<a class="fund-link" href="/docs/yggdrasil-playbook.pdf?v=20260318" target="_blank">Playbook</a>' +
+            '<a class="fund-link" href="/docs/yggdrasil-one-pager-v2.pdf?v=20260318" target="_blank">One-Pager</a>' +
           '</div>';
         grid.appendChild(card);
       });
