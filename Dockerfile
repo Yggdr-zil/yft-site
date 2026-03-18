@@ -28,6 +28,9 @@ COPY nginx.conf /etc/nginx/templates/default.conf.template
 # Marketing site + deck folders
 COPY --from=build /app/dist /usr/share/nginx/html
 
+# Override docs with latest PDFs (bypasses build cache)
+COPY public/docs/ /usr/share/nginx/html/docs/
+
 # Server files
 COPY server/index.js  /opt/contact-server/index.js
 COPY server/auth.js   /opt/contact-server/auth.js
