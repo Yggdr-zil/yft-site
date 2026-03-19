@@ -1,6 +1,6 @@
 {
-  "_readme": "Unique per-fund passwords. Updated 2026-03-18. _version forces re-seed on deploy.",
-  "_version": "2026-03-18-decktype",
+  "_readme": "Unique per-fund passwords. Updated 2026-03-19. _version forces re-seed on deploy.",
+  "_version": "2026-03-19-dallas7",
 
   "1517": {
     "name": "1517 Fund",
@@ -49,5 +49,47 @@
     "password": "ygg2026-khm",
     "active": true,
     "deckType": "founder-first-iv"
+  },
+  "aristos": {
+    "name": "Aristos Ventures",
+    "password": "ygg2026-avd",
+    "active": true,
+    "deckType": "founder-first"
+  },
+  "ashla": {
+    "name": "Ashla",
+    "password": "ygg2026-ash",
+    "active": true,
+    "deckType": "founder-first"
+  },
+  "sentiero": {
+    "name": "Sentiero Ventures",
+    "password": "ygg2026-svd",
+    "active": true,
+    "deckType": "founder-first"
+  },
+  "patterson": {
+    "name": "Patterson Thoma",
+    "password": "ygg2026-ptd",
+    "active": true,
+    "deckType": "founder-first"
+  },
+  "ntan": {
+    "name": "North Texas Angel Network",
+    "password": "ygg2026-ntx",
+    "active": true,
+    "deckType": "founder-first"
+  },
+  "firstrate": {
+    "name": "First Rate Ventures",
+    "password": "ygg2026-frv",
+    "active": true,
+    "deckType": "founder-first"
+  },
+  "dvc": {
+    "name": "Dallas Venture Capital",
+    "password": "ygg2026-dvc",
+    "active": true,
+    "deckType": "founder-first"
   }
 }
