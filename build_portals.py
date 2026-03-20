@@ -15,21 +15,14 @@ ADMIN_TEMPLATE = Path(__file__).parent / "admin-portal.html"
 
 # Fund slug → (display name, deck path)
 FUNDS = {
-    "1517":      ("1517 Fund",                  "/1517-deck/"),
-    "iv":        ("Industry Ventures",          "/industry-ventures-deck/"),
-    "contrary":  ("Contrary Capital",           "/contrary-deck/"),
-    "lux":       ("Lux Capital",                "/lux-deck/"),
-    "precursor": ("Precursor Ventures",         "/precursor-deck/"),
-    "qed":       ("QED Investors",              "/qed-deck/"),
-    "nyca":      ("NYCA Partners",              "/nyca-deck/"),
-    "ribbit":    ("Ribbit Capital",             "/ribbit-deck/"),
-    "aristos":   ("Aristos Ventures",           "/aristos-deck/"),
-    "ashla":     ("Ashla",                      "/ashla-deck/"),
-    "sentiero":  ("Sentiero Ventures",          "/sentiero-deck/"),
-    "patterson": ("Patterson Thoma",            "/patterson-deck/"),
-    "ntan":      ("North Texas Angel Network",  "/ntan-deck/"),
-    "firstrate": ("First Rate Ventures",        "/firstrate-deck/"),
-    "dvc":       ("Dallas Venture Capital",     "/dvc-deck/"),
+    "1517":      ("1517 Fund",           "/1517-deck/"),
+    "iv":        ("Industry Ventures",   "/industry-ventures-deck/"),
+    "contrary":  ("Contrary Capital",    "/contrary-deck/"),
+    "lux":       ("Lux Capital",         "/lux-deck/"),
+    "precursor": ("Precursor Ventures",  "/precursor-deck/"),
+    "qed":       ("QED Investors",       "/qed-deck/"),
+    "nyca":      ("NYCA Partners",       "/nyca-deck/"),
+    "ribbit":    ("Ribbit Capital",      "/ribbit-deck/"),
 }
 
 DRY_RUN = "--dry-run" in sys.argv
