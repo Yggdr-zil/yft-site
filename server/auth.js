@@ -170,3 +170,11 @@ export function getEvents() {
       .map(line => JSON.parse(line));
   } catch { return []; }
 }
+
+/**
+ * Clear all telemetry events.
+ */
+export function clearTelemetry() {
+  try { writeFileSync(TELEMETRY_FILE, '', 'utf8'); return { ok: true }; }
+  catch (e) { return { error: e.message }; }
+}

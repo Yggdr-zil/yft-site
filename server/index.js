@@ -3,7 +3,7 @@ import { createServer } from "node:http";
 import { createTransport } from "nodemailer";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { login, validateToken, validateAdmin, logEvent, getEvents, revokeByFund, addFund, getFunds } from "./auth.js";
+import { login, validateToken, validateAdmin, logEvent, getEvents, clearTelemetry, revokeByFund, addFund, getFunds } from "./auth.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -153,6 +153,14 @@ createServer(async (req, res) => {
 
     if (!validateAdmin(adminUser, adminPass)) return json(res, 401, { error: "Unauthorized" });
     return json(res, 200, { events: getEvents() });
+  }
+
+  // ── Admin: Clear telemetry ───────────────────────────────────────
+  if (req.method === "POST" && req.url === "/api/admin/clear-telemetry") {
+    let body;
+    try { body = JSON.parse(await readBody(req)); } catch { body = {}; }
+    if (!validateAdmin(body.username, body.password)) return json(res, 401, { error: "Unauthorized" });
+    return json(res, 200, clearTelemetry());
   }
 
   // ── Admin: Revoke fund ────────────────────────────────────────────
