@@ -246,6 +246,20 @@ async function load() {
     console.warn('Deck events unavailable:', e.message);
   }
 
+  // Fetch registered funds dynamically
+  try {
+    const fundsApi = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://localhost:3001/api/admin/funds' : '/api/admin/funds';
+    const creds = btoa('admin:' + token);
+    const fr = await fetch(fundsApi, { headers: { Authorization: 'Basic ' + creds } });
+    if (fr.ok) {
+      const fd = await fr.json();
+      KNOWN_FUNDS = (fd.funds || []).map(f => f.id).filter(id => !id.startsWith('test'));
+    }
+  } catch (e) {
+    console.warn('Funds list unavailable:', e.message);
+  }
+
   btn.disabled = false; btn.textContent = 'Refresh';
 
   // Tag source
@@ -294,7 +308,7 @@ function renderStats(events) {
   `).join('');
 }
 
-const KNOWN_FUNDS = ['1517','contrary','iv','btv','lux','nyca','precursor','qed','ribbit'];
+let KNOWN_FUNDS = [];
 
 function renderFundTable(events) {
   const funds = {};
