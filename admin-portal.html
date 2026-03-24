@@ -541,6 +541,7 @@
         <button class="nav-tab" data-tab="decks">Decks</button>
         <button class="nav-tab" data-tab="playbook">Playbook</button>
         <button class="nav-tab" data-tab="onepager">One-Pager</button>
+        <button class="nav-tab" data-tab="financials">Financials</button>
         <button class="nav-tab" data-tab="contact">Contact</button>
         <button class="nav-tab" data-tab="telemetry">Telemetry</button>
       </div>
@@ -593,6 +594,9 @@
 
       <!-- ── One-Pager ─────────────────────────────────────── -->
       <div class="tab-panel" id="panel-onepager"></div>
+
+      <!-- ── Financials ────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-financials"></div>
 
       <!-- ── Contact ───────────────────────────────────────── -->
       <div class="tab-panel" id="panel-contact">
@@ -769,7 +773,7 @@
 
     /* ── Tab switching ───────────────────────────────────── */
     var tabs = document.querySelectorAll('.nav-tab[data-tab]');
-    var loaded = { overview: true, decks: false, playbook: false, onepager: false, contact: true, telemetry: false };
+    var loaded = { overview: true, decks: false, playbook: false, onepager: false, financials: false, contact: true, telemetry: false };
 
     tabs.forEach(function(tab) {
       tab.addEventListener('click', function() {
@@ -786,6 +790,10 @@
         if (name === 'onepager' && !loaded.onepager) {
           document.getElementById('panel-onepager').innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf?v=20260318"></iframe>';
           loaded.onepager = true;
+        }
+        if (name === 'financials' && !loaded.financials) {
+          document.getElementById('panel-financials').innerHTML = '<iframe src="/docs/financial-statements.pdf?v=20260324"></iframe>';
+          loaded.financials = true;
         }
         if (name === 'telemetry' && !loaded.telemetry) {
           var hash = adminCreds ? encodeURIComponent(adminCreds.password) : '';

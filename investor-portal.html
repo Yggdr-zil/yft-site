@@ -238,6 +238,7 @@
         <button class="nav-tab active" data-tab="deck">Deck</button>
         <button class="nav-tab" data-tab="playbook">Playbook</button>
         <button class="nav-tab" data-tab="onepager">One-Pager</button>
+        <button class="nav-tab" data-tab="financials">Financials</button>
         <button class="nav-tab" data-tab="contact">Contact</button>
       </div>
       <div class="nav-spacer"></div>
@@ -250,6 +251,7 @@
       </div>
       <div class="tab-panel" id="panel-playbook"></div>
       <div class="tab-panel" id="panel-onepager"></div>
+      <div class="tab-panel" id="panel-financials"></div>
       <div class="tab-panel" id="panel-contact">
         <div class="contact-page">
           <div class="contact-card">
@@ -306,9 +308,10 @@
       deck:     document.getElementById('panel-deck'),
       playbook: document.getElementById('panel-playbook'),
       onepager: document.getElementById('panel-onepager'),
+      financials: document.getElementById('panel-financials'),
       contact:  document.getElementById('panel-contact')
     };
-    var loaded = { deck: false, playbook: false, onepager: false, contact: true };
+    var loaded = { deck: false, playbook: false, onepager: false, financials: false, contact: true };
 
     function switchTab(name) {
       tabs.forEach(function(t) {
@@ -328,6 +331,10 @@
       if (name === 'onepager' && !loaded.onepager) {
         panels.onepager.innerHTML = '<iframe src="/docs/yggdrasil-one-pager-v2.pdf?v=20260318"></iframe>';
         loaded.onepager = true;
+      }
+      if (name === 'financials' && !loaded.financials) {
+        panels.financials.innerHTML = '<iframe src="/docs/financial-statements.pdf?v=20260324"></iframe>';
+        loaded.financials = true;
       }
       telem('portal_view_' + name, '/portal/' + FUND_ID + '/' + name);
     }
