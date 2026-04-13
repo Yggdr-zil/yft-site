@@ -52,7 +52,7 @@
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
         html, body { height:100%; overflow-x:hidden; }
         html { scroll-snap-type:y mandatory; scroll-behavior:smooth; }
-        body { background:var(--navy-dark); color:var(--tp); font-family:var(--fb); font-weight:300; -webkit-font-smoothing:antialiased; zoom:0.8; }
+        body { background:var(--navy-dark); color:var(--tp); font-family:var(--fb); font-weight:300; -webkit-font-smoothing:antialiased; }
 
         /* === SLIDE BASE === */
         .slide {
@@ -74,6 +74,7 @@
             flex:1; display:flex; flex-direction:column;
             justify-content:center; max-height:100%; overflow:hidden;
             padding:var(--pad); position:relative; z-index:1;
+            transform:scale(0.82); transform-origin:center center;
         }
 
         /* === RESPONSIVE === */
