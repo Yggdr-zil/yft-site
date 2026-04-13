@@ -52,7 +52,7 @@
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
         html, body { height:100%; overflow-x:hidden; }
         html { scroll-snap-type:y mandatory; scroll-behavior:smooth; }
-        body { background:var(--navy-dark); color:var(--tp); font-family:var(--fb); font-weight:300; -webkit-font-smoothing:antialiased; }
+        body { background:var(--navy-dark); color:var(--tp); font-family:var(--fb); font-weight:300; -webkit-font-smoothing:antialiased; zoom:0.8; }
 
         /* === SLIDE BASE === */
         .slide {
@@ -294,8 +294,7 @@
             </div>
             <div class="rv"><h1>The Compute<br>Pricing Standard</h1></div>
             <div class="rv"><div class="cover-rule"></div></div>
-            <div class="rv"><p class="cover-sub">Pre-Seed &nbsp;·&nbsp; Patent Pending &nbsp;·&nbsp; Delaware C-Corp</p></div>
-            <div class="rv"><p class="cover-foot">Joseph "Bear" Januszewski &nbsp;·&nbsp; Patent Pending &nbsp;·&nbsp; Delaware C-Corp</p></div>
+            <div class="rv"><p class="cover-foot">Joseph "Bear" Januszewski &nbsp;·&nbsp; Founder &amp; CEO</p></div>
         </div>
     </section>
 
@@ -310,7 +309,7 @@
             <div class="rv"><span class="rule"></span></div>
             <div class="rv" style="margin-top:var(--gap);display:flex;flex-direction:column;gap:var(--gap);">
                 <p style="font-family:var(--fd);font-size:clamp(1.05rem,2.1vw,1.55rem);line-height:1.6;color:var(--tp);">
-                    Solo builder.<br>No co-founder. No capital.
+                    Solo builder.<br>No co-founder. Bootstrapped.
                 </p>
                 <div class="card-gold">
                     <p style="font-size:var(--ts2);line-height:1.65;color:var(--tp);">Two conversations with Goldman Sachs — MD and VP of Futures Sales Trading. Their direction: <strong style="color:var(--gold);">"Needs long and short side. Build it from public prices."</strong> Built exactly that — then decided to own the equity and license it to the world.</p>
@@ -555,7 +554,7 @@
     <section class="slide split" id="s5">
         <div class="slide-content">
             <div class="rv"><span class="label">Live Product</span></div>
-            <div class="rv"><h2>This is running right now.</h2></div>
+            <div class="rv"><h2>56 accelerators. 28 providers. 5.6M data points. Live.</h2></div>
             <div class="rv"><span class="rule"></span></div>
             <div class="rv" style="margin-top:var(--gap);">
 
@@ -594,37 +593,32 @@
          ============================================= -->
     <section class="slide" id="s6">
         <div class="slide-content">
-            <div class="rv"><span class="label">Competitive Moat</span></div>
-            <div class="rv"><h2>$45M validates the market.<br>We have the moat no one else does.</h2></div>
+            <div class="rv"><span class="label">Market Landscape</span></div>
+            <div class="rv"><h2>The infrastructure is being built.<br>The pricing layer doesn't exist yet.</h2></div>
             <div class="rv"><span class="rule"></span></div>
-            <div class="rv">
-                <div class="comp-grid" style="margin-top:var(--gap);">
-                    <div class="comp-card">
-                        <div class="comp-name">Ornn</div>
-                        <div class="comp-raised">$5.7M — Crucible + Vine</div>
-                        <div class="comp-have">Price tracking, crypto-adjacent</div>
-                        <div class="comp-miss">no cross-GPU normalization</div>
+            <div class="rv" style="margin-top:var(--gap);">
+                <!-- Market activity — what's happening -->
+                <div class="three-col" style="gap:clamp(0.8rem,1.5vw,1.4rem);margin-bottom:var(--gap);">
+                    <div class="card-top">
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--tp);margin-bottom:0.4em;">Trading Firms</div>
+                        <div style="font-size:var(--ts2);color:var(--gold);margin-bottom:0.5em;">DRW + Jump → $4.7M into Silicon Data</div>
+                        <p style="font-size:var(--ts2);line-height:1.5;">Sophisticated capital entering GPU compute data — but single-GPU spot only, no cross-architecture normalization.</p>
                     </div>
-                    <div class="comp-card">
-                        <div class="comp-name">Silicon Data</div>
-                        <div class="comp-raised">$4.7M — DRW + Jump</div>
-                        <div class="comp-have">Single-GPU spot indexes, Bloomberg-listed</div>
-                        <div class="comp-miss">single-GPU only, no cross-architecture</div>
+                    <div class="card-top">
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--tp);margin-bottom:0.4em;">GPU-Backed Lending</div>
+                        <div style="font-size:var(--ts2);color:var(--gold);margin-bottom:0.5em;">CoreWeave + Macquarie → $11B+</div>
+                        <p style="font-size:var(--ts2);line-height:1.5;">Institutional capital already flowing into GPU collateral — but no index to hedge exposure. Lenders are flying blind.</p>
                     </div>
-                    <div class="comp-card">
-                        <div class="comp-name">Architect / AX</div>
-                        <div class="comp-raised">$35M — Miami Intl + Tioga</div>
-                        <div class="comp-have">Derivatives exchange platform, exchange infrastructure</div>
-                        <div class="comp-miss">not a benchmark — needs an index to settle</div>
-                    </div>
-                    <div class="comp-card us">
-                        <div class="comp-name" style="color:var(--gold);">Yggdrasil</div>
-                        <div class="comp-raised">$0 raised · Seeking pre-seed</div>
-                        <div class="comp-have">Patent-pending cross-architecture normalization + live product + Goldman product direction + IOSCO compliance roadmap</div>
-                        <div class="comp-miss">No competitor has cross-architecture normalization — the prerequisite for exchange-grade settlement.</div>
+                    <div class="card-top" style="border-top-color:var(--gold);background:rgba(197,149,42,0.06);">
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--gold);margin-bottom:0.4em;">What's Missing</div>
+                        <div style="font-size:var(--ts2);color:var(--gold);margin-bottom:0.5em;">Yggdrasil — the settlement index</div>
+                        <p style="font-size:var(--ts2);line-height:1.5;">Cross-architecture normalization. Live product. IOSCO compliance roadmap. Patent pending. <strong style="color:var(--gold);">No one else has this.</strong></p>
                     </div>
                 </div>
-                <p style="font-family:var(--fd);font-size:var(--ts2);font-style:italic;color:var(--ts);margin-top:var(--gap);">Non-provisional patent filed — USPTO Track One review active. Core algorithm protected. Values published, method protected — can't replicate without licensing.</p>
+                <!-- Bottom line -->
+                <div class="card-gold" style="text-align:center;">
+                    <p style="font-family:var(--fd);font-size:clamp(1rem,1.8vw,1.35rem);font-style:italic;color:var(--tp);line-height:1.6;margin:0;">Trading desks are deploying capital. Lenders are writing $11B in GPU-backed loans.<br>They all need a pricing standard. <strong style="color:var(--gold);">That's what we built.</strong></p>
+                </div>
             </div>
         </div>
     </section>
@@ -650,7 +644,7 @@
                         <div style="font-size:var(--tl);color:var(--gold);letter-spacing:0.04em;margin-bottom:0.5em;">$3K/mo · $10K/mo</div>
                         <ul>
                             <li>$3K — Price transparency for compute brokers</li>
-                            <li>$10K — Quant &amp; prop desks</li>
+                            <li>$10K — Quant desks &amp; prop shops — trading data</li>
                         </ul>
                     </div>
                     <!-- Stage 02 — Data Licensing -->
@@ -694,8 +688,8 @@
                     </div>
                     <div>
                         <div style="font-size:var(--ts2);color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4em;">Year 10</div>
-                        <div class="stat-n" style="font-size:clamp(1.6rem,3vw,2.4rem);color:var(--gold);">$100–250M</div>
-                        <div style="font-size:var(--ts2);color:var(--ts);margin-top:0.3em;">$3.4T market · 3–5% hedged · oil-model fees</div>
+                        <div class="stat-n" style="font-size:clamp(1.6rem,3vw,2.4rem);color:var(--gold);">$2.1B</div>
+                        <div style="font-size:var(--ts2);color:var(--ts);margin-top:0.3em;">$10T market · 35% hedged · index model fee from spread</div>
                     </div>
                 </div>
             </div>
@@ -709,44 +703,50 @@
     <section class="slide" id="s8">
         <div class="slide-content">
             <div class="rv"><span class="label">Use of Funds</span></div>
-            <div class="rv"><h2>Everything built. Cash flow positive by Month 15.</h2></div>
+            <div class="rv"><h2>Use of Funds</h2></div>
             <div class="rv"><span class="rule"></span></div>
             <div class="rv" style="margin-top:var(--gap);">
-                <div class="alloc-bar">
-                    <div class="alloc-seg" style="width:56.6%;background:var(--gold);"></div>
-                    <div class="alloc-seg" style="width:9.6%;background:rgba(197,149,42,0.7);"></div>
-                    <div class="alloc-seg" style="width:6%;background:rgba(197,149,42,0.55);"></div>
-                    <div class="alloc-seg" style="width:9.6%;background:rgba(197,149,42,0.4);"></div>
-                    <div class="alloc-seg" style="width:9.6%;background:rgba(197,149,42,0.28);"></div>
-                    <div class="alloc-seg" style="width:8.6%;background:rgba(197,149,42,0.14);"></div>
-                </div>
-                <ul style="margin-top:var(--gap);">
-                    <li><span style="color:var(--gold);">56%</span> — 6 months operations (2 engineers + founder)</li>
-                    <li><span style="color:var(--gold);">10%</span> — Benchmark compute (GPU cluster rental)</li>
-                    <li><span style="color:var(--gold);">6%</span> — Office (downtown Dallas)</li>
-                    <li><span style="color:var(--gold);">10%</span> — Legal + regulatory counsel</li>
-                    <li><span style="color:var(--gold);">10%</span> — IOSCO advisory + compliance</li>
-                    <li><span style="color:var(--gold);">8%</span> — Cloud infra, insurance, ops</li>
-                </ul>
-                <div class="divider" style="margin:var(--gap) 0;"></div>
-                <div class="two-col">
-                    <div>
-                        <div class="stat-n" style="font-size:clamp(1.4rem,2.8vw,2.2rem);">~$47K/mo</div>
-                        <div style="font-size:var(--tl);color:var(--ts);margin-top:0.3em;">Monthly burn rate</div>
+                <div class="three-col" style="gap:clamp(0.8rem,1.5vw,1.4rem);margin-bottom:var(--gap);">
+                    <div class="card-top">
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--gold);margin-bottom:0.5em;">Engineering</div>
+                        <ul>
+                            <li>2 engineers — Day 1 post-close</li>
+                            <li>GPU cluster benchmarking budget</li>
+                            <li>Cloud infrastructure</li>
+                        </ul>
                     </div>
-                    <div>
-                        <div class="stat-n" style="font-size:clamp(1.4rem,2.8vw,2.2rem);">~12 mo</div>
-                        <div style="font-size:var(--tl);color:var(--ts);margin-top:0.3em;">~12 mo runway with early revenue</div>
+                    <div class="card-top">
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--gold);margin-bottom:0.5em;">Compliance &amp; Legal</div>
+                        <ul>
+                            <li>Haynes and Boone — compliance counseling</li>
+                            <li>IOSCO advisory + ISAE 3000</li>
+                            <li>Entity + IP maintenance</li>
+                        </ul>
+                    </div>
+                    <div class="card-top">
+                        <div style="font-size:var(--tb);font-weight:500;color:var(--gold);margin-bottom:0.5em;">Operations &amp; Runway</div>
+                        <ul>
+                            <li>Office space</li>
+                            <li>Insurance, banking, tools</li>
+                            <li>Reserve until cash flow positive</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="divider" style="margin:var(--gap) 0;"></div>
                 <div style="font-size:var(--tl);font-weight:500;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:var(--gaps);">Milestones</div>
-                <ul>
-                    <li><span style="color:var(--gold);">Mo. 1</span> — 2 engineers onboarded · first benchmark run</li>
-                    <li><span style="color:var(--gold);">Mo. 3</span> — All providers auditable · 10+ GPUs benchmarked</li>
-                    <li><span style="color:var(--gold);">Mo. 4</span> — Blockchain data · first paying customer</li>
-                    <li><span style="color:var(--gold);">Mo. 6</span> — Bloomberg-ready · CFTC opinion · IOSCO infra</li>
-                </ul>
+                <div class="two-col" style="gap:clamp(1.5rem,3vw,3rem);">
+                    <ul>
+                        <li><span style="color:var(--gold);">Mo. 1</span> — 2 engineers onboarded · first benchmark run</li>
+                        <li><span style="color:var(--gold);">Mo. 3</span> — All providers auditable · 10+ GPUs benchmarked</li>
+                        <li><span style="color:var(--gold);">Mo. 4</span> — Blockchain data · first paying customer</li>
+                        <li><span style="color:var(--gold);">Mo. 6</span> — Bloomberg-ready · IOSCO infra</li>
+                    </ul>
+                    <ul>
+                        <li><span style="color:var(--gold);">Mo. 12</span> — Pass ISAE 3000 Audit</li>
+                        <li><span style="color:var(--gold);">Mo. 18</span> — Partner with first bank to facilitate swap</li>
+                        <li><span style="color:var(--gold);">Mo. 24</span> — Revenue from OTC begins</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -757,19 +757,19 @@
     <section class="slide" id="s9">
         <div class="slide-content">
             <div class="rv"><span class="label">Team</span></div>
-            <div class="rv"><h2>One person built everything you've seen.<br>Here's who the raise hires.</h2></div>
+            <div class="rv"><h2>Bear Januszewski — Founder &amp; CEO.<br>Hiring with the raise.</h2></div>
             <div class="rv"><span class="rule"></span></div>
             <div class="rv">
                 <div class="card-gold" style="margin-top:var(--gap);margin-bottom:var(--gaps);">
-                    <div style="font-weight:400;color:var(--tm);font-size:var(--ts2);margin-bottom:var(--gaps);letter-spacing:0.04em;">Joseph "Bear" Januszewski — CEO</div>
+                    <div style="font-weight:400;color:var(--tm);font-size:var(--ts2);margin-bottom:var(--gaps);letter-spacing:0.04em;">Joseph "Bear" Januszewski — Founder &amp; CEO</div>
                     <div class="two-col" style="gap:clamp(0.75rem,1.5vw,1.5rem);">
                         <ul>
-                            <li>Chief Product Officer — roadmap &amp; UX direction</li>
-                            <li>CCO / Methodology Author — IOSCO opinion letters</li>
+                            <li>Index architecture &amp; methodology design</li>
+                            <li>Finance strategy &amp; IOSCO compliance roadmap</li>
                         </ul>
                         <ul>
-                            <li>CFO — financial operations until Series A</li>
-                            <li>Built full stack solo: pipeline, API, scoring, patent</li>
+                            <li>Goldman Sachs meetings — product direction validated</li>
+                            <li>Built full stack pre-funding: pipeline, API, scoring, patent</li>
                         </ul>
                     </div>
                 </div>
