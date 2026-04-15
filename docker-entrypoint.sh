@@ -51,6 +51,5 @@ echo "[entrypoint] Templates ready: $(ls "$TDIR/decks/" 2>/dev/null | wc -l) dec
 cd /opt/contact-server
 DATA_DIR="${DATA_DIR:-/data}" PORT=$CONTACT_PORT node index.js &
 
-export UPSTREAM_HOST=$(echo "${UPSTREAM_API}" | sed 's|https\?://||' | sed 's|/.*||')
-envsubst '${PORT} ${UPSTREAM_API} ${UPSTREAM_HOST}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
+envsubst '${PORT} ${UPSTREAM_API}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
 nginx -g 'daemon off;'
