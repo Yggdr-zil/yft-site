@@ -546,7 +546,6 @@
         <button class="nav-tab" data-tab="telemetry">Telemetry</button>
       </div>
       <div class="nav-spacer"></div>
-      <button class="nav-tab" id="btn-dashboard" style="color:rgba(197,149,42,0.7)">Dashboard &#8599;</button>
     </nav>
 
     <div class="content">
@@ -801,11 +800,6 @@
           loaded.telemetry = true;
         }
       });
-    });
-
-    /* ── Dashboard button ────────────────────────────────── */
-    document.getElementById('btn-dashboard').addEventListener('click', function() {
-      window.open('/dashboard/', '_blank');
     });
 
     /* ── Overview: Fund Cards ────────────────────────────── */

@@ -243,7 +243,6 @@
       </div>
       <div class="nav-spacer"></div>
       <button class="nav-tab download" id="btn-download">&#8681; Deck</button>
-      <button class="nav-tab external" id="btn-dashboard">Dashboard &#8599;</button>
     </nav>
     <div class="content">
       <div class="tab-panel active" id="panel-deck">
@@ -341,16 +340,6 @@
 
     tabs.forEach(function(tab) {
       tab.addEventListener('click', function() { switchTab(tab.getAttribute('data-tab')); });
-    });
-
-    /* ── Dashboard (new tab + cross-tab auth) ────────────── */
-    document.getElementById('btn-dashboard').addEventListener('click', function() {
-      if (authToken) {
-        localStorage.setItem('ygg_vc_token', authToken);
-        localStorage.setItem('ygg_vc_fund', FUND_ID);
-      }
-      window.open('/dashboard/', '_blank');
-      telem('portal_dashboard_open', '/dashboard/');
     });
 
     /* ── Download deck ──────────────────────────────────── */

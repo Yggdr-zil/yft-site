@@ -111,39 +111,6 @@ for (const fund of FUNDS) {
       );
     });
 
-    test('dashboard button opens new tab + cross-tab auth', async ({ page, context }) => {
-      test.skip(!token, 'login test must pass first');
-      await injectSession(page, fund.id, token);
-
-      // Listen for popup before clicking
-      const popupPromise = context.waitForEvent('page');
-      await page.click('#btn-dashboard');
-
-      // Read localStorage immediately — the dashboard popup's LoginGate may
-      // consume (promote + delete) the token from localStorage on load.
-      const storedToken = await page.evaluate(() =>
-        localStorage.getItem('ygg_vc_token'),
-      );
-
-      const popup = await popupPromise;
-
-      // If the popup's LoginGate already consumed the token, check popup's
-      // sessionStorage instead (cross-tab promotion succeeded).
-      let tokenFound = !!storedToken;
-      if (!tokenFound) {
-        try {
-          await popup.waitForLoadState('domcontentloaded');
-          const popupToken = await popup.evaluate(() =>
-            sessionStorage.getItem('ygg_vc_token'),
-          );
-          tokenFound = !!popupToken;
-        } catch { /* popup may have closed or navigated */ }
-      }
-
-      expect(tokenFound).toBeTruthy();
-      await popup.close();
-    });
-
     test('session persistence', async ({ page }) => {
       test.skip(!token, 'login test must pass first');
       await injectSession(page, fund.id, token);
